@@ -235,7 +235,7 @@ let deleteTargetIndex = null; // Untuk menyimpan index yang sedang dipilih
 // --- RANDOM IDOL GENERATOR (CLEANED & ANIMATED) ---
 const idolList = [
     "Yujin (IVE)", "Ahyeon (BABYMONSTER)", "Rosè (BLACKPINK) ", "Winter (Aespa)", 
-    "Sana (TWICE)", "Asa (BABYMONSTER)", "Hanni (NEWJEANS)", "Miyeon (I-DLE)", "Jennie (BLACKPINK)", "Karina (Aespa)", "Yuju (GFRIEND)", "Rei (IVE)", "Nayeon (TWICE)", "Irene (Red Velvet)", "Ian (Hearts2Hearts)", "Chiquita (BABYMONSTER)", "Ningning (Aespa)", "Chaewon (LE SSERAFIM)", "Minju (ILLIT)", "Sakura (LE SSERAFIM)", "Yeji (ITZY)", "Soyeon (I-DLE)", "Jihyo (TWICE)", "Wonhee (ILLIT)", "Yuna (ITZY)", "Rora (BABYMONSTER)", "Wounyoung (IVE)", "Haewon (NMIXX)", "Momo (TWICE)", "Yunah (ILLIT)", "Kyujin (NMIXX)", "Lily (NMIXX)", "Lesseo (IVE)", "Yunjin (LE SSERAFIM)", "Seulgi (Red Velvet)", "Tzuyu (TWICE)", "Eunchae (LE SSERAFIM)", "Jiwoo (NMIXX)", "Yuha (Hearts2Hearts)", "Yeon (Hearts2Hearts)", "Dahyun (TWICE)", "Giselle (Aespa)", "Jisoo (BLACKPINK)", "Lia (ITZY)", "Ruka (BABYMONSTER)", "Lisa (BLACKPINK)", "Pharita (BABYMONSTER)", "Gaeul (IVE)", "Rami ♡ (BABYMONSTER)", "Haerin (NEWJEANS)", "Hyein (NEWJEANS)", "Jeongyeon (TWICE)", "Kazuha (LE SSERAFIM)", "Gawon (MEOVV)", "Minnie (I-DLE)", "Jiwoo (Hearts2Hearts)", "Bailey (ADP)", "Anna (MEOVV)", "Juun (Hearts2Hearts)", "Yuqi (I-DLE)", "Shuhua (I-DLE)", "Ella (MEOVV)", "Carmen (Hearts2Hearts)", "Danielle ♡ (NEWJEANS)", "Minji (NEWJEANS)", "Chaeyoung (TWICE)", "Bae (NMIXX)", "Narin (MEOVV)", "Hyoyeon (SNSD)", "Ryujin (ITZY)", "Chaeryoung (ITZY)", "Moka (ILLIT)", "Mina (TWICE)", "Iroha (ILLIT)", "Sullyoon (NMIXX)"
+    "Sana (TWICE)", "Asa (BABYMONSTER)", "Hanni (NEWJEANS)", "Miyeon (I-DLE)", "Jennie (BLACKPINK)", "Karina (Aespa)", "Yuju (GFRIEND)", "Rei (IVE)", "Nayeon (TWICE)", "Irene (Red Velvet)", "Ian (Hearts2Hearts)", "Chiquita (BABYMONSTER)", "Ningning (Aespa)", "Chaewon (LE SSERAFIM)", "Minju (ILLIT)", "Sakura (LE SSERAFIM)", "Yeji (ITZY)", "Soyeon (I-DLE)", "Jihyo (TWICE)", "Wonhee (ILLIT)", "Yuna (ITZY)", "Rora (BABYMONSTER)", "Wonyoung (IVE)", "Haewon (NMIXX)", "Momo (TWICE)", "Yunah (ILLIT)", "Kyujin (NMIXX)", "Lily (NMIXX)", "Lesseo (IVE)", "Yunjin (LE SSERAFIM)", "Seulgi (Red Velvet)", "Tzuyu (TWICE)", "Eunchae (LE SSERAFIM)", "Jiwoo (NMIXX)", "Yuha (Hearts2Hearts)", "Yeon (Hearts2Hearts)", "Dahyun (TWICE)", "Giselle (Aespa)", "Jisoo (BLACKPINK)", "Lia (ITZY)", "Ruka (BABYMONSTER)", "Lisa (BLACKPINK)", "Pharita (BABYMONSTER)", "Gaeul (IVE)", "Rami ♡ (BABYMONSTER)", "Haerin (NEWJEANS)", "Hyein (NEWJEANS)", "Jeongyeon (TWICE)", "Kazuha (LE SSERAFIM)", "Gawon (MEOVV)", "Minnie (I-DLE)", "Jiwoo (Hearts2Hearts)", "Bailey (ADP)", "Anna (MEOVV)", "Juun (Hearts2Hearts)", "Yuqi (I-DLE)", "Shuhua (I-DLE)", "Ella (MEOVV)", "Carmen (Hearts2Hearts)", "Danielle ♡ (NEWJEANS)", "Minji (NEWJEANS)", "Chaeyoung (TWICE)", "Bae (NMIXX)", "Narin (MEOVV)", "Hyoyeon (SNSD)", "Ryujin (ITZY)", "Chaeryoung (ITZY)", "Moka (ILLIT)", "Mina (TWICE)", "Iroha (ILLIT)", "Sullyoon (NMIXX)"
 ];
 
 const randomBtn = document.getElementById("randomNameBtn");
@@ -1292,6 +1292,107 @@ function renderHistoryUI() {
 }
 
 // =========================
+// MEMBER / GROUP TAB
+// =========================
+const memberTab = document.getElementById("memberTab");
+const groupTab = document.getElementById("groupTab");
+
+const memberPanel = document.getElementById("memberPanel");
+const groupPanel = document.getElementById("groupPanel");
+
+if (memberTab && groupTab) {
+
+    memberTab.addEventListener("click", () => {
+        memberTab.classList.add("active");
+        groupTab.classList.remove("active");
+
+        memberPanel.style.display = "block";
+        groupPanel.style.display = "none";
+    });
+
+    groupTab.addEventListener("click", () => {
+        groupTab.classList.add("active");
+        memberTab.classList.remove("active");
+
+        memberPanel.style.display = "none";
+        groupPanel.style.display = "block";
+
+        generateGroupAnalysis();
+    });
+
+}
+
+function getVocalTier(point) {
+
+    point = Number(point);
+
+    // Cari tier yang paling mendekati
+    let closest = vocalData[0];
+
+    vocalData.forEach(item => {
+        if (Math.abs(item.point - point) < Math.abs(closest.point - point)) {
+            closest = item;
+        }
+    });
+
+    return closest.name;
+}
+
+// =========================
+// GROUP ANALYSIS
+// =========================
+function generateGroupAnalysis() {
+
+    if (compareList.length < 2) return;
+
+let totalVocal = 0;
+let totalDance = 0;
+let totalRap = 0;
+let totalSP = 0;
+let totalCredit = 0;
+let totalVisual = 0;
+let totalScore = 0;
+
+compareList.forEach(idol => {
+    totalVocal += Number(idol.vocalPoint) || 0;
+totalDance += Number(idol.dancePoint) || 0;
+totalRap += Number(idol.rapPoint) || 0;
+totalSP += Number(idol.spPoint) || 0;
+totalCredit += Number(idol.creditPoint) || 0;
+totalVisual += Number(idol.visualPoint) || 0;
+totalScore += Number(idol.score) || 0;
+});
+
+const member = compareList.length;
+
+const avgVocal = totalVocal / member;
+const avgDance = totalDance / member;
+const avgRap = totalRap / member;
+const avgSP = totalSP / member;
+const avgCredit = totalCredit / member;
+const avgVisual = totalVisual / member;
+const avgScore = totalScore / member;
+
+document.getElementById("groupScore").textContent = avgScore.toFixed(2);
+document.getElementById("groupTier").textContent = getTierText(avgScore);
+
+document.getElementById("avgVocal").textContent = getVocalTier(avgVocal);
+document.getElementById("avgDance").textContent = roundDance(avgDance).toFixed(2);
+document.getElementById("avgRap").textContent = roundRap(avgRap).toFixed(2);
+document.getElementById("avgSP").textContent = Math.round(avgSP) + "/20";
+document.getElementById("avgCredit").textContent = Math.round(avgCredit);
+document.getElementById("avgVisual").textContent = Math.round(avgVisual);
+}
+
+function roundDance(val){
+    return Math.round(val / 0.05) * 0.05;
+}
+
+function roundRap(val){
+    return Math.round(val / 0.25) * 0.25;
+}
+
+// =========================
 // SCORE COUNT UP
 // =========================
 function animateScore(element, target) {
@@ -1427,20 +1528,42 @@ if (saveBtn) {
         if (compareList.length >= 20) { showToast("Maximum 20 idols!"); return; }
 
         // 3. Simpan dengan Format Lengkap
-        compareList.push({ 
-            name, overall, 
-            vocal, vocalTier,
-            dance, danceTier,
-            rap, rapTier,
-            sp, spTier,
-            credit, visual 
-        });
-        
-        updateCompareUI();
-        showToast(`${name} added! `);
-    });
-}
+       compareList.push({
 
+    name,
+
+    overall,
+
+    score: window.lastAnalysis.score,
+
+    vocal,
+    vocalTier,
+    vocalPoint: window.lastAnalysis.vocalPoint,
+
+    dance,
+    danceTier,
+    dancePoint: window.lastAnalysis.dancePoint,
+
+    rap,
+    rapTier,
+    rapPoint: window.lastAnalysis.rapPoint,
+
+    sp,
+    spTier,
+    spPoint: window.lastAnalysis.spPoint,
+
+    credit,
+    creditPoint: window.lastAnalysis.creditPoint,
+
+    visual,
+    visualPoint: window.lastAnalysis.visualPoint
+
+});
+
+updateCompareUI();
+showToast(`${name} added!`);
+});
+}
 // 2. START COMPARE (WITH TIE DETECTION LOGIC)
 const startBtnGlobal = document.getElementById("startCompare");
 if (startBtnGlobal) {
