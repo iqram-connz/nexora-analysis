@@ -2117,6 +2117,8 @@ animation:scorePop .40s ease;
     display:flex;
     flex-direction:column;
 
+    overflow:hidden;      /* tambahkan */
+
     box-shadow:0 20px 60px rgba(0,0,0,.7);
 
 }
@@ -2126,6 +2128,8 @@ animation:scorePop .40s ease;
     flex:1;
 
     overflow-y:auto;
+
+    min-height:0;     /* WAJIB */
 
     margin:18px 0;
 
@@ -3422,3 +3426,249 @@ transition: all 0.3s ease;
 .badge-silver { background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05)); border-color: rgba(192, 192, 192, 0.5); color: #e0e0e0; }
 .badge-bronze { background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05)); border-color: rgba(205, 127, 50, 0.5); color: #cd7f32; }
 .badge-diamond { background: linear-gradient(135deg, rgba(185, 242, 255, 0.2), rgba(185, 242, 255, 0.05)); border-color: rgba(185, 242, 255, 0.5); color: #b9f2ff; box-shadow: 0 0 15px rgba(185, 242, 255, 0.2); }
+
+/* =========================
+   ANALYSIS TAB
+========================= */
+
+.overlay-tabs{
+
+    display:flex;
+    gap:10px;
+
+    margin-top:8px;
+    margin-bottom:18px;
+
+}
+
+.overlay-tab{
+
+    flex:1;
+
+    padding:13px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#232332;
+
+    color:#bdbdbd;
+
+    font-size:14px;
+    font-weight:800;
+
+    letter-spacing:.8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.overlay-tab:hover{
+
+    transform:translateY(-2px);
+
+    color:#fff;
+
+}
+
+.overlay-tab.active{
+
+    background:linear-gradient(
+        135deg,
+        #7c3aed,
+        #a259ff
+    );
+
+    color:#fff;
+
+    box-shadow:
+        0 0 18px rgba(162,89,255,.55);
+
+}
+
+
+
+/* =========================
+   GROUP PANEL
+========================= */
+
+#memberPanel,
+#groupPanel{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    min-height:0;
+
+}
+
+
+
+/* =========================
+   GROUP CARD
+========================= */
+
+.group-card{
+
+    background:linear-gradient(
+        145deg,
+        #1d1d28,
+        #14141d
+    );
+
+    border:1px solid rgba(162,89,255,.35);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:
+        0 0 20px rgba(162,89,255,.12);
+
+}
+
+
+
+/* =========================
+   GROUP TITLE
+========================= */
+
+.group-card h3{
+
+    margin:0 0 15px;
+
+    text-align:center;
+
+    color:#fff;
+
+    font-size:20px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+}
+
+
+
+/* =========================
+   SCORE
+========================= */
+
+.group-score{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.group-score span{
+
+    display:block;
+
+    font-size:38px;
+
+    font-weight:900;
+
+    color:#a259ff;
+
+    text-shadow:
+        0 0 18px rgba(162,89,255,.6);
+
+}
+
+.group-score p{
+
+    margin-top:5px;
+
+    color:#bdbdbd;
+
+    font-size:15px;
+
+}
+
+
+
+/* =========================
+   SKILLS
+========================= */
+
+.group-skill{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.group-skill span:first-child{
+
+    color:#ddd;
+
+    font-weight:700;
+
+}
+
+.group-skill span:last-child{
+
+    color:#fff;
+
+    font-weight:900;
+
+}
+
+
+
+/* =========================
+   INSIGHT
+========================= */
+
+#groupInsight{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:rgba(162,89,255,.08);
+
+    border:1px solid rgba(162,89,255,.18);
+
+    color:#ddd;
+
+    line-height:1.6;
+
+    font-size:14px;
+
+}
+
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+#groupPanel::-webkit-scrollbar{
+
+    width:4px;
+
+}
+
+#groupPanel::-webkit-scrollbar-thumb{
+
+    background:#a259ff;
+
+    border-radius:10px;
+
+}
