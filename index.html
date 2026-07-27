@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 1. JUDUL TAB BROWSER (Penting banget!) -->
+    <title>NEXORA | K-Pop Idol Talent Analysis & Ranking</title>
+
+    <!-- 2. DESKRIPSI UNTUK GOOGLE (Ini yang muncul di hasil pencarian) -->
+   <meta name="description" content="NEXORA Talent Analysis is a K-pop idol database featuring talent rankings, vocal, dance, rap, stage presence, visual analysis, and overall scores for K-pop idols from every generation.">
+
+    <!-- 3. KEYWORDS (Bantu Google paham topikmu) -->
+   <meta name="keywords" content="NEXORA, K-pop, K-pop database, idol ranking, talent analysis, vocal ranking, dance ranking, rap ranking, stage presence, visual ranking, K-pop stats">
+
+    <!-- 4. CSS & SCRIPT -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    
+    <div id="stars"></div>
+
+    <!-- 2. SPLASH SCREEN / INTRO -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <h1 class="logo">𝄞</h1>
+            <h1 class="title">NEXORA</h1>
+            <h2 class="subtitle">Talent Analysis</h2>
+            <p class="tagline">Measure • Analyze • Discover</p>
+            <div class="divider"></div>
+
+              <p class="tagline" style=font-weight: bold;>  @nexora_analysis</p>
+
+            <div class="features">
+                <p>✓ Vocal Analysis</p>
+                <p>✓ Dance Analysis</p>
+                <p>✓ Rap Analysis</p>
+                <p>✓ Stage Presence</p>
+                <p>✓ Credit Songs</p>
+                <p>✓ Visual Rating</p>
+            </div>
+
+            <button id="startBtn">✨ START ANALYSIS ✨</button>
+
+            <!-- TOMBOL IDOL CHART -->
+            <button id="openIdolChartBtn" style="
+                background: transparent; 
+                color: #a259ff; 
+                border: 2px solid #9c4fff; 
+                padding: 12px 30px; 
+                font-size: 16px; 
+                font-weight: bold; 
+                border-radius: 50px; 
+                cursor: pointer; 
+                margin-top: 20px;
+                box-shadow: 0 0 10px rgba(162, 89, 255, 0.3);
+                transition: 0.3s;
+            ">
+                📊 IDOL CHART
+            </button>
+            
+                <!-- 4. MODAL IDOL CHART (DI LUAR SPLASH & ANALYSIS) -->
+    <div id="idolChartModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content chart-modal">
+            
+            <!-- Header Modal -->
+            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center !important; margin-bottom: 10px;">
+                <h3>Nexora Idol Database</h3>
+                <button id="closeIdolChartBtn" class="close-btn">×</button>
+            </div>
+
+            <p class="modal-disclaimer">⚠️ CMIIW if the stats roast your bias! 🔥</p>
+            
+            <!-- Tombol Filter -->
+            <div style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="filterByGen('gen3')" class="filter-btn active">Gen 3</button>
+                <button onclick="filterByGen('gen4')" class="filter-btn">Gen 4</button>
+                <button onclick="filterByGen('gen5')" class="filter-btn">Gen 5</button>
+                <button onclick="filterByGen('gen2')" class="filter-btn">Gen 2</button>
+            </div>
+
+            <!-- List -->
+            <div id="idolChartList" class="idol-chart-grid"></div>
+        </div>
+    </div>
+            <small>© 2026 NEXORA</small>
+        </div>
+    </div>
+
+    <div id="main-content">
+       
+    </div>
+    
+    <div class="card">
+
+    <h1>🎤 Talent Analysis</h1>
+    
+
+
+    <p>Welcome to NEXORA Talent Analysis
+ 
+Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap, Stage Presence, Credit Songs, and Optional Visuals—delivering fair, detailed, and insightful analysis of your favorite idols.</p>
+</div>
+
+<div class="container">
+
+   <h1> ↓ Choose ↓ </h1>
+   
+    <header class="card">
+      
+        <h2>Input Talent:</h2>
+    
+      <label>🪪 Name:</label>
+<div class="input-wrapper">
+<input type="text" id="names" placeholder="Enter Idol names...">
+  
+    <!-- ✅ TOMBOL RESET ALL BARU -->
+    <button id="resetAllDataBtn" class="nexora-reset-btn" title="Reset Semua Data">↺ Reset All</button>
+
+   <button id="randomNameBtn" class="nexora-random-btn" title="Nama Random">🎲</button>
+   
+</div>
+
+
+
+        <label>🎤 Vocal:</label>
+
+<select id="vocal">
+    <option>Choose Vocals...</option>
+</select>
+
+<div class="info-row">
+    <div id="vocalPoint" class="point-box">0</div>
+    <div id="vocalBadge" class="badge-box">-</div>
+
+</div>
+        
+<label>💃 Dance:</label>
+
+<input
+    type="number"
+    id="dance"
+    min="1.00"
+    max="10.00"
+    step="0.05"
+    placeholder="Input dance (1.00 - 10.00)">
+          <div class="info-row">
+            <div id="dancePoint" class="point-box">0</div>
+            <div id="danceBadge" class="badge-box">-</div>
+        </div>
+      
+
+        <label>🗣️ Rap:</label>
+        <select id="rap">
+           <option>Choose Raps...</option>
+        </select>
+        <!-- Kotak Info Rap -->
+        <div class="info-row">
+            <div id="rapPoint" class="point-box">0</div>
+            <div id="rapBadge" class="badge-box">-</div>
+        </div>
+
+      
+        <label>✨ Stage Presence:</label>
+        <select id="sp">
+            <option>Choose Stage Presences...</option>
+        </select>
+        
+        <!-- Tambahkan baris ini untuk Poin & Badge SP -->
+        <div class="info-row">
+            <div id="spPoint" class="point-box">0</div>
+            <div id="spBadge" class="badge-box">-</div>
+            </div>
+        
+   </div>
+      
+          </div>
+
+        <div class="card">
+          
+          <h3>♪ OPTIONAL ♪</h3>
+        
+           <label>📝 Credit Songs / Songwriting:</label>
+        <input type="number" id="credit" placeholder="Input Credit Song / Songwriting..." min="0" step="1">
+        
+        <div class="info-row">
+            <div id="creditPoint" class="point-box">0</div>
+            <div id="creditBadge" class="badge-box">-</div>
+            </div>
+          
+        <label>🌟 Visual:</label>
+        <input type="number" id="visual" placeholder="Input Visual (1% - 100%)">
+        
+        <div class="info-row">
+            <div id="visualPoint" class="point-box">0</div>
+            <div id="visualBadge" class="badge-box">-</div>
+            </div>
+            
+        </div>
+        
+          </div>
+        
+    <!-- INI TOMBOL ANALYZE YANG HILANG -->
+    <button id="analyze" class="btn-primary">📊 ANALYZE</button>
+</div>
+
+<!-- ✅ LOADING SCREEN (Harus ada di dalam body) -->
+<div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+    <div class="loading-box">
+        <div class="loading-icon">✨</div>
+        <h2>Analyzing Talent...</h2>
+        <p>Please Wait...</p>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+    </div>
+</div>
+
+ <div style="display:flex; gap:10px; margin-bottom:20px;">
+    <button id="saveCompare" class="btn-secondary" style="display: none;">
+        ⭐ Save for Compare
+    </button>
+    <button id="openCompare" class="btn-primary" style="display: none;">
+        ⚔ Open Compare List
+    </button>
+</div>
+
+<div id="compareCard" class="compare-card" style="display:none;">
+    
+    <!-- HEADER -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap: 15px;">
+        <h2 style="margin:0; font-size:18px; line-height:1.1; flex-shrink:0; color:#fff;">
+            ⚔ COMPARE IDOL
+        </h2>
+        
+        <button id="resetCompare" class="reset-btn">RESET LIST</button>
+    </div>
+    
+    <!-- LIST IDOL -->
+    <h3 style="color:#a259ff; font-size:17px; letter-spacing:1px; margin-bottom:32px;">COMPARE LIST:</h3>
+    <div id="compareListDisplay" style="min-height: 50px;">No idols saved.</div>
+    
+    <!-- TOTAL COUNTER -->
+    <p id="compareTotal" style="margin-top:10px; color:#888; text-align:right; font-family:monospace;">Total : 0 / 20</p>
+    
+    <!-- TOMBOL START -->
+    <button id="startCompare" class="btn-primary" style="width:100%; margin-top:15px;">START COMPARE</button>
+
+    <!-- AREA HISTORY -->
+    <div class="history-section">
+        <div id="historyListDisplay"></div>
+    </div>
+</div>
+
+<div id="rankingOverlay">
+    <div class="ranking-container">
+
+        <h2 class="overlay-main-title">NEXORA ANALYSIS</h2>
+
+        <!-- TAB -->
+        <div class="overlay-tabs">
+            <button id="memberTab" class="overlay-tab active">
+                ⚔ MEMBER
+            </button>
+
+            <button id="groupTab" class="overlay-tab">
+                👥 GROUP (Coming Soon)
+            </button>
+        </div>
+
+        <!-- ========================= -->
+        <!-- MEMBER PANEL -->
+        <!-- ========================= -->
+        <div id="memberPanel">
+
+            <div id="rankingList"></div>
+
+        </div>
+
+        <!-- ========================= -->
+        <!-- GROUP PANEL -->
+        <!-- ========================= -->
+        <div id="groupPanel" style="display:none;">
+
+            <div class="group-card">
+
+                <h3>👥 GROUP ANALYSIS</h3>
+
+                <div class="group-score">
+                    <span id="groupScore">0.00</span>
+                    <p id="groupTier">Dozen Group</p>
+                </div>
+
+                <hr>
+
+                <h4>Average Skills</h4>
+
+                <div class="group-skill">
+                    <span>🎤 Vocal</span>
+                    <span id="avgVocal">-</span>
+                </div>
+
+                <div class="group-skill">
+                    <span>💃 Dance</span>
+                    <span id="avgDance">-</span>
+                </div>
+
+                <div class="group-skill">
+                    <span>🎤 Rap</span>
+                    <span id="avgRap">-</span>
+                </div>
+
+                <div class="group-skill">
+                    <span>⭐ SP</span>
+                    <span id="avgSP">-</span>
+                </div>
+
+                <div class="group-skill">
+                    <span>✍ Credit</span>
+                    <span id="avgCredit">-</span>
+                </div>
+
+                <div class="group-skill">
+                    <span>👑 Visual</span>
+                    <span id="avgVisual">-</span>
+                </div>
+
+                <hr>
+
+                <h4>AI Insight</h4>
+
+                <p id="groupInsight">
+                    Analyze a group to generate AI Insight.
+                </p>
+
+            </div>
+
+        </div>
+
+        <button id="closeRanking">
+            CLOSE
+        </button>
+
+    </div>
+</div>
+<!-- ========================================== -->
+<!-- 3. RESULT CARD (TERPISAH)                  -->
+<!-- ========================================== -->
+
+<div id="resultCard" class="result-card" style="display:none;">
+  
+    <h3 class="analysis-title">NEXORA ANALYSIS</h3>
+
+    <div class="score-display">
+        <span id="finalScore">0.00</span>
+    </div>
+    
+    <h2 id="resultName">Unknown</h2>
+    <div id="tierText">TOP IDOL</div>
+
+    <div class="status-card">
+        <span id="bonusText"></span>
+        <div class="divider"></div>
+        <span id="arStatus"></span>
+    </div>
+
+    <div class="section-title">RADAR CHART 📊</div>
+    <div class="chart-container">
+        <canvas id="talentRadar"></canvas>
+    </div>
+
+    <div class="section-title">TOTAL TALENT</div>
+    <div class="calculation-box">
+        <div id="formulaText"></div>
+        <div id="averageText"></div>
+    </div>
+    
+    <!-- TAMBAHKAN INI DI DALAM #resultCard, DI ATAS TOMBOL COPY RESULT -->
+
+<!-- GANTI BAGIAN AI SUMMARY LAMA DENGAN INI -->
+<div class="section-title">INSIGHT</div>
+<div class="nexora-ai-card">
+
+    <div class="ai-header">
+        <span class="ai-label">NEXORA AI INSIGHT</span>
+        <!-- ✅ TAMBAHKAN ID DI SINI -->
+        <span id="gradeBadge" class="ai-tier-badge">LOADING...</span>
+    </div>
+
+    <div class="ai-stats-row">
+
+        <div class="stat-item">
+            <span class="stat-val">--</span>
+            <span class="stat-name">CORE AVG</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+            <span class="stat-val">--</span>
+            <span class="stat-name">BEST SKILL</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+            <span class="stat-val">--</span>
+            <span class="stat-name">WORST SKILL</span>
+        </div>
+
+    </div>
+<!-- Letakkan ini di bawah Grade atau di atas teks Insight -->
+<div id="achievementContainer" class="trophy-case">
+    <div id="achievementBadge" class="premium-badge hidden">
+        <span class="badge-icon"></span>
+        <span class="badge-title"></span>
+    </div>
+</div>
+
+    <!-- TALENT DISTRIBUTION BARS -->
+    <div class="talent-distribution-container">
+        <h4 class="dist-title"> TALENT DISTRIBUTION</h4>
+        <div id="talentBars" class="talent-bars-grid">
+            <!-- Bars akan di-generate otomatis oleh JS -->
+        </div>
+    </div>
+
+    <!-- SKILL GAP INDICATOR -->
+    <div class="skill-gap-container">
+        <div class="gap-labels">
+            <span id="gapBestLabel">SP</span>
+            <span class="gap-distance" id="gapDistanceText">Gap: 50.0</span>
+            <span id="gapWorstLabel">RAP</span>
+        </div>
+        <div class="gap-bar-track">
+            <div class="gap-bar-fill" id="gapBarFill"></div>
+            <div class="gap-marker-best" id="gapMarkerBest"></div>
+            <div class="gap-marker-worst" id="gapMarkerWorst"></div>
+        </div>
+        <p class="gap-insight" id="gapInsight">Balanced Profile</p>
+    </div>
+
+    <!-- ✅ TAMBAHKAN ID DI SINI -->
+    <p id="insightText" class="ai-desc">Analyzing talent profile...</p>
+
+</div>
+
+<!-- WRAPPER BARU UNTUK MEMBUAT TOMBOL BERSEBELAHAN -->
+<div class="nexora-copy-wrapper">
+    <button id="copyResult" class="btn-secondary">
+        📋 COPY RESULT
+    </button>
+
+    <button id="copyResultCard" class="btn-secondary">
+        📋 COPY RESULT (Full Card 📊)
+    </button>
+</div>
+
+
+<!-- TOMBOL EXPORT IMAGE -->
+<button id="exportImage" class="btn-secondary">
+    📷 EXPORT IMAGE
+</button>
+
+<!-- ========================================== -->
+<!-- 4. RANKING OVERLAY (ANTI-BENTROK SEARCH)   -->
+<!-- ========================================== -->
+
+<!-- ========================================== -->
+<!-- 5. TOAST NOTIFICATION                      -->
+<!-- ========================================== -->
+<!-- NEXORA TOAST ELEMENT (FIXED) -->
+<div id="nexoraToast" class="toast-notification">
+    <span id="toastMessage"></span> <!-- Kosongkan isinya -->
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<!-- Pastikan file click.mp3 ada di folder assets/sounds/ -->
+<audio id="clickSound" src="assets/sounds/click.mp3" preload="auto"></audio>
+
+
+<audio id="successSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_12b0c7443c.mp3" preload="auto"></audio>
+
+
+        
+ </div>
+    
+    </div>
+        
+  </div>
+
+  
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
