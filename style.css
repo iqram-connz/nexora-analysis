@@ -1,0 +1,3424 @@
+/* ===========================
+   NEXORA STAR BACKGROUND
+=========================== */
+
+/* Container Bintang */
+#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    /* Hapus will-change dan translateZ */
+}
+
+/* Bintang Individual */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    animation: twinkle infinite ease-in-out;
+    /* Hapus will-change dan translateZ */
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+
+body {
+     background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+    background-size: 400% 400%;
+    animation: bgMove 45s ease infinite;
+
+}
+
+/* Update Card & Input Styles agar mengikuti tema */
+.card, .result-card, .badge-box {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    color: var(--text-main);
+}
+
+.result-card {
+    margin-top: 20px;
+    border-radius: 28px;
+    padding: 28px;
+    background: var(--bg-card); /* Sesuaikan dengan variabel warnamu */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease; /* Efek muncul halus */
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; /* Tinggi tetap agar tidak kosong melompong */
+    width: 100%;
+    margin-top: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TOMBOL ANALYZE (PRIMARY ACTION) --- */
+#analyze {
+    width: 100%;
+    padding: 18px 0;
+    margin-top: 25px;
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700; /* Tebal agar tegas */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    
+    /* Gradasi Ungu Neon ke Biru Langit */
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    background-size: 200% auto;
+    
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    /* Bayangan Glow yang Kuat */
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.5);
+    transition: all 0.4s ease;
+}
+
+/* Efek Hover: Gradasi bergerak & Glow makin terang */
+#analyze:hover {
+    background-position: right center; /* Menggeser gradasi */
+    transform: translateY(-3px); /* Naik sedikit */
+    box-shadow: 0 8px 30px rgba(108, 92, 231, 0.7); /* Glow makin besar */
+}
+
+/* Efek Klik: Tombol ditekan */
+#analyze:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(108, 92, 231, 0.4);
+}
+
+/* --- TOMBOL ANALYZE (PRIMARY ACTION) --- */
+#analyze {
+    width: 100%;
+    padding: 18px 0;
+    margin-top: 25px;
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700; /* Tebal agar tegas */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    
+    /* Gradasi Ungu Neon ke Biru Langit */
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    background-size: 200% auto;
+    
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    /* Bayangan Glow yang Kuat */
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.5);
+    transition: all 0.4s ease;
+}
+
+/* Efek Hover: Gradasi bergerak & Glow makin terang */
+#analyze:hover {
+    background-position: right center; /* Menggeser gradasi */
+    transform: translateY(-3px); /* Naik sedikit */
+    box-shadow: 0 8px 30px rgba(108, 92, 231, 0.7); /* Glow makin besar */
+}
+
+/* Efek Klik: Tombol ditekan */
+#analyze:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(108, 92, 231, 0.4);
+}
+
+/* --- Efek Kilau (Shine Effect) --- */
+#analyze::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent
+    );
+    transition: 0.6s;
+    z-index: -1;
+}
+
+#analyze:hover::before {
+    left: 100%; /* Kilauan lewat saat hover */
+}
+
+
+/* Perbaiki tampilan Kartu Hasil agar tidak membuat jarak kosong saat tersembunyi */
+.result-card {
+    margin-top: 10px; /* Jarak kecil dari tombol Analyze */
+    margin-bottom: 10px; /* Jarak kecil ke tombol Copy */
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    
+    /* PENTING: Gunakan display: none agar tidak memakan ruang saat tersembunyi */
+    display: none; 
+}
+/* --- ANIMASI PEMBUKAAN WEBSITE --- */
+
+/* 1. Definisikan gerakan animasinya */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px); /* Mulai dari 30px di bawah */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Kembali ke posisi asli */
+    }
+}
+
+/* 2. Terapkan ke elemen-elemen utama */
+header, 
+.input-group, 
+.btn-primary, 
+.btn-secondary, 
+.footer {
+    opacity: 0; /* Awalnya sembunyi */
+    animation: slideUpFade 0.8s ease-out forwards; /* Durasi 0.8 detik */
+}
+
+/* 3. Buat efek berurutan (staggered) agar tidak kaku */
+header { animation-delay: 0.1s; }
+.input-group:nth-child(1) { animation-delay: 0.2s; } /* Vocal */
+.input-group:nth-child(2) { animation-delay: 0.3s; } /* Dance */
+.input-group:nth-child(3) { animation-delay: 0.4s; } /* Rap */
+.input-group:nth-child(4) { animation-delay: 0.5s; } /* SP */
+.input-group:nth-child(5) { animation-delay: 0.6s; } /* Credit */
+.input-group:nth-child(6) { animation-delay: 0.7s; } /* Visual */
+
+.btn-primary { animation-delay: 0.8s; } /* Tombol Analyze */
+.footer { animation-delay: 1.0s; }
+
+.splash-content h1 {
+    animation: pulseText 2s infinite;
+}
+
+@keyframes pulseText {
+    0% { text-shadow: 0 0 10px rgba(108, 92, 231, 0.5); }
+    50% { text-shadow: 0 0 25px rgba(108, 92, 231, 1); }
+    100% { text-shadow: 0 0 10px rgba(108, 92, 231, 0.5); }
+}
+
+#copyResult {
+display: block;
+margin: 20px auto 0; /* Tengah dan ada jarak dari atas */
+padding: 14px 20px;
+margin-top: 15px;
+font-family: 'Poppins', sans-serif;  
+font-size: 0.9rem;  
+font-weight: 600;  
+letter-spacing: 1.5px;  
+text-transform: uppercase;  
+color: #e0e0ff; /* Putih kebiruan */  
+  
+/* Latar Transparan ala Kaca */  
+background: rgba(255, 255, 255, 0.03);  
+border: 1px solid rgba(108, 92, 231, 0.4);  
+border-radius: 50px; /* Bentuk Pill yang modern */  
+  
+backdrop-filter: blur(8px); /* Efek buram di belakang tombol */  
+cursor: pointer;  
+position: relative;  
+overflow: hidden;  
+transition: all 0.3s ease;
+}
+
+/* =========================
+   EXPORT CARD
+========================= */
+
+.export-card{
+    width:1080px;
+    height:1350px;
+
+    background:
+        radial-gradient(circle at top,#8b5cf6 0%,#4c1d95 35%,#090b18 100%);
+
+    color:#fff;
+
+    border-radius:40px;
+
+    padding:80px;
+
+    box-sizing:border-box;
+
+    position:relative;
+
+    overflow:hidden;
+
+    font-family:Poppins,sans-serif;
+}
+
+/* Glow */
+.export-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:600px;
+    height:600px;
+
+    background:#8b5cf6;
+
+    filter:blur(180px);
+
+    opacity:.18;
+
+    top:-120px;
+    right:-120px;
+
+}
+
+/* Border Glow */
+
+.export-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border:2px solid rgba(255,255,255,.08);
+
+    border-radius:40px;
+
+    pointer-events:none;
+
+}
+
+.export-score{
+
+    font-size:130px;
+
+    font-weight:800;
+
+    text-align:center;
+
+    margin-top:35px;
+
+    color:#fff;
+
+    text-shadow:0 0 25px rgba(255,255,255,.35);
+
+}
+
+.export-tier{
+
+    width:max-content;
+
+    margin:auto;
+
+    padding:12px 35px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+.export-chart{
+
+    width:620px;
+
+    margin:70px auto;
+
+}
+
+.export-breakdown{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:18px 0;
+
+    font-size:34px;
+
+}
+
+.export-footer{
+
+    position:absolute;
+
+    bottom:55px;
+
+    left:80px;
+
+    right:80px;
+
+    text-align:center;
+
+    color:#cfcfff;
+
+    font-size:24px;
+
+    opacity:.8;
+
+}
+
+#exportImage {
+  
+  display: block;
+margin: 25px auto 0; /* Tengah dan ada jarak dari atas */
+padding: 12px 33px;
+
+font-family: 'Poppins', sans-serif;  
+font-size: 0.9rem;  
+font-weight: 600;  
+letter-spacing: 1.5px;  
+text-transform: uppercase;  
+color: #e0e0ff; /* Putih kebiruan */  
+  
+/* Latar Transparan ala Kaca */  
+background: rgba(255, 255, 255, 0.03);  
+border: 1px solid rgba(108, 92, 231, 0.4);  
+border-radius: 48px; /* Bentuk Pill yang modern */  
+  
+backdrop-filter: blur(8px); /* Efek buram di belakang tombol */  
+cursor: pointer;  
+position: relative;  
+overflow: hidden;  
+transition: all 0.3s ease;
+  
+}
+
+/* Container Chart agar tingginya pas dan tidak melompong */
+.chart-container {
+    position: relative;
+    height: 250px; /* Tinggi tetap agar layout stabil */
+    width: 100%;
+    margin-top: 15px;
+}
+
+.chart-box{
+
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(108,92,231,.25);
+
+    backdrop-filter:blur(12px);
+    
+}
+    
+box-shadow:
+    inset 0 0 15px rgba(255,255,255,.03),
+    0 0 20px rgba(108,92,231,.15);
+
+select, input {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+label {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+
+body{
+    background:#0d0c0c;
+    color:white;
+    font-family:Arial,sans-serif;
+    margin:1;
+}
+
+.container{
+    max-width:500px;
+    margin:40px auto;
+    padding:20px;
+}
+
+h1{
+    color:#be91f3;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:#930de3;
+    color:white;
+    font-size:18px;
+}
+
+.card{
+    background:#1e1e1e;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    transition:all .35s ease;
+    color:#e3bff9;
+    font-weight:bold;
+    background:rgba(30,30,45,.65);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.08);
+}
+
+.calculation-box{
+    margin:18px 0;
+    padding:15px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(108,92,231,.25);
+
+    color:#ddd;
+
+    font-size:14px;
+    text-align:center;
+
+    line-height:1.8;
+}
+
+#formulaText{
+    color:#cbb8ff;
+    font-weight:600;
+}
+
+#averageText{
+    margin-top:8px;
+
+    font-size:22px;
+
+    color:#ffffff;
+
+    font-weight:bold;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+select {
+    width: 100%;
+    padding: 14px 18px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+
+    border: 2px solid rgba(108,92,231,.45);
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(10px);
+
+    color: var(--text-main);
+    font-size: 15px;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: .35s ease;
+    appearance: none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, #8b7cff 50%),
+        linear-gradient(135deg, #8b7cff 50%, transparent 50%);
+    background-position:
+        calc(100% - 22px) calc(50% - 3px),
+        calc(100% - 16px) calc(50% - 3px);
+    background-size:6px 6px;
+    background-repeat:no-repeat;
+    animation: nexoraGlow 4s ease-in-out infinite;
+}
+
+@keyframes nexoraGlow{
+    0%{
+        box-shadow:0 0 8px rgba(108,92,231,.15);
+    }
+
+    50%{
+        box-shadow:
+        0 0 18px rgba(108,92,231,.45),
+        0 0 35px rgba(108,92,231,.20);
+    }
+
+    100%{
+        box-shadow:0 0 8px rgba(108,92,231,.15);
+    }
+}
+
+
+select:hover{
+    border-color:#8b7cff;
+
+    box-shadow:
+    0 0 15px rgba(108,92,231,.45),
+    0 0 35px rgba(108,92,231,.20);
+
+    transform:translateY(-2px);
+}
+
+select:focus{
+    border-color:#a78bfa;
+
+    box-shadow:
+    0 0 0 3px rgba(108,92,231,.20),
+    0 0 25px rgba(108,92,231,.55),
+    inset 0 0 12px rgba(108,92,231,.15);
+}
+
+select option{
+    background:linear-gradient(135deg,#5d1470,#111111);
+    color:white;
+}
+
+/* =========================
+   NEXORA NUMBER INPUT
+========================= */
+
+input[type="number"]{
+    width:82%;
+    padding:14px 18px;
+    margin-top:8px;
+
+    border-radius:15px;
+    border:1px solid rgba(108,92,231,.35);
+
+    background:rgba(25,25,40,.85);
+    color:#fff;
+
+    font-size:15px;
+    font-weight:500;
+
+    transition:all .35s ease;
+
+    box-shadow:
+        inset 0 0 10px rgba(255,255,255,.03),
+        0 0 15px rgba(108,92,231,.15);
+
+    backdrop-filter:blur(10px);
+}
+
+/* Hover */
+input[type="number"]:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 18px rgba(108,92,231,.35),
+        0 0 35px rgba(108,92,231,.15);
+}
+
+/* Focus */
+input[type="number"]:focus{
+    outline:none;
+
+    border-color:#8c7bff;
+
+    box-shadow:
+        0 0 10px #6c5ce7,
+        0 0 30px rgba(108,92,231,.7),
+        0 0 60px rgba(108,92,231,.25);
+}
+
+/* Placeholder */
+input[type="number"]::placeholder{
+    color:rgba(255,255,255,.45);
+}
+
+/* Hilangkan panah atas bawah */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance:none;
+    margin:0;
+}
+
+input[type="number"]{
+    appearance:textfield;
+}
+
+button{
+    margin-top:15px;
+    cursor:pointer;
+    box-shadow: inset 0 0 10px rgba(255,255,255,.03),
+        0 0 15px rgba(108,92,231,.15);
+
+    backdrop-filter:blur(10px);
+}
+
+#result{
+    color:#ddd;
+    line-height:1.5;
+    font-weight:bold;
+}
+body{
+    background:#141111;
+    color:white;
+    font-family:Arial, sans-serif;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    color:#af75e5;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#bd6df0;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    box-shadow: inset 0 0 10px rgba(255,255,255,.03),
+        0 0 15px rgba(108,92,231,.15);
+
+    backdrop-filter:blur(10px);
+}
+
+/* =========================
+   RESULT CARD - ELEGANT GLASSMORPHISM
+   ========================= */
+#resultCard {
+    display: none; /* Default hidden, muncul saat dianalisis */
+    
+    /* Background Kaca Transparan */
+    background: rgba(20, 20, 35, 0.6); 
+    backdrop-filter: blur(15px); /* Efek blur di belakang card */
+    -webkit-backdrop-filter: blur(15px);
+    
+    /* Border Halus & Elegan */
+    border: 1px solid rgba(162, 89, 255, 0.2); /* Ungu tipis NEXORA */
+    border-radius: 20px; /* Sudut membulat */
+    
+    /* Bayangan Lembut */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* Tata Letak */
+    padding: 30px;
+    margin-top: 20px;
+    color: #ffffff;
+    overflow: hidden; /* Mencegah elemen keluar batas */
+    
+    /* Pastikan tidak ada garis aneh */
+    outline: none;
+}
+
+/* Membersihkan semua judul di dalam card agar rapi */
+#resultCard h2, 
+#resultCard h3, 
+#resultCard .title {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Efek hover sedikit agar interaktif */
+#resultCard:hover {
+    border-color: rgba(162, 89, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(162, 89, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+
+
+.analysis-title{
+    text-align:center;
+    font-size:15px;
+    letter-spacing:3px;
+    color:#b98cff;
+    font-weight:700;
+    margin-bottom:18px;
+    text-transform:uppercase;
+}
+
+#finalScore{
+    display: block;
+    font-size: 62px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-align: center;
+
+    text-shadow:
+        0 0 10px rgba(168,120,255,.5),
+        0 0 20px rgba(108,92,231,.4);
+}
+
+#tierText{
+    display:inline-block;
+    padding:10px 22px;
+    margin:12px 0;
+
+    border-radius:999px;
+
+    font-weight:700;
+    letter-spacing:1px;
+
+    font-size:15px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+    0 0 20px rgba(162,89,255,.25);
+
+    transition:.3s;
+}
+
+/* Dozen */
+.tier-dozen{
+    background:linear-gradient(135deg,#ff3b5c,#ff7a18);
+    color:#fff;
+}
+
+/* Average */
+.tier-average{
+    background:linear-gradient(135deg,#ff9800,#ffd54f);
+    color:#fff;
+}
+
+/* Above Average */
+.tier-above{
+    background:linear-gradient(135deg,#2ecc71,#26c6da);
+    color:#fff;
+}
+
+/* Good */
+.tier-good{
+    background:linear-gradient(135deg,#00c853,#00b8d4);
+    color:#fff;
+}
+
+/* Great */
+.tier-great{
+    background:linear-gradient(135deg,#2979ff,#9c27b0);
+    color:#fff;
+}
+
+/* Top */
+.tier-top{
+    background:linear-gradient(135deg,#8e24aa,#111111);
+    color:#fff;
+}
+
+/* Perfect */
+.tier-perfect{
+    background:linear-gradient(135deg,#000000,#2b004f);
+    color:#f3e5f5;
+}
+
+/* STYLE KHUSUS UNTUK TANDA ALL-ROUNDER */
+/* PAKSA CONTAINER JADI VERTIKAL */
+.status-card {
+    display: flex !important;       /* Tambah !important biar pasti menang */
+    flex-direction: column !important; /* Kunci susun atas-bawah */
+    align-items: center !important;    /* Tengah horizontal */
+    justify-content: center !important;
+    gap: 10px;                      /* Jarak pas antara Bonus & AR */
+    margin: 20px auto;
+    width: 100%;                    /* Pastikan container penuh dulu baru tengahkan isinya */
+}
+
+.section-title{
+    margin: 24px 0 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: #b78cff;
+
+    text-transform: uppercase;
+
+    position: relative;
+}
+
+.section-title::before,
+.section-title::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+
+    width:28%;
+
+    height:1px;
+
+    background:rgba(183,140,255,.25);
+}
+
+.section-title::before{
+    left:0;
+}
+
+.section-title::after{
+    right:0;
+}
+
+/* BONUS DI ATAS */
+#bonusText {
+    font-size: 0.75rem;
+    color: #a29bfe;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;            /* Biar bonus ga turun baris */
+}
+
+/* ALL-ROUNDER DI BAWAH */
+#arStatus {
+    display: none;                  /* Default sembunyi */
+    
+    background: linear-gradient(90deg, #6a6aff, #a100da, #6a6aff);
+    color: #111;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    padding: 8px 24px;
+    border-radius: 999px;
+    white-space: nowrap;            /* Wajib lurus */
+    
+    box-shadow:
+        0 0 8px rgba(184,57,255,0.5),
+        0 0 18px rgba(58,0,245,0.505);
+    animation: Glow 2s infinite alternate;
+}
+
+/* =========================
+   STATUS BADGES COLORS
+   ========================= */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: white;
+    display: inline-block;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+/* STANDARD (Abu-abu) */
+.status-standard {
+    background: #555;
+}
+
+/* ALMOST ALL-ROUNDER (Hijau Muda Solid) */
+.status-almost-ar {
+    background: #1dd1a1;
+}
+
+/* ALL-ROUNDER (Ungu Kebiruan / Blue-Purple Gradient) */
+.status-all-rounder {
+    background: linear-gradient(135deg, #6c5ce7, #00cec9) !important;
+    box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+}
+
+/* ALMOST ACE (Ungu Muda Solid) */
+.status-almost-ace {
+    background: #a29bfe;
+}
+
+/* ACE (Ungu Kehitaman / Dark Purple-Black Gradient) */
+.status-ace {
+    background: linear-gradient(135deg, #2d3436, #6c5ce7) !important;
+    box-shadow: 0 0 15px rgba(108, 92, 231, 0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.divider{
+    width:1px;
+    height:22px;
+    background:rgba(255,255,255,.15);
+}
+
+#startBtn{
+    padding:12px 36px;
+
+    border:none;
+    border-radius:30px;
+
+    background:linear-gradient(90deg,#6c5ce7,#9b59ff);
+
+    color:#fff;
+
+    font-size:16px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    box-shadow:0 0 18px rgba(108,92,231,.35);
+}
+
+#startBtn:hover{
+
+    transform:translateY(-3px) scale(1.03);
+
+    box-shadow:
+        0 0 20px rgba(108,92,231,.6),
+        0 0 40px rgba(108,92,231,.3);
+}
+
+#startBtn:active {
+    transform: scale(.95);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(108,92,231,.6);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(108,92,231,.8);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(108,92,231,.6);
+    }
+}
+
+#main-content{
+    display:none;
+    opacity:0;
+    animation:fadeIn .8s forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   NEXORA TEXT INPUT
+========================= */
+
+input[type="text"]{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border:none;
+    outline:none;
+
+    border-radius:16px;
+
+    background:rgba(25,25,40,.85);
+
+    color:white;
+    font-size:15px;
+    font-weight:500;
+
+    border:1px solid rgba(108,92,231,.35);
+
+    backdrop-filter:blur(12px);
+
+    transition:.35s;
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,.04),
+        0 0 18px rgba(108,92,231,.15);
+
+    box-sizing:border-box;
+}
+
+input[type="text"]:focus{
+
+    border-color:#8f7bff;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 18px rgba(108,92,231,.55),
+        0 0 35px rgba(108,92,231,.30);
+
+}
+
+input[type="text"]::placeholder{
+
+    color:#9ca3af;
+    letter-spacing:.5px;
+
+}
+
+#splash-screen{
+    transition: opacity .8s ease;
+}
+
+#splash-screen.fade-out{
+    opacity:0;
+    pointer-events:none;
+}
+
+
+button:hover{
+    background:#c76dff;
+}
+h3{ 
+    color:#e6e3a4;
+}
+h2{
+  color:#82ade1;
+}
+
+/* =========================
+   POINT BOX
+========================= */
+
+.point-box{
+    min-width:82px;
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    background:rgba(25,25,40,.85);
+    border:1px solid rgba(108,92,231,.35);
+
+    color:#fff;
+    font-weight:700;
+    font-size:15px;
+    text-align:center;
+
+    backdrop-filter:blur(10px);
+
+    transition:.35s;
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,.04),
+        0 0 18px rgba(108,92,231,.15);
+}
+        
+
+.point-box:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 18px rgba(108,92,231,.45),
+        0 0 35px rgba(108,92,231,.25);
+}
+
+
+/* =========================
+   BADGE BOX
+========================= */
+.badge-box{
+    min-width:110px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    color:white;
+
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    backdrop-filter:blur(12px);
+
+    transition:.35s;
+
+    box-shadow:
+        inset 0 0 10px rgba(255,255,255,.05),
+        0 0 15px rgba(108,92,231,.18);
+}
+
+.info-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:8px;
+    margin-bottom:15px;
+}
+
+.point-box{
+    width:80px;
+    height:36px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#2b2b2b;
+    border-radius:10px;
+    font-weight:bold;
+    color:#fff;
+}
+
+.badge-box{
+    width:110px;
+    height:36px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:18px;
+    font-weight:bold;
+    color:#fff;
+}
+
+/* =========================
+   BADGE COLORS (FINAL FIX)
+   ========================= */
+
+/* Tier Dasar & Menengah */
+/* =========================
+   BADGE TIERS (GRADIENT ONLY - NO SOLID COLOR CONFLICT)
+   ========================= */
+
+/* --- MERAH (Dozen / Non-Dancer) --- */
+.badge-dozen, .badge-non-dancer { 
+    color: white !important;
+    background: linear-gradient(135deg, #f44336, #f47c36) !important;
+} 
+
+/* --- ORANYE (Basic / Average / Complete) --- */
+/* Ini yang biasanya bermasalah karena dipakai Dance, Rap, dan Credit */
+.badge-basic, .badge-average, .badge-complete { 
+    color: white !important;
+    background: linear-gradient(135deg, #f08800, #ffc034) !important;
+}
+
+/* --- HIJAU MUDA (Above Avg) --- */
+.badge-above-avg { 
+    color: white !important;
+    background: linear-gradient(135deg, #8bc34a, #4ac3b4) !important; 
+}  
+
+/* --- HIJAU (Intermediate / Good) --- */
+/* Dipakai Dance & Vocal/SP/Rap */
+.badge-intermediate, .badge-good { 
+    color: white !important;
+    background: linear-gradient(135deg, #8bc34a, #4ac3b4) !important;
+} 
+
+/* --- BIRU (Great / Advanced) --- */
+/* Dipakai Vocal/SP/Rap/Credit & Dance */
+.badge-great, .badge-advanced { 
+    color: white !important;
+    background: linear-gradient(135deg, #2196f3, #be87ff) !important; 
+}        
+
+/* --- UNGU MUDA (Ace / Graceful / Proficient) --- */
+.badge-ace, .badge-graceful, .badge-proficient { 
+    color: white !important;
+    background: linear-gradient(135deg, #bb43ff, #9587ff) !important; 
+}          
+
+/* --- HITAM/Ungu Tua (Master / Producer) --- */
+.badge-master, .badge-producer { 
+    color: white !important;
+    background: linear-gradient(135deg, #333333, #5700be) !important; 
+}       
+
+/* --- COKLAT (Perfect) --- */
+.badge-perfect { 
+    color: white !important;
+    background: linear-gradient(135deg, #8d6e63, #35004fee) !important;
+}     
+
+#main-content{
+    display:none;
+}
+
+
+
+/* =========================
+   SPLASH SCREEN
+========================= */
+
+#splash-screen{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(135deg,#111827,#1e1b4b);
+
+    z-index:9999;
+}
+
+.splash-content{
+    text-align:center;
+    animation:fadeUp 1s ease;
+}
+
+.logo{
+    font-size:40px;
+    margin-bottom:8px;
+
+    animation:float 3s ease-in-out infinite;
+}
+
+.title{
+    font-size:45px;
+    letter-spacing:5px;
+    font-weight:800;
+
+    color:#ffffff;
+
+    transition:.35s;
+
+    shadow:0 0 18px rgba(86,65,248,0.35);
+
+    margin:0;
+}
+
+.subtitle{
+    margin-top:5px;
+    color:#cfcfcf;
+    font-weight:500;
+}
+
+.tagline{
+    margin:18px 0;
+    color:#9ca3af;
+    font-size:15px;
+}
+
+.divider{
+    width:180px;
+    height:2px;
+
+    margin:20px auto;
+
+    background:linear-gradient(90deg,transparent,#6c5ce7,transparent);
+}
+
+.features p{
+    margin:8px 0;
+    color:#e5e5e5;
+    font-size:15px;
+}
+
+#startBtn{
+    margin-top:28px;
+}
+
+.splash-content{
+    text-align:center;
+}
+
+#startBtn{
+    margin-top:20px;
+    padding:14px 40px;
+    font-size:18px;
+    border-radius:30px;
+    cursor:pointer;
+}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    color:white;
+
+    background:linear-gradient(-45deg,
+    #09090f,
+    #17172b,
+    #1a0d2b,
+    #09090f);
+
+    background-size:400% 400%;
+    animation:bgMove 100s ease infinite;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 40px rgba(157, 93, 255, .35);
+}
+
+/* Pastikan tombol punya posisi relative agar bisa jadi acuan jika dibungkus nanti, 
+   tapi karena sekarang terpisah, kita pakai margin saja */
+
+#copyResult {
+    position: relative; /* Penting untuk referensi */
+    display: block;
+    margin: 0 auto; /* Tengah horizontal */
+}
+
+/* =========================
+   TOAST NOTIFICATION STYLE
+   ========================= */
+/* Container Toast */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none; /* Biar gak ganggu klik elemen di bawahnya */
+}
+
+/* Item Toast Individual */
+.nexora-toast {
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #a259ff;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 0 15px rgba(162, 89, 255, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 200px;
+    justify-content: center;
+}
+
+/* Animasi Masuk */
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animasi Keluar (via JS class) */
+.nexora-toast.hiding {
+    animation: fadeOutDown 0.3s ease-in forwards;
+}
+
+@keyframes fadeOutDown {
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+
+
+small{
+  font-weight:bold;
+  margin:10px 0;
+  margin-bottom:10px;
+}
+p{
+  font:bold;
+}
+
+.splash-content h1{
+  animation: zommIn 1s ease;
+}
+
+.splash-content h2{
+  animation: fadeUp 1.2s ease;
+}
+
+.splash-content p{
+  animation: fadeUp 1.6s ease;
+}
+
+#startBtn{
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes zoomIn{
+  from{
+    opacity:0;
+    transform:scale(.5);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes glow{
+  from{
+    box-shadow:0 0 10px #6c5ce7;
+  }
+  to{
+    box-shadow:0 0 25px #8c7bff;
+  }
+}
+
+
+
+.hide{
+  animation: fadeOut .7s forwards;
+}
+
+@keyframes zoomIn{
+  from{
+    opacity:0;
+    transform:scale(1.08);
+    filter:blur(10px);
+  }
+}
+
+.status-card {
+    display: flex;
+    justify-content: center;
+    margin: 15px auto;
+}
+
+#tierDescription{
+    margin-top:10px;
+    padding:12px 20px;
+
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:1px;
+
+    color:#ffffff;
+
+    background:linear-gradient(135deg,#9bab00,#ffff7d);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:15px;
+
+    box-shadow:
+        0 0 20px rgba(108,92,231,.45),
+        inset 0 0 10px rgba(255,255,255,.08);
+
+    text-transform:uppercase;
+}
+
+score-bonus{
+    font-size: 15px;     /* Tulisan lebih kecil */
+    padding: 3.5px 5px;   /* Badge lebih pendek */
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+@keyframes float{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+}
+
+#loadingScreen{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(10,10,20,.88);
+
+    backdrop-filter:blur(8px);
+
+    z-index:9999;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.loading-box{
+
+    width:300px;
+
+    background:#17172b;
+
+    border:2px solid #8b5cf6;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 0 25px rgba(139,92,246,.35);
+
+}
+
+.loading-icon{
+
+    font-size:40px;
+
+    animation:spin 2s linear infinite;
+
+}
+
+.loading-bar{
+
+    width:100%;
+
+    height:8px;
+
+    background:#333;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-top:20px;
+
+}
+
+.loading-fill{
+
+    width:0;
+
+    height:100%;
+
+    background:#8b5cf6;
+
+    animation:loading 2s linear forwards;
+
+}
+
+@keyframes loading{
+
+    from{width:0;}
+
+    to{width:100%;}
+
+}
+
+@keyframes spin{
+
+    from{transform:rotate(0deg);}
+
+    to{transform:rotate(360deg);}
+
+}
+
+#resultName{
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 8px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+/* NEXORA HISTORY CARD STYLE */
+
+/* =========================
+   SCROLLABLE HISTORY CONTAINER
+   ========================= */
+#historyListDisplay {
+    max-height: 300px; /* Batasi tinggi maksimal agar tidak memanjang ke bawah */
+    overflow-y: auto;  /* Aktifkan scroll jika konten melebihi 300px */
+    
+    /* Opsional: Tambahkan sedikit padding dan border agar lebih rapi */
+    padding-right: 5px; /* Beri jarak agar scrollbar tidak menempel teks */
+    scrollbar-width: thin; /* Untuk Firefox */
+    scrollbar-color: #a259ff rgba(0,0,0,0.1); /* Warna scrollbar ungu Nexora */
+}
+
+/* Kustomisasi Scrollbar untuk Chrome/Edge/Safari */
+#historyListDisplay::-webkit-scrollbar {
+    width: 6px;
+}
+
+#historyListDisplay::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#historyListDisplay::-webkit-scrollbar-thumb {
+    background: #a259ff; /* Warna ungu Nexora */
+    border-radius: 10px;
+}
+
+#historyListDisplay::-webkit-scrollbar-thumb:hover {
+    background: #8c4ae6; /* Warna ungu lebih gelap saat di-hover */
+}
+
+
+.history-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(162, 89, 255, 0.2);
+
+}
+
+.history-title {
+    font-size: 13px;
+    color: #a259ff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-title::before {
+    content: '';
+    width: 4px;
+    height: 14px;
+    background: #a259ff;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #a259ff;
+}
+
+.history-item {
+    background: linear-gradient(145deg, rgba(20, 20, 35, 0.9), rgba(10, 10, 20, 0.95));
+    border: 1px solid rgba(162, 89, 255, 0.15);
+    border-left: 3px solid #a259ff; /* Aksen Nexora di kiri */
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.history-item:hover {
+    transform: translateX(5px);
+    border-color: rgba(162, 89, 255, 0.5);
+    box-shadow: 0 5px 20px rgba(162, 89, 255, 0.15);
+}
+
+/* Efek Glow di belakang saat hover */
+.history-item::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(162, 89, 255, 0.1), transparent);
+    transition: 0.5s;
+}
+.history-item:hover::after {
+    left: 100%;
+}
+
+.history-info h4 {
+    margin: 0;
+    font-size: 15px;
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(162, 89, 255, 0.3);
+}
+
+.history-info p {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: #888;
+    font-family: monospace; /* Biar tanggal terlihat techy */
+}
+
+.history-actions {
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+.btn-load-history {
+    background: rgba(162, 89, 255, 0.1);
+    color: #a259ff;
+    border: 1px solid rgba(162, 89, 255, 0.3);
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    text-transform: uppercase;
+    
+    /* ✅ TAMBAHAN INI AGAR TEKS DI TENGAH */
+    display: inline-flex;       /* Mengubah perilaku layout tombol */
+    align-items: center;        /* Menengahkan secara vertikal */
+    justify-content: center;    /* Menengahkan secara horizontal */
+    text-align: center;         /* Backup untuk teks biasa */
+    line-height: 1.2;           /* Agar tinggi baris tidak membuat teks naik/turun */
+}
+
+.btn-load-history:hover {
+    background: #a259ff;
+    color: #fff;
+    box-shadow: 0 0 10px #a259ff;
+}
+
+
+.btn-delete-history {
+    background: transparent;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+
+.btn-delete-history:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    text-shadow: 0 0 8px #ff4d4d;
+}
+
+
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+@keyframes scorePop{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.25);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+.score-pop{
+animation:scorePop .40s ease;
+}
+
+.compare-side span{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+.vs-text{
+
+    font-size:32px;
+
+    font-weight:800;
+
+    opacity:.8;
+
+}
+
+/* =========================
+   SAVE FOR COMPARE
+========================= */
+
+#saveCompare{
+
+    width:100%;
+    padding:15px;
+    margin-top:12px;
+
+    border:none;
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        #8b5cf6,
+        #6d28d9
+    );
+
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.8px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 12px rgba(162,89,255,.35);
+
+    transition:.3s;
+}
+
+#saveCompare:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(162,89,255,.6),
+        0 0 35px rgba(162,89,255,.25);
+
+}
+
+
+/* =========================
+   OPEN COMPARE
+========================= */
+
+#openCompare{
+
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+
+    border:none;
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #7c3aed
+    );
+
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.8px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 15px rgba(79,70,229,.35);
+
+    transition:.3s;
+}
+
+#openCompare:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(79,70,229,.6),
+        0 0 35px rgba(79,70,229,.25);
+
+}
+
+
+/* =========================
+   START COMPARE
+========================= */
+
+#startCompare{
+
+    width:100%;
+    padding:16px;
+    margin-top:15px;
+
+    border:none;
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        #06b6d4,
+        #7c3aed
+    );
+
+    color:white;
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 18px rgba(6,182,212,.35);
+
+    transition:.3s;
+}
+
+#startCompare:hover{
+
+    transform:scale(1.02);
+
+    box-shadow:
+        0 0 25px rgba(6,182,212,.6),
+        0 0 45px rgba(124,58,237,.35);
+
+}
+
+#saveCompare:active,
+#openCompare:active,
+#startCompare:active{
+
+    transform:scale(.97);
+
+}
+
+/* 1. OVERLAY BACKGROUND (BLUR & TRANSPARAN) */
+
+#rankingOverlay{
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    padding:20px;
+
+    z-index:999999;
+    
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    
+    /* TRIGGER GPU AGAR BLUR LANCAR DI SAFARI */
+    transform: translateZ(0); 
+    -webkit-transform: translateZ(0);
+}
+
+#rankingOverlay.show{
+    display:flex;
+}
+
+.ranking-container{
+
+    width:100%;
+    max-width:360px;
+
+    max-height:80vh;
+
+    background:#16161d;
+
+    border:1px solid rgba(162,89,255,.35);
+
+    border-radius:24px;
+
+    padding:22px;
+
+    display:flex;
+    flex-direction:column;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.7);
+
+}
+/* 2. CONTAINER KONTEN (DIKECILKAN & DIPUSATKAN) */
+#rankingList{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    margin:18px 0;
+
+}
+/* Custom Scrollbar Halus */
+#rankingList::-webkit-scrollbar { width: 4px !important; }
+#rankingList::-webkit-scrollbar-thumb { background: #a259ff !important; border-radius: 10px !important; }
+
+/* 3. TITLE */
+.nexora-overlay-title {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(162, 89, 255, 0.8);
+}
+
+/* 4. TOMBOL CLOSE (DIBUAT SANGAT JELAS & MUDAH DICAPAI) */
+#closeRanking {
+    /* ... style lama kamu tetap dipertahankan ... */
+    margin-top: 18px !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
+    padding: 17px !important;
+    background: #900bff !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 900 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3) !important;
+    text-transform: uppercase !important;
+    align-self: center !important;
+
+    /* ✅ TAMBAHKAN INI UNTUK MEMPERBAIKI TOMBOL KEPOTONG */
+    position: relative !important;
+    z-index: 10 !important;
+    margin-bottom: 25px !important; /* Diperbesar agar glow punya ruang napas */
+}
+
+
+/* =========================
+   COMPARE CARD UTAMA (TRANSPARAN)
+   ========================= */
+/* --- CONTAINER CARD --- */
+.compare-card {
+    background: linear-gradient(145deg, #1a1a2e, #121218);
+    border: 1px solid rgba(162, 89, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(162, 89, 255, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- HEADER --- */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(162, 89, 255, 0.5);
+}
+
+/* --- LIST AREA --- */
+.list-label {
+    font-size: 12px;
+    color: #a259ff;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.idol-list-container {
+    min-height: 60px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.empty-msg {
+    color: #555;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* --- ITEM IDOL (SUPER BOLD STYLE) --- */
+.idol-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.idol-name {
+    font-family: 'Arial Black', 'Impact', sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    /* Trik Fake Bold */
+    -webkit-text-stroke: 1px #a259ff; 
+    -webkit-text-fill-color: #ffffff;
+}
+
+.idol-status {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    background: #a259ff;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(162, 89, 255, 0.6);
+}
+
+/* --- FOOTER & COUNTER --- */
+.card-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.counter-text {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    border-bottom: 2px solid #a259ff;
+    padding-bottom: 2px;
+}
+
+.btn-start {
+    background: linear-gradient(90deg, #a259ff, #7b2cbf);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(162, 89, 255, 0.4);
+    transition: 0.3s;
+}
+.btn-start:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(162, 89, 255, 0.7);
+}
+
+/* Status SAVED yang Lebih Menonjol */
+#compareListDisplay p span:last-child {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 900 !important;
+    background: #a259ff;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(162, 89, 255, 0.8);
+}
+
+/* 3. Total Counter yang Bold */
+#compareTotal {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    margin-top: 10px;
+    text-align: right;
+    border-bottom: 2px solid #a259ff;
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+/* 5. Font untuk Peringatan (Warning) */
+.history-title, 
+.ranking-header {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* =========================
+   NEXORA PREMIUM TOAST STYLE
+   ========================= */
+.toast-notification {
+    visibility: hidden; /* Tersembunyi secara default */
+    min-width: 280px;
+    
+    /* Gradasi warna gelap khas Nexora */
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 16px 24px;
+    
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    
+    /* Border tipis ungu agar terlihat premium */
+    border: 1px solid rgba(162, 89, 255, 0.3);
+    
+    /* Efek bayangan ungu (glow) */
+    box-shadow: 0 8px 32px rgba(162, 89, 255, 0.2);
+    
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Efek membal saat muncul */
+}
+
+/* Class ini ditambahkan oleh JavaScript saat notifikasi aktif */
+.toast-notification.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Naik sedikit saat muncul */
+}
+
+/* --- MODAL OVERLAY (Latar Belakang Gelap) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex; /* Penting agar tombol close dan konten rapi */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* --- KOTAK MODAL UTAMA --- */
+.chart-modal {
+    background: #121212;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh; /* Biar gak terlalu panjang di layar HP */
+    overflow-y: auto; /* Bisa discroll kalau isinya banyak */
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 0 30px rgba(162, 89, 255, 0.2), 
+                0 0 60px rgba(0, 0, 0, 0.8); 
+    border: 1px solid #333;
+    position: relative;
+}
+
+/* --- JUDUL & HEADER --- */
+.modal-header h3 {
+    font-size: 25px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #a259ff, #d48aff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-left: 18px;
+}
+
+/* --- TOMBOL CLOSE (X) --- */
+.close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.close-btn:hover {
+    background: #ff4d4d;
+    box-shadow: 0 0 10px #ff4d4d;
+    transform: rotate(90deg);
+}
+
+/* --- DISCLAIMER TEXT --- */
+.modal-disclaimer {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+/* --- TOMBOL FILTER GEN --- */
+.filter-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.filter-btn:hover {
+    border-color: #a259ff;
+    color: #fff;
+    transform: translateY(-2px);
+}
+.filter-btn.active {
+    background: #a259ff;
+    border-color: #a259ff;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(162, 89, 255, 0.6);
+}
+/* --- BAGIAN TALENT (DATA STATISTIK) --- */
+.idol-card p {
+    font-family: 'Consolas', 'Courier New', monospace; /* Font simple ala coding */
+    font-size: 13px; 
+    line-height: 1.6; 
+    color: #ccc; 
+    margin: 0;
+    white-space: pre-line; /* Penting! Agar \n di JavaScript terbaca sebagai baris baru */
+}
+
+
+/* --- KARTU IDOL (IDOL CARD) --- */
+.idol-card {
+    background: #1e1e1e;
+    border-left: 4px solid #a259ff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.idol-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(162, 89, 255, 0.15);
+}
+
+/* --- NAMA IDOL (GRADIENT) --- */
+.idol-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- STATUS (GLOW EMAS) --- */
+.idol-card div:nth-of-type(2) {
+    color: gold;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    text-shadow: 0 0 10px rgba(255,244,7,0.6);
+}
+
+/* --- SCORE (GLOW UNGU) --- */
+.idol-card div:last-child {
+    color: #a259ff;
+    font-weight: 900;
+    text-align: center;
+    font-size: 18px;
+    text-shadow: 0 0 10px rgba(162, 89, 255, 0.5);
+}
+
+/* --- TOMBOL PEMBUKA UTAMA --- */
+#openIdolChartBtn {
+    background: transparent;
+    color: #a259ff; 
+    border: 2px solid #a259ff; 
+    padding: 12px 30px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    border-radius: 50px; 
+    background:linear-gradient(90deg,#6c5ce7,#a259ff);
+    cursor: pointer; 
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(162, 89, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efek membal halus */
+    position: relative;
+    overflow: hidden;
+}
+
+#openIdolChartBtn:hover {
+    background: rgba(162, 89, 255, 0.15); /* Transparan ungu tipis, bukan solid */
+    color: #fff;
+    border-color: #fff; /* Border berubah jadi putih terang */
+    box-shadow: 
+        0 0 15px #a259ff,   /* Glow inti */
+        0 0 30px #a259ff,   /* Glow menyebar */
+        inset 0 0 10px rgba(162, 89, 255, 0.5); /* Cahaya dari DALAM tombol */
+    transform: translateY(-2px); /* Sedikit naik ke atas */
+}
+
+#openIdolChartBtn:active {
+    transform: scale(0.95); /* Mengecil sedikit saat ditekan */
+    box-shadow: 0 0 5px #a259ff;
+}
+
+/* --- ANIMASI MODAL MUNCUL --- */
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95); /* Mulai dari bawah dan agak kecil */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1); /* Posisi normal */
+    }
+}
+
+/* Terapkan animasi ke kotak modal */
+.chart-modal {
+    animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Animasi cepat tapi smooth */
+}
+
+/* Animasi untuk latar belakang gelap */
+.modal-overlay {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Tambahkan ini di file CSS atau tag <style> */
+.confetti-canvas {
+    transition: opacity 1s ease-out; /* Efek memudar selama 1 detik */
+}
+
+/* Style untuk Halaman History */
+#historyPage {
+    font-family: sans-serif;
+    color: white;
+}
+
+#saveToHistoryBtn {
+  width: 100%;
+    padding: 12px 0;
+    margin-top: 20px;
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.90rem;
+    font-weight: 500; /* Tebal agar tegas */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    
+    /* Gradasi Ungu Neon ke Biru Langit */
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    background-size: 200% auto;
+    
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    /* Bayangan Glow yang Kuat */
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.5);
+    transition: all 0.4s ease;
+ }
+
+/* ==========================================
+   NEXORA AI SUMMARY CARD STYLING
+   ========================================== */
+
+.nexora-ai-card {
+    background: rgba(18, 18, 25, 0.7); /* Gelap transparan */
+    backdrop-filter: blur(16px);       /* Efek kaca buram */
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(162, 89, 255, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Garis neon tipis di atas kartu */
+.nexora-ai-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a259ff, transparent);
+}
+
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.ai-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #888;
+    font-weight: 700;
+}
+
+.ai-tier-badge {
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.ai-stats-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-val {
+    display: block;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(162, 89, 255, 0.5);
+}
+
+.stat-name {
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+}
+/* ==========================================
+   NEXORA ULTIMATE UI ENHANCEMENTS
+   ========================================== */
+
+/* 1. Scroll History yang Rapi & Terbatas */
+#historyListContainer {
+    max-height: 60vh; /* Maksimal 60% dari tinggi layar */
+    overflow-y: auto; /* Scroll vertikal jika melebihi batas */
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #a259ff #0f0f1a;
+}
+
+/* Kustomisasi Scrollbar agar futuristik */
+#historyListContainer::-webkit-scrollbar {
+    width: 6px;
+}
+#historyListContainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+#historyListContainer::-webkit-scrollbar-thumb {
+    background: #a259ff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #a259ff;
+}
+
+/* 2. Tombol Nexora Style (Glowing & Modern) */
+.btn-secondary, button {
+    background: rgba(162, 89, 255, 0.1);
+    border: 1px solid rgba(162, 89, 255, 0.4);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.btn-secondary:hover, button:hover {
+    background: rgba(162, 89, 255, 0.3);
+    box-shadow: 0 0 15px rgba(162, 89, 255, 0.6);
+    border-color: #a259ff;
+    transform: translateY(-2px);
+}
+
+/* Efek kilauan saat hover */
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    opacity: 0;
+}
+.btn-secondary:hover::after {
+    opacity: 1;
+    left: 100%;
+}
+
+/* 3. Halaman History yang Lebih "Nexora" */
+#historyPage {
+    background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+    backdrop-filter: blur(10px);
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 3px solid #a259ff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    background: rgba(162, 89, 255, 0.1);
+    box-shadow: 0 0 20px rgba(162, 89, 255, 0.2);
+    transform: scale(1.01);
+}
+
+/* 4. Efek Glow untuk Judul dan Elemen Penting */
+h2, h3, .overlay-main-title {
+    text-shadow: 0 0 10px rgba(162, 89, 255, 0.7);
+    letter-spacing: 2px;
+}
+
+/* 5. Toast Notifikasi yang Lebih Elegan */
+#nexoraToast {
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid #a259ff;
+    box-shadow: 0 0 20px rgba(162, 89, 255, 0.4);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50px;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.ai-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #d1d1d1;
+    margin-top: 9px;
+    font-style: italic;
+    border-left: 2px solid #a259ff;
+    padding-left: 12px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scorePop {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+/* Container Utama */
+.input-group {
+    margin-bottom: 15px;
+}
+
+/* Label */
+.input-group label {
+    display: block;
+    color: #b78cff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+/* Input Nama Full Width */
+.nexora-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(162, 89, 255, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    box-sizing: border-box; /* Penting agar padding tidak melebarkan elemen */
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.nexora-input:focus {
+    border-color: #a259ff;
+    box-shadow: 0 0 10px rgba(162, 89, 255, 0.2);
+}
+
+/* Baris Tombol (Action Row) */
+.action-row {
+    display: flex;
+    gap: 8px; /* Jarak antar tombol */
+    margin-top: 8px;
+}
+
+/* Tombol Reset All */
+.nexora-reset-btn {
+    flex-grow: 1; /* Mengambil sisa ruang agar sejajar dengan dadu */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(199,16,255,0.4);
+    color: #b443ff;
+    
+    padding: 8px 0; /* Padding vertikal saja, horizontal diatur flex */
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nexora-reset-btn .icon {
+    font-size: 16px;
+}
+
+.nexora-reset-btn:hover {
+    background: rgba(159,24,255,0.441);
+    border-color: #b443ff;
+    color: #fff;
+}
+
+/* Tombol Dadu (Random) */
+.nexora-random-btn {
+    width: 42px; /* Lebar tetap */
+    height: 38px; /* Samakan tinggi dengan tombol reset (padding + font) */
+    
+    background: rgba(162, 89, 255, 0.1);
+    border: 1px solid rgba(162, 89, 255, 0.4);
+    color: #b78cff;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nexora-random-btn:hover {
+    background: rgba(162, 89, 255, 0.25);
+    border-color: #a259ff;
+    color: #fff;
+    transform: rotate(360deg);
+}
+
+
+/* TOMBOL GUIDE BULAT KECIL DI TENGAH */
+#guideBtn.intro-btn {
+    /* Layout & Ukuran Bulat */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;       /* Lebar tetap */
+    height: 56px;      /* Tinggi sama dengan lebar = bulat sempurna */
+    margin: 20px auto; /* Auto kiri-kanan = posisi tengah horizontal */
+    
+    /* Warna & Efek Neon */
+    background: rgba(162, 89, 255, 0.1);
+    color: #dcb9ff;
+    border: 1px solid rgba(162, 89, 255, 0.4);
+    border-radius: 50%; /* Wajib 50% biar bulat */
+    font-size: 18px;    /* Ukuran icon buku */
+    cursor: pointer;
+    
+    animation: nexora-pulse 3s infinite ease-in-out;
+    
+    /* Glassmorphism & Glow */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 
+        0 0 20px rgba(162, 89, 255, 0.15),
+        inset 0 0 10px rgba(162, 89, 255, 0.1);
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover: Glow Lebih Terang & Sedikit Membesar */
+#guideBtn.intro-btn:hover {
+    background: rgba(162, 89, 255, 0.25);
+    border-color: #a259ff;
+    color: #ffffff;
+    transform: scale(1.1); /* Membesar 10% */
+    box-shadow: 
+        0 0 35px rgba(162, 89, 255, 0.4),
+        inset 0 0 15px rgba(162, 89, 255, 0.2);
+}
+
+/* Active/Click: Mengecil Dikit */
+#guideBtn.intro-btn:active {
+    transform: scale(0.95);
+    box-shadow: 
+        0 0 15px rgba(162, 89, 255, 0.2),
+        inset 0 0 8px rgba(162, 89, 255, 0.1);
+}
+
+/* Opsional: Animasi Pulse Pelan Biar Menarik Perhatian */
+@keyframes guide-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(162, 89, 255, 0.15); }
+    50% { box-shadow: 0 0 30px rgba(162, 89, 255, 0.3); }
+}
+
+#guideBtn.intro-btn {
+    animation: guide-pulse 3s infinite ease-in-out;
+}
+
+/* Hentikan pulse saat hover */
+#guideBtn.intro-btn:hover {
+    animation: none;
+}
+
+/* =========================
+   NEXORA GUIDE OVERLAY
+========================= */
+
+#guideOverlay.page-container {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    
+    /* UBAH JADI FLEX COLUMN BIAR SEMUA KE TENGAH */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontal center */
+    justify-content: flex-start; /* Mulai dari atas */
+    
+    height: 100%; 
+    overflow-y: auto; 
+    
+    padding: 30px 20px 80px;
+    background: #0d0d12;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+/* Kelas aktif saat JS memanggil .show */
+#guideOverlay.page-container.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Header Guide */
+.guide-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+.guide-header h1 {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.guide-header p {
+    color: #9f9fba;
+    font-size: 14px;
+}
+
+/* CARD SYSTEM */
+.guide-card {
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid rgba(162, 89, 255, .25);
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 20px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 0 30px rgba(162, 89, 255, .08),
+        inset 0 0 20px rgba(255, 255, 255, .02);
+
+    transition: .25s;
+}
+
+.guide-card:hover {
+    border-color: #a259ff;
+    transform: translateY(-2px);
+}
+
+/* TITLE & TEXT */
+.guide-title {
+    color: #a259ff;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.guide-card p {
+    color: #d7d7e5;
+    line-height: 1.8;
+    font-size: 14px;
+    margin: 6px 0;
+}
+
+/* TABLE STYLING */
+.guide-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.guide-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    color: white;
+    font-size: 14px;
+}
+
+.guide-table td:last-child {
+    text-align: right;
+    color: #d4b3ff;
+    font-weight: 700;
+}
+
+/* TAG & ICON */
+.guide-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 10px;
+    background: #a259ff22;
+    color: #dcb9ff;
+    border: 1px solid #a259ff55;
+}
+
+.guide-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* BACK BUTTON */
+.guide-back {
+    width: 100%;
+    margin-top: 35px;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 480px) {
+    #guideOverlay.page-container {
+        padding: 20px 15px 60px;
+    }
+    
+    .guide-header h1 {
+        font-size: 25px;
+    }
+    
+    .guide-title {
+        font-size: 17px;
+    }
+    
+    .guide-card {
+        padding: 18px;
+        border-radius: 16px;
+    }
+}
+
+@keyframes nexora-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(162, 89, 255, 0.15); }
+    50% { box-shadow: 0 0 35px rgba(162, 89, 255, 0.3); }
+}
+
+.idol-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-edit-idol {
+    background: transparent;
+    border: none;
+    color: #a259ff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.btn-edit-idol:hover {
+    opacity: 1;
+    background: rgba(162, 89, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.idol-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(162, 89, 255, 0.15);
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+
+.skill-gap-container {
+    margin-top: 15px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(162, 89, 255, 0.1);
+}
+
+.gap-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #b78cff;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.gap-distance {
+    color: #fff;
+    background: rgba(162, 89, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+}
+
+.gap-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gap-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d2d3, #a259ff);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+.gap-marker-best, .gap-marker-worst {
+    position: absolute;
+    top: -2px;
+    width: 10px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    transform: translateX(-45%);
+    transition: left 0.6s ease;
+}
+
+.gap-marker-best { background: #0078d3; }
+.gap-marker-worst { background: #ff4f4f; }
+
+.gap-insight {
+    margin: 8px 0 0;
+    font-size: 10px;
+    color: #888;
+    text-align: center;
+    font-style: italic;
+}
+
+.talent-distribution-container {
+    margin-top: 15px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(162, 89, 255, 0.1);
+}
+
+.dist-title {
+    font-size: 13px;
+    color: #b78cff;
+    font-weight: 700;
+    font-style: bold;
+    letter-spacing: 1px;
+    margin-top: 11px;
+    text-align: center;
+}
+
+.talent-bars-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.talent-bar-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar-icon {
+    font-size: 11px;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(176,114,255,0.3);
+}
+
+.bar-track {
+    width: 115%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+    /* Warna default, akan di-override oleh JS */
+    background: linear-gradient(90deg, #a259ff, #b78cff);
+}
+
+.bar-value {
+    font-size: 11px;
+    color: #fff;
+    font-weight: 700;
+    text-align: right;
+}
+
+#copyResultCard {
+display: block;
+margin: 20px auto 0; /* Tengah dan ada jarak dari atas */
+padding: 14px 20px;
+margin-top: 15px;
+font-family: 'Poppins', sans-serif;  
+font-size: 0.9rem;  
+font-weight: 600;  
+letter-spacing: 1.5px;  
+text-transform: uppercase;  
+color: #e0e0ff; /* Putih kebiruan */  
+  
+/* Latar Transparan ala Kaca */  
+background: rgba(255, 255, 255, 0.03);  
+border: 1px solid rgba(108, 92, 231, 0.4);  
+border-radius: 50px; /* Bentuk Pill yang modern */  
+  
+backdrop-filter: blur(8px); /* Efek buram di belakang tombol */  
+cursor: pointer;  
+position: relative;  
+overflow: hidden;  
+transition: all 0.3s ease;
+}
+
+/* Hanya mengatur layout wrapper, tidak mengganggu style btn-secondary */
+.nexora-copy-wrapper {
+    display: flex;
+    gap: 10px; /* Jarak antar tombol */
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Memaksa tombol di dalam wrapper menjadi sama lebar & rapi */
+.nexora-copy-wrapper .btn-secondary {
+    flex: 1; 
+    white-space: normal; /* Agar teks panjang bisa turun baris */
+    line-height: 1.3;
+    padding: 12px 8px; /* Sedikit disesuaikan agar muat 2 baris */
+}
+
+/* Responsif: Jika layar sangat sempit, kembali menumpuk */
+@media (max-width: 400px) {
+    .nexora-copy-wrapper {
+        flex-direction: column;
+    }
+}
+
+.trophy-case {
+    margin-top: 15px;
+    min-height: 0; /* Agar tidak menyisakan celah saat kosong */
+    transition: all 0.3s ease;
+}
+
+.premium-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    
+    /* Efek Kaca Premium */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    
+    /* Animasi halus saat muncul */
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Kelas untuk menyembunyikan badge (Ruang Kosong) */
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Warna-warna Tier (Sama seperti sebelumnya) */
+.badge-gold { background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05)); border-color: rgba(255, 215, 0, 0.5); color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+.badge-silver { background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05)); border-color: rgba(192, 192, 192, 0.5); color: #e0e0e0; }
+.badge-bronze { background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05)); border-color: rgba(205, 127, 50, 0.5); color: #cd7f32; }
+.badge-diamond { background: linear-gradient(135deg, rgba(185, 242, 255, 0.2), rgba(185, 242, 255, 0.05)); border-color: rgba(185, 242, 255, 0.5); color: #b9f2ff; box-shadow: 0 0 15px rgba(185, 242, 255, 0.2); }
