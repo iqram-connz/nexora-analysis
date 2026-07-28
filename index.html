@@ -73,9 +73,22 @@
             </div>
 
             <p class="modal-disclaimer">⚠️ CMIIW if the stats roast your bias! 🔥</p>
-            
+            <div class="idol-search">
+    <input
+        type="text"
+        id="idolSearch"
+        placeholder="🔍 Search idol..."
+        oninput="searchIdol()">
+</div>
             <!-- Tombol Filter -->
             <div style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+     <button id="openCreateDatabase">➕ Create a Database (Coming Soon!)</button>
+
+<!-- Gunakan 'hidden' atau 'style="display:none"' -->
+<div id="createDatabaseOverlay" hidden>
+    <button id="closeCreateDatabase">Close</button>
+</div>
+
                 <button onclick="filterByGen('gen3')" class="filter-btn active">Gen 3</button>
                 <button onclick="filterByGen('gen4')" class="filter-btn">Gen 4</button>
                 <button onclick="filterByGen('gen5')" class="filter-btn">Gen 5</button>
@@ -223,7 +236,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
     <button id="saveCompare" class="btn-secondary" style="display: none;">
         ⭐ Save for Compare
     </button>
-    <button id="openCompare" class="btn-primary" style="display: none;">
+    <button id="openCompare" class="btn-primary">
         ⚔ Open Compare List
     </button>
 </div>
@@ -258,7 +271,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 <div id="rankingOverlay">
     <div class="ranking-container">
 
-        <h2 class="overlay-main-title">NEXORA ANALYSIS</h2>
+        <h2 class="overlay-main-title">NEXORA COMPARE</h2>
 
         <!-- TAB -->
         <div class="overlay-tabs">
