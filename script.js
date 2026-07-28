@@ -2649,19 +2649,27 @@ const idolDatabase = {
 
 let currentGen = 'gen3';
 
-// FUNGSI RENDER
-function renderIdolChart() {
+// ✅ FUNGSI RENDER UTAMA (SUDAH DIGABUNG & DIPERBAIKI)
+function renderIdolChart(searchText = "") {
     const listContainer = document.getElementById("idolChartList");
     if (!listContainer) return; 
     
     listContainer.innerHTML = "";
-    const data = idolDatabase[currentGen] || [];
-    
-    if (data.length === 0) {
-        listContainer.innerHTML = "<p style='text-align:center; color:#888;'>Data coming soon!</p>";
-        return;
+    let data = idolDatabase[currentGen] || [];
+
+    // Filter berdasarkan search keyword
+    if (searchText) {
+        data = data.filter(idol =>
+            idol.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            idol.group.toLowerCase().includes(searchText.toLowerCase())
+        );
     }
 
+    if (data.length === 0) {
+        listContainer.innerHTML = "<p style='text-align:center; color:#888;'>No idol found.</p>";
+        return;
+    }
+    
     data.forEach(idol => {
         let borderColor = "#e196ff"; 
         if (idol.group === "BLACKPINK") borderColor = "#424242";
@@ -2672,109 +2680,82 @@ function renderIdolChart() {
         if (idol.group === "LE SSERAFIM") borderColor = "#ff751f";
         if (idol.group === "IVE") borderColor = "#002892";
         
+        // ✅ PERBAIKAN LOGIKA RENDER TALENT (VARIABEL PROCESSEDLINE DIDEFINISIKAN)
+        const processedTalent = idol.talent.split('\n').map(line => {
+            let type = 'default';
+            if (line.includes('Vocal')) type = 'vocal';
+            else if (line.includes('Dance')) type = 'dance';
+            else if (line.includes('Rap')) type = 'rap';
+            else if (line.includes('SP')) type = 'sp';
+            else if (line.includes('Credit')) type = 'credit';
+            else if (line.includes('Visual')) type = 'visual';
+
+            function getColor(val) {
+                if (type === 'vocal') {
+                    if (val <= 10) return "#ff4d4d"; if (val <= 20) return "#feca57";
+                    if (val <= 50) return "#5bff1b"; if (val <= 95) return "#a29bfe";
+                    return "#6c5ce7";
+                } 
+                else if (type === 'dance') {
+                    if (val < 40) return "#ff4d4d"; if (val < 60) return "#feca57";
+                    if (val < 80) return "#5bff1b"; if (val < 100) return "#a29bfe";
+                    return "#6c5ce7";
+                }
+                else if (type === 'rap') {
+                    if (val <= 10) return "#ff4d4d"; if (val <= 15) return "#feca57";
+                    if (val <= 50) return "#5bff1b"; if (val <= 95) return "#a29bfe";
+                    return "#6c5ce7";
+                }
+                else if (type === 'sp') {
+                    if (val <= 50) return "#ff4d4d"; 
+                    if (val <= 65) return "#feca57"; 
+                    if (val <= 85) return "#5bff1b"; 
+                    if (val <= 95) return "#a29bfe"; 
+                    return "#6c5ce7"; 
+                }
+                else if (type === 'credit') {
+                    if (val === 0) return "#ff4d4d"; if (val <= 0.9) return "#feca57";
+                    if (val <= 2.9) return "#5bff1b"; if (val <= 3.9) return "#a29bfe";
+                    return "#6c5ce7";
+                }
+                else if (type === 'visual') {
+                    if (val <= 2.9) return "#ff4d4d"; if (val <= 4.9) return "#feca57";
+                    if (val <= 6.9) return "#5bff1b"; if (val <= 7.9) return "#a29bfe";
+                    return "#6c5ce7";
+                }
+                return "#fff";
+            }
+
+            // Ganti angka setelah tanda + dengan warna glow
+            let processedLine = line.replace(/(?<=\+\s*)\d+\.?\d*/g, (match) => {
+                const val = parseFloat(match);
+                const color = getColor(val);
+                return `<span style="color: ${color}; font-weight: 800; text-shadow: 0 0 6px ${color}, 0 0 9px ${color}, 0 0 11px ${color}40;">${match}</span>`;
+            });
+
+            // Kecilkan teks di dalam kurung
+            processedLine = processedLine.replace(/$([^)]+)$/g, '<span style="display: inline-block; font-size: 8px !important; line-height: 1 !important; opacity: 0.6;">($1)</span>');
+
+            return processedLine;
+        }).join('<br>');
         
         listContainer.innerHTML += `
-    <div class="idol-card" style="border-color: ${borderColor}; padding: 15px; margin-bottom: 10px;">
-        <h3 style="margin:0; color: ${borderColor};">${idol.name} <span style="font-size:12px; color:#ccc;">(${idol.group})</span></h3>
-        
-<p style="font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.6; color: #e0e0e0; white-space: pre-line; margin-top: 8px; font-weight: 700; text-shadow: 1px 1px 2px rgba(68,31,99,0.8);">
-    ${idol.talent.split('\n').map(line => {
-        // 1. Deteksi Tipe Statistik untuk menentukan palet warna
-        let type = 'default';
-        if (line.includes('Vocal')) type = 'vocal';
-        else if (line.includes('Dance')) type = 'dance';
-        else if (line.includes('Rap')) type = 'rap';
-        else if (line.includes('SP')) type = 'sp';
-        else if (line.includes('Credit')) type = 'credit';
-        else if (line.includes('Visual')) type = 'visual';
-
-        // 2. Fungsi Warna Sesuai Aturanmu
-        function getColor(val) {
-            if (type === 'vocal') {
-                if (val <= 10) return "#ff4d4d"; if (val <= 20) return "#feca57";
-                if (val <= 50) return "#5bff1b"; if (val <= 95) return "#a29bfe";
-                return "#6c5ce7";
-            } 
-            else if (type === 'dance') {
-                if (val < 40) return "#ff4d4d"; if (val < 60) return "#feca57";
-                if (val < 80) return "#5bff1b"; if (val < 100) return "#a29bfe";
-                return "#6c5ce7";
-            }
-            else if (type === 'rap') {
-                if (val <= 10) return "#ff4d4d"; if (val <= 15) return "#feca57";
-                if (val <= 50) return "#5bff1b"; if (val <= 95) return "#a29bfe";
-                return "#6c5ce7";
-            }
-            else if (type === 'sp') {
-                // 🔴 Merah (+5 s/d +50)
-                if (val <= 50) return "#ff4d4d"; 
+            <div class="idol-card" style="border-color: ${borderColor}; padding: 15px; margin-bottom: 10px;">
+                <h3 style="margin:0; color: ${borderColor};">${idol.name} <span style="font-size:12px; color:#ccc;">(${idol.group})</span></h3>
                 
-                // 🟡 Kuning (+55 s/d +65)
-                if (val <= 65) return "#feca57"; 
-                
-                // 🟢 Hijau (+70 s/d +85)
-                if (val <= 85) return "#5bff1b"; 
-                
-                // 🟣 Ungu Muda (+90 s/d +95)
-                if (val <= 95) return "#a29bfe"; 
-                
-                // 🟣 Ungu Tua (+100)
-                return "#6c5ce7"; 
-            }
+                <p style="font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.6; color: #e0e0e0; white-space: pre-line; margin-top: 8px; font-weight: 700; text-shadow: 1px 1px 2px rgba(68,31,99,0.8);">
+                    ${processedTalent}
+                </p>
 
-            else if (type === 'credit') {
-                if (val === 0) return "#ff4d4d"; if (val <= 0.9) return "#feca57";
-                if (val <= 2.9) return "#5bff1b"; if (val <= 3.9) return "#a29bfe";
-                return "#6c5ce7";
-            }
-            else if (type === 'visual') {
-                if (val <= 2.9) return "#ff4d4d"; if (val <= 4.9) return "#feca57";
-                if (val <= 6.9) return "#5bff1b"; if (val <= 7.9) return "#a29bfe";
-                return "#6c5ce7";
-            }
-            return "#fff";
-        }
-        // 3. Regex Khusus: HANYA cari angka setelah tanda '+'
-        return line.replace(/(?<=\+\s*)\d+\.?\d*/g, (match) => {
-            const val = parseFloat(match);
-            const color = getColor(val);
-            
-            // Efek Glow Bertingkat (Inti Terang + Sebaran Cahaya)
-            return `<span style="
-                color: ${color}; 
-                font-weight: 800; 
-                text-shadow: 
-                    0 0 6px ${color}, 
-                    0 0 9px ${color}, 
-                    0 0 11px ${color}40;
-            ">${match}</span>`;
-        });
-
-        // 4. KECILKAN TEKS DI DALAM KURUNG
-        // Gunakan \ untuk mendeteksi tanda kurung ( dan )
-        processedLine = processedLine.replace(/$([^)]+)$/g, '<span style="display: inline-block; font-size: 8px !important; line-height: 1 !important; opacity: 0.6;">($1)</span>');
-
-
-
-        return processedLine;
-
-    }).join('<br>')}
-
-</p>
-
-
-<!-- RANK STYLE (Versi Mini & Soft Glow) -->
-<div style="color: #c8c0ff; font-weight:bold; text-shadow: 0 0 10px rgba(181,169,255,0.4); text-align:center; margin-top: 15px; font-size: 13px;">${idol.rank}</div>
-
-        <div style="color: #b5a9ff; font-weight:bold; text-shadow: 0 0 10px rgba(242,215,255,0.8); text-align:center; margin-top: 10px;">${idol.status}</div>
-         <div style="color: #ffffff; font-weight: 900; text-align: center; font-size: 20px; text-shadow: 0 0 15px rgba(215,130,255,0.8), 0 0 30px rgba(223,156,255,0.8); margin-top: 10px;">${idol.score}</div>
-
-
+                <div style="color: #c8c0ff; font-weight:bold; text-shadow: 0 0 10px rgba(181,169,255,0.4); text-align:center; margin-top: 15px; font-size: 13px;">${idol.rank}</div>
+                <div style="color: #b5a9ff; font-weight:bold; text-shadow: 0 0 10px rgba(242,215,255,0.8); text-align:center; margin-top: 10px;">${idol.status}</div>
+                <div style="color: #ffffff; font-weight: 900; text-align: center; font-size: 20px; text-shadow: 0 0 15px rgba(215,130,255,0.8), 0 0 30px rgba(223,156,255,0.8); margin-top: 10px;">${idol.score}</div>
+            </div>
         `;
     });
 }
 
-// EVENT LISTENER
+// ✅ EVENT LISTENER
 document.addEventListener("DOMContentLoaded", function() {
     const openBtn = document.getElementById("openIdolChartBtn");
     const closeBtn = document.getElementById("closeIdolChartBtn");
@@ -2794,7 +2775,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// FUNGSI FILTER
+// ✅ FUNGSI SEARCH (DI LUAR FUNGSI LAIN)
+window.searchIdol = function() {
+    const keyword = document.getElementById("idolSearch").value;
+    renderIdolChart(keyword);
+}
+
+// ✅ FUNGSI FILTER GEN (DUPLOKASI DIHAPUS)
 window.filterByGen = function(genKey) {
     currentGen = genKey;
     const buttons = document.querySelectorAll('.filter-btn');
@@ -2806,5 +2793,14 @@ window.filterByGen = function(genKey) {
         }
     });
     
-    renderIdolChart(); 
+    const keyword = document.getElementById("idolSearch")?.value || "";
+    renderIdolChart(keyword); // Hanya panggil sekali saja
+}
+
+openCreateDatabase.onclick = () => {
+    createDatabaseOverlay.classList.add("show");
+}
+
+closeCreateDatabase.onclick = () => {
+    createDatabaseOverlay.classList.remove("show");
 }
