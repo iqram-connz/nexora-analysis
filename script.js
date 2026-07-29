@@ -1037,44 +1037,45 @@ const exportBtn = document.getElementById("exportImage");
 
 if (exportBtn) {
     exportBtn.addEventListener("click", async () => {
-        const card = document.getElementById("resultCard");
+        const card = document.getElementById("resultCard") || document.querySelector(".export-card");
         if (!card || typeof htmlToImage === 'undefined') return;
 
-        // Loading state
         const originalText = exportBtn.innerHTML;
-        exportBtn.innerHTML = " Rendering...";
+        exportBtn.innerHTML = "⏳ Rendering...";
         exportBtn.disabled = true;
 
         try {
-            // Pastikan font & layout siap
+            // 1. Aktifkan mode export khusus
+            card.classList.add("export-mode");
+            
             await document.fonts.ready;
-            await new Promise(resolve => setTimeout(resolve, 300));
+            await new Promise(resolve => setTimeout(resolve, 400));
 
-            // ✅ RENDER MENGGUNAKAN html-to-image
+            // 2. Capture dalam mode terang
             const dataUrl = await htmlToImage.toPng(card, {
-                quality: 1.0,          // Kualitas maksimal
-                pixelRatio: 3,         // Resolusi tinggi (ganti scale)
-                backgroundColor: "#0b1020", // Fallback warna solid
-                cacheBust: true,       // Hindari cache gambar
-                style: {
-                    // Override sementara untuk memastikan konsistensi
-                    transform: 'none', 
-                    filter: 'none'
-                }
+                quality: 1.0,
+                pixelRatio: 3,
+                backgroundColor: "#090b18", // Fallback warna dasar
+                cacheBust: true
             });
 
-            // Download file
+            // 3. Kembalikan ke tampilan normal SEBELUM download
+            card.classList.remove("export-mode");
+
+            // 4. Download
             const link = document.createElement("a");
-            const idolName = document.getElementById("names")?.value || "Unknown";
+            const idolName = document.getElementById("names")?.value || 
+                             document.querySelector(".export-score")?.textContent?.trim() || "Unknown";
             link.download = `NEXORA-${idolName.replace(/\s+/g, '-')}.png`;
             link.href = dataUrl;
             link.click();
 
-            showToast("High-quality image exported! ✨");
+            showToast("Export berhasil! ✨");
 
         } catch (err) {
             console.error("Export failed:", err);
-            showToast("Export failed ❌ Check console");
+            card.classList.remove("export-mode"); // Safety cleanup
+            showToast("Gagal export ❌");
         } finally {
             exportBtn.innerHTML = originalText;
             exportBtn.disabled = false;
