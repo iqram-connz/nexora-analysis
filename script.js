@@ -1041,28 +1041,21 @@ if (exportBtn) {
         if (!card || typeof htmlToImage === 'undefined') return;
 
         const originalText = exportBtn.innerHTML;
-        exportBtn.innerHTML = "⏳ Rendering...";
+        exportBtn.innerHTML = " Rendering...";
         exportBtn.disabled = true;
 
         try {
-            // 1. Aktifkan mode export khusus
-            card.classList.add("export-mode");
-            
             await document.fonts.ready;
-            await new Promise(resolve => setTimeout(resolve, 400));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
-            // 2. Capture dalam mode terang
+            // ✅ VERSI ASLI: Tanpa onclone, tanpa brightness, tanpa export-mode
             const dataUrl = await htmlToImage.toPng(card, {
                 quality: 1.0,
                 pixelRatio: 3,
-                backgroundColor: "#090b18", // Fallback warna dasar
+                backgroundColor: "#090b18",
                 cacheBust: true
             });
 
-            // 3. Kembalikan ke tampilan normal SEBELUM download
-            card.classList.remove("export-mode");
-
-            // 4. Download
             const link = document.createElement("a");
             const idolName = document.getElementById("names")?.value || 
                              document.querySelector(".export-score")?.textContent?.trim() || "Unknown";
@@ -1074,7 +1067,6 @@ if (exportBtn) {
 
         } catch (err) {
             console.error("Export failed:", err);
-            card.classList.remove("export-mode"); // Safety cleanup
             showToast("Gagal export ❌");
         } finally {
             exportBtn.innerHTML = originalText;
@@ -1082,6 +1074,7 @@ if (exportBtn) {
         }
     });
 }
+
 // =========================
 // NEXORA TOAST SYSTEM
 // =========================
