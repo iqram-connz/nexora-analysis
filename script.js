@@ -1038,46 +1038,44 @@ const exportBtn = document.getElementById("exportImage");
 if (exportBtn) {
     exportBtn.addEventListener("click", async () => {
         const card = document.getElementById("resultCard");
-        if (!card) return;
+        if (!card || typeof htmlToImage === 'undefined') return;
 
-        // Tampilkan loading state sementara
+        // Loading state
         const originalText = exportBtn.innerHTML;
-        exportBtn.innerHTML = "⏳ Generating...";
+        exportBtn.innerHTML = " Rendering...";
         exportBtn.disabled = true;
 
         try {
-            // 1. Pastikan semua font Google/Web sudah termuat sempurna
+            // Pastikan font & layout siap
             await document.fonts.ready;
-            
-            // 2. Beri jeda agar browser selesai merender ulang layout & animasi
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
 
-            // 3. Capture dengan konfigurasi optimal
-            const canvas = await html2canvas(card, {
-                scale: 3,           // Resolusi tinggi (3x)
-                backgroundColor: "#0b1020", // Warna background fallback
-                useCORS: true,      // Izinkan gambar eksternal
-                logging: false,     // Matikan log biar gak berat
-                windowWidth: card.scrollWidth,
-                windowHeight: card.scrollHeight,
-                x: 0,               // Mulai capture dari koordinat 0
-                y: 0
+            // ✅ RENDER MENGGUNAKAN html-to-image
+            const dataUrl = await htmlToImage.toPng(card, {
+                quality: 1.0,          // Kualitas maksimal
+                pixelRatio: 3,         // Resolusi tinggi (ganti scale)
+                backgroundColor: "#0b1020", // Fallback warna solid
+                cacheBust: true,       // Hindari cache gambar
+                style: {
+                    // Override sementara untuk memastikan konsistensi
+                    transform: 'none', 
+                    filter: 'none'
+                }
             });
 
-            // 4. Download file
+            // Download file
             const link = document.createElement("a");
             const idolName = document.getElementById("names")?.value || "Unknown";
             link.download = `NEXORA-${idolName.replace(/\s+/g, '-')}.png`;
-            link.href = canvas.toDataURL("image/png");
+            link.href = dataUrl;
             link.click();
 
-            showToast("Image exported! 📷");
+            showToast("High-quality image exported! ✨");
 
         } catch (err) {
             console.error("Export failed:", err);
             showToast("Export failed ❌ Check console");
         } finally {
-            // Kembalikan tombol ke semula
             exportBtn.innerHTML = originalText;
             exportBtn.disabled = false;
         }
