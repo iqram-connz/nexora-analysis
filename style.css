@@ -3694,28 +3694,43 @@ transition: all 0.3s ease;
     box-shadow:0 0 18px rgba(162,89,255,.35);
 }
 
-/* ✅ MODE EXPORT KHUSUS (FLAT & TERANG) */
-.export-card.export-mode {
-    /* Ganti radial-gradient yang gagal dirender dengan warna solid cerah */
-    background: linear-gradient(180deg, #2e1065 0%, #090b18 100%) !important;
-    
-    /* Matikan semua filter berat */
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    
-    /* Naikkan brightness & contrast secara paksa */
-    filter: brightness(1.15) contrast(1.1) !important;
+/* =========================
+   EXPORT MODE FIX
+========================= */
+
+.export-mode{
+    background:#141124 !important;
 }
 
-/* Perbaiki elemen anak agar ikut terang */
-.export-card.export-mode .chart-box,
-.export-card.export-mode .calculation-box {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+.export-mode *{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+
+    filter:none !important;
+
+    animation:none !important;
+    transition:none !important;
 }
 
-.export-card.export-mode::before {
-    /* Glow pseudo-element dibuat lebih terang */
-    opacity: 0.4 !important;
-    filter: blur(120px) brightness(1.3) !important;
+.export-mode .card,
+.export-mode .nexora-ai-card,
+.export-mode .calculation-box,
+.export-mode .chart-box,
+.export-mode .skill-gap-container,
+.export-mode .talent-distribution-container{
+    background:#1b1830 !important;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.export-mode .analysis-title,
+.export-mode .section-title,
+.export-mode h2,
+.export-mode h3,
+.export-mode p,
+.export-mode span{
+    color:#fff !important;
+}
+
+.export-mode canvas{
+    background:transparent !important;
 }
