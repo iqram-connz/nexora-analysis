@@ -1036,30 +1036,52 @@ ${specLabel}
 const exportBtn = document.getElementById("exportImage");
 
 if (exportBtn) {
-
-    exportBtn.addEventListener("click", () => {
-
+    exportBtn.addEventListener("click", async () => {
         const card = document.getElementById("resultCard");
+        if (!card) return;
 
-        html2canvas(card, {
-            scale: 3,
-            backgroundColor: "#0b1020",
-            useCORS: true
-        }).then(canvas => {
+        // Tampilkan loading state sementara
+        const originalText = exportBtn.innerHTML;
+        exportBtn.innerHTML = "⏳ Generating...";
+        exportBtn.disabled = true;
 
+        try {
+            // 1. Pastikan semua font Google/Web sudah termuat sempurna
+            await document.fonts.ready;
+            
+            // 2. Beri jeda agar browser selesai merender ulang layout & animasi
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // 3. Capture dengan konfigurasi optimal
+            const canvas = await html2canvas(card, {
+                scale: 3,           // Resolusi tinggi (3x)
+                backgroundColor: "#0b1020", // Warna background fallback
+                useCORS: true,      // Izinkan gambar eksternal
+                logging: false,     // Matikan log biar gak berat
+                windowWidth: card.scrollWidth,
+                windowHeight: card.scrollHeight,
+                x: 0,               // Mulai capture dari koordinat 0
+                y: 0
+            });
+
+            // 4. Download file
             const link = document.createElement("a");
-            link.download = `NEXORA-${document.getElementById("names").value || "Unknown"}.png`;
-
+            const idolName = document.getElementById("names")?.value || "Unknown";
+            link.download = `NEXORA-${idolName.replace(/\s+/g, '-')}.png`;
             link.href = canvas.toDataURL("image/png");
-
             link.click();
 
             showToast("Image exported! 📷");
 
-        });
-
+        } catch (err) {
+            console.error("Export failed:", err);
+            showToast("Export failed ❌ Check console");
+        } finally {
+            // Kembalikan tombol ke semula
+            exportBtn.innerHTML = originalText;
+            exportBtn.disabled = false;
+        }
     });
-
 }
 
 // =========================
