@@ -1983,7 +1983,7 @@ currentComment = comment;
     renderTalentDistribution();
     updateSkillGapIndicator();
 } // <--- KURUNG PENUTUP FUNGSI GENERATE AISUMMARY
-});
+}); // <--- kurung penutup DOMloadedContent
 
 // ✅ TARUH FUNGSI INI DI SINI (SETELAH RENDER TALENT)
 function updateSkillGapIndicator() {
@@ -2064,7 +2064,10 @@ function renderTalentDistribution() {
         "Vocal": { icon: "Vocal", color: "linear-gradient(90deg, #d4ff6b, #bdee5a)" },
         "Dance": { icon: "Dance", color: "linear-gradient(90deg, #489cfb, #0a7fe3)" },
         "Rap":   { icon: "Rap", color: "linear-gradient(90deg, #ff6530, #ff5203)" },
-        "SP":    { icon: "SP", color: "linear-gradient(90deg, 0 0 10px rgba(162, 89, 255, 0.3); #ffc636, #ffaa00)" },
+"SP": {
+  icon: "SP",
+  color: "linear-gradient(90deg, #ffc636, #ffaa00)"
+},
         "Credit":{ icon: "Credit Songs", color: "linear-gradient(90deg, #7af1b5, #8eeaeb)" },
         "Visual":{ icon: "Visual", color: "linear-gradient(90deg, #d979bd, #a6ccf1)" }
     };
@@ -2149,12 +2152,13 @@ document.addEventListener("click", function(e) {
 
         
         // 6. Sembunyikan Card & Tombol Compare
-        document.getElementById("resultCard").style.display = "none";
+        const resultCard = document.getElementById("resultCard");
+if (resultCard) resultCard.style.display = "none";
         document.getElementById("compareCard").style.display = "none";
         
         const saveBtn = document.getElementById("saveCompare");
         
-        if (saveCompare) saveCompare.style.display = "none";
+        if (saveBtn) saveCompare.style.display = "none";
        // if (openBtn) openBtn.style.display = "none";
         
         // 7. Hancurkan Chart
@@ -2225,12 +2229,12 @@ function updatePremiumAchievement(data) {
         tierClass = "badge-silver";
     }
     // 4. CEK DANCE (Gold/Silver Tier)
-    else if (parseFloat(data.dancePoint) >= 99) {
+    else if (parseFloat(data.dancePoint) >= 100) {
         bestTitle = "Master Dancer";
         bestIcon = "💃";
         tierClass = "badge-gold";
-    } else if (parseFloat(data.dancePoint) >= 100) {
-        bestTitle = "Insanse Dancer";
+    } else if (parseFloat(data.dancePoint) >= 99) {
+        bestTitle = "Insane Dancer";
         bestIcon = "💃";
         tierClass = "badge-diamond";
     } else if (parseFloat(data.dancePoint) >= 95) {
@@ -2558,9 +2562,9 @@ const idolDatabase = {
         name: "Kazuha",
         group: "LE SSERAFIM",
         rank: "Top 3/5 in LE SSERAFIM",
-        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.30 | +93 (Proficient)\n• Rap: 8.00 | +25 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 19+ | +1.9(Good)\n• Visual: 94% | +9.4 (Visualist)`,
+        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.30 | +93 (Proficient)\n• Rap: 8.00 | +25 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 19+ | +1.9 (Good)\n• Visual: 94% | +9.4 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
-        score: "8.73– Great Idol"
+        score: "8.73 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
     {
         name: "Eunchae",
@@ -2783,7 +2787,10 @@ function renderIdolChart(searchText = "") {
             });
 
             // Kecilkan teks di dalam kurung
-            processedLine = processedLine.replace(/$([^)]+)$/g, '<span style="display: inline-block; font-size: 5px !important; line-height: 1 !important; opacity: 0.6;">($1)</span>');
+            processedLine = processedLine.replace(
+    /\(([^)]+)\)/g,
+    '<span style="font-size:11px;opacity:1;">($1)</span>'
+);
 
             return processedLine;
         }).join('<br>');
