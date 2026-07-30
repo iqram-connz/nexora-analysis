@@ -12,16 +12,17 @@
    <meta name="description" content="NEXORA Talent Analysis is a K-pop idol database featuring talent rankings, vocal, dance, rap, stage presence, visual analysis, and overall scores for K-pop idols from every generation.">
 
     <!-- 3. KEYWORDS (Bantu Google paham topikmu) -->
-   <meta name="keywords" content="NEXORA, K-pop, K-pop database, idol ranking, talent analysis, vocal ranking, dance ranking, rap ranking, stage presence, visual ranking, K-pop stats">
+   <meta name="keywords" content="NEXORA, K-pop, K-pop database, idol ranking, talent analysis, vocal ranking, dance rzzanking, rap ranking, stage presence, visual ranking, K-pop stats">
 
     <!-- 4. CSS & SCRIPT -->
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 </head>
 <body>
@@ -37,7 +38,7 @@
             <p class="tagline">Measure • Analyze • Discover</p>
             <div class="divider"></div>
 
-              <p class="tagline" style=font-weight: bold;>  @nexora_analysis</p>
+              <p class="tagline" style="font-weight: bold";>  @nexora_analysis</p>
 
             <div class="features">
                 <p>✓ Vocal Analysis</p>
@@ -82,12 +83,12 @@
     <input
         type="text"
         id="idolSearch"
-        placeholder="🔍 Search idol..."
+        placeholder="🔍 Search idol / Group..."
         oninput="searchIdol()">
 </div>
             <!-- Tombol Filter -->
             <div style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-     <button id="openCreateDatabase" disabled>➕ Create a Database (Coming Soon!)</button>
+     <button id="openCreateDatabase" class="data-btn" disabled>➕ Create a Database (Coming Soon!)</button>
 
 <!-- Gunakan 'hidden' atau 'style="display:none"' -->
 <div id="createDatabaseOverlay" hidden>
@@ -110,7 +111,6 @@
 
     <div id="main-content">
        
-    </div>
     
     <div class="card">
 
@@ -194,8 +194,6 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
             </div>
         
    </div>
-      
-          </div>
 
         <div class="card">
           
@@ -219,11 +217,8 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
             
         </div>
         
-          </div>
-        
     <!-- INI TOMBOL ANALYZE YANG HILANG -->
     <button id="analyze" class="btn-primary">📊 ANALYZE</button>
-</div>
 
 <!-- ✅ LOADING SCREEN (Harus ada di dalam body) -->
 <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
@@ -514,7 +509,12 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
   
 <script src="data.js"></script>
+<!-- HAPUS INI -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> -->
+
+<!-- TAMBAHKAN INI -->
 <script src="https://unpkg.com/html-to-image/dist/html-to-image.js"></script>
+
 <script src="script.js"></script>
 
 </body>
