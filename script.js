@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startBtn = document.getElementById("startBtn");
 if (startBtn) {
     startBtn.addEventListener("click", () => {
-        // 1. Mainkan suara transisi (opsional, kalau ada file audionya)
+        // 1. kan suara transisi (opsional, kalau ada file audionya)
         if (typeof playSound === 'function') {
             playSound('clickSound'); 
         }
@@ -610,11 +610,11 @@ if (analyzeBtn) {
 
                     const safeData = [
                         v > 0 ? Math.min(v * 1.5, 100) : 0,
-                        d > 0 ? Math.min(d - 15.5, 100) : 0,
-                        r > 0 ? Math.min(r * 1.8, 100) : 0,
+                        d > 0 ? Math.min(d / 1.25, 100) : 0,
+                        r > 0 ? Math.min(r * 1.35, 100) : 0,
                         s > 0 ? Math.min(s - 15, 100) : 0,
-                        c > 0 ? Math.min(c * 5, 100) : 0,
-                        vis > 0 ? Math.min(vis * 5.5, 100) : 0
+                        c > 0 ? Math.min(c * 5.25, 100) : 0,
+                        vis > 0 ? Math.min(vis * 5.25, 100) : 0
                     ];
 
                     const radarShadowPlugin = {
@@ -793,10 +793,6 @@ setTimeout(() => {
     
 updatePremiumAchievement(window.lastAnalysis);
 
-    // 4. Update UI lainnya
-    if (gradeBadge) gradeBadge.textContent = finalGrade;
-    if (insightText) insightText.textContent = comment;
-
 }, 1500);
 
                 // --- 7. UPDATE BADGE TIER & STATUS ---
@@ -916,7 +912,7 @@ Status: ${d.status} (+${d.bonus.toFixed(2)})
 Total:
 ${document.getElementById("formulaText").textContent} ${document.getElementById("averageText").textContent}
 
-Score: ${d.score.toFixed(2)} (${d.tier})`;
+Score: ${d.score.toFixed(2)} (${d.tier}) • ${currentFinalGrade}`;
 
         try {
             await navigator.clipboard.writeText(text);
@@ -978,9 +974,9 @@ const finalGrade = currentFinalGrade;
 const comment = currentComment;
         
         // Ambil data achievement premium
-        const achIcon = document.querySelector(".badge-icon")?.textContent || "";
+        const achIcon = document.querySelector(".badge-icon")?.textContent || "━";
         const achTitle = document.querySelector(".badge-title")?.textContent || "";
-        let achLine = "";
+        let achLine = "━";
         if (achTitle) {
             achLine = `\n🏆 Achievement: ${achIcon} ${achTitle}`;
         }
@@ -1003,22 +999,26 @@ ${d.name}
 
 • Visual: ${d.visual} | +${d.visualPoint} (${visBadge})
 
-━━━━━━━━━━━━━━━━━━━━━━━
 Status: ${d.status} (${d.bonus > 0 ? '+' + d.bonus : 'No Bonus'})
+
+Total:
+${document.getElementById("formulaText").textContent} ${document.getElementById("averageText").textContent}
 
 Score: ${d.score.toFixed(2)} (${d.tier})
 
 ━━━━━━━━━━━━━━━━━━━━━━━
-INSIGHT
+– INSIGHT –
 
-Grade • ${currentFinalGrade} •
+Grade • ${currentFinalGrade}
 "${currentComment}"
 
 Talent Distribution
 ${distLines}
 
-Skill Gap:
-${highest.name} (Gap: ${gap}) ${lowest.name}
+Achievement: ${achIcon} ${achTitle}
+
+${highest.name} ➡︎ ${lowest.name}
+Gap: ${gap}
 ${specLabel}
 `.trim();
 
@@ -1205,11 +1205,11 @@ window.editIdolFromList = function(index) {
 
                 window.talentChart.data.datasets[0].data = [
                     Math.min(v * 1.5, 100),
-                    Math.min(d - 15.5, 100),
-                    Math.min(r * 1.8, 100),
+                    Math.min(d / 1.25, 100),
+                    Math.min(r * 1.35, 100),
                     Math.min(s - 15, 100),
-                    Math.min(c * 5, 100),
-                    Math.min(vis * 5.5, 100)
+                    Math.min(c * 6.25, 100),
+                    Math.min(vis * 5.25, 100)
                 ];
                 window.talentChart.update();
             }
@@ -1424,13 +1424,14 @@ function animateScore(element, target) {
         if (current >= target) {
             current = target;
             clearInterval(timer);
+
+            // Efek pop
+            element.style.animation = "scorePop .35s";
+
+            setTimeout(() => {
+                element.style.animation = "";
+            }, 350);
         }
-
-element.style.animation = "scorePop .35s";
-
-setTimeout(() => {
-    element.style.animation = "";
-}, 350);
 
         element.textContent = current.toFixed(2);
 
@@ -1540,6 +1541,8 @@ if (saveBtn) {
         if (compareList.some(i => i.name === name)) { showToast("Already added!"); return; }
         if (compareList.length >= 20) { showToast("Maximum 20 idols!"); return; }
 
+console.log(window.lastAnalysis);
+
         // 3. Simpan dengan Format Lengkap
        compareList.push({
 
@@ -1577,6 +1580,7 @@ updateCompareUI();
 showToast(`${name} added!`);
 });
 }
+console.table(compareList);
 // 2. START COMPARE (WITH TIE DETECTION LOGIC)
 const startBtnGlobal = document.getElementById("startCompare");
 if (startBtnGlobal) {
@@ -1720,6 +1724,7 @@ if (openBtn) {
     });
 }
 
+
 // --- NEXORA AI SUMMARY (FIXED ORIGINAL VERSION) ---
 function generateAISummary() {
     console.log("🤖 Nexora AI Summary started...");
@@ -1727,7 +1732,7 @@ function generateAISummary() {
     // 1. AMBIL DATA DARI INPUTAN
     const nameInput = document.getElementById('names');
     const name = nameInput ? nameInput.value.trim() : "This Idol";
-    
+
     const v = parseFloat(getPointFromBox("vocalPoint")) || 0;
     const d = parseFloat(getPointFromBox("dancePoint")) || 0;
     const r = parseFloat(getPointFromBox("rapPoint")) || 0;
@@ -1771,7 +1776,7 @@ function generateAISummary() {
     // ACE DETECTION & BEST/WORST LOGIC
     // =======================
     const bestObj = window.currentStatsList[0];
-    
+
     const potentialWorstSkills = window.currentStatsList.filter(stat => {
         if (stat.name === "Vocal" && stat.point > 85) return false;
         if (stat.name === "Dance" && stat.point > 90) return false;
@@ -1814,13 +1819,13 @@ function generateAISummary() {
     const statNames = document.querySelectorAll('.stat-name');
     if (statVals.length >= 3 && statNames.length >= 3) {
         statVals[0].textContent = coreAvg.toFixed(2); statNames[0].textContent = "CORE AVG";
-        
+
         statVals[1].innerHTML = bestSkillText.replace(/&/g, "<br>&"); 
         statNames[1].textContent = "BEST SKILL";
-        
+
         statVals[2].innerHTML = worstSkillText;
         statNames[2].textContent = isAce ? "STATUS" : "WORST SKILL";
-        
+
         if (isAce) {
             statVals[2].style.color = "#ffd700";
             statVals[2].style.textShadow = "0 0 10px rgba(255, 215, 0, 0.5)";
@@ -1829,7 +1834,7 @@ function generateAISummary() {
             statVals[2].style.textShadow = "";
         }
     }
-
+    
     // =======================
     // GRADE & COMMENT GENERATION (MANUAL)
     // =======================
@@ -1841,7 +1846,7 @@ function generateAISummary() {
     else if (coreAvg >= 90) { grade = "S (Legend)"; gradeBg = "linear-gradient(135deg, #ff6b6b, #ee5a5a)"; } 
     else if (coreAvg >= 85) { grade = "S- (Elite)"; gradeBg = "linear-gradient(135deg, #ff9f43, #ff7f00)"; } 
     else if (coreAvg >= 80) { grade = "A+ (Expert)"; gradeBg = "linear-gradient(135deg, #feca57, #ffb800)"; } 
-    else if (coreAvg >= 75) { grade = "A (Main)"; gradeBg = "linear-gradient(135deg, #ffcd3c, #ffc107)"; } 
+    else if (coreAvg >= 75) { grade = "A (Top)"; gradeBg = "linear-gradient(135deg, #ffcd3c, #ffc107)"; } 
     else if (coreAvg >= 70) { grade = "A- (Epic)"; gradeBg = "linear-gradient(135deg, #48dbfb, #0abde3)"; } 
     else if (coreAvg >= 65) { grade = "B+ (Star)"; gradeBg = "linear-gradient(135deg, #0abde3, #0097e6)"; } 
     else if (coreAvg >= 60) { grade = "B (Performer)"; gradeBg = "linear-gradient(135deg, #00d2d3, #01a3a4)"; }   
@@ -2068,7 +2073,7 @@ function renderTalentDistribution() {
     window.currentStatsList.forEach(stat => {
         const meta = skillMeta[stat.name] || { icon: "⭐", color: "linear-gradient(90deg, #a259ff, #b78cff)" };
         const pct = Math.min(Math.max(stat.val, 0), 100);
-        
+
          html += `
             <div class="talent-bar-row">
                 <span class="bar-icon">${meta.icon}</span>
@@ -2148,9 +2153,9 @@ document.addEventListener("click", function(e) {
         document.getElementById("compareCard").style.display = "none";
         
         const saveBtn = document.getElementById("saveCompare");
-        const openBtn = document.getElementById("openCompare");
-        if (saveBtn) saveBtn.style.display = "none";
-        if (openBtn) openBtn.style.display = "none";
+        
+        if (saveCompare) saveCompare.style.display = "none";
+       // if (openBtn) openBtn.style.display = "none";
         
         // 7. Hancurkan Chart
         if (window.talentChart) {
@@ -2189,13 +2194,22 @@ function updatePremiumAchievement(data) {
         bestTitle = "Perfect Visual";
         bestIcon = "💎";
         tierClass = "badge-diamond";
-    } 
+    } else if (parseFloat(data.visualPoint) >= 90) {
+      bestTitle = "Nice Visual";
+      bestIcon = "🎀";
+      tierClass = "badge-gold";
+    }
     // 2. CEK STAGE PRESENCE (Gold Tier)
     else if (parseFloat(data.spPoint) >= 100) {
         bestTitle = "Ace Stage";
+        bestIcon = "🌟";
+        tierClass = "badge-diamond";
+    } else if (parseFloat(data.spPoint) >= 95) {
+        bestTitle = "Performer Stage";
         bestIcon = "✨";
         tierClass = "badge-gold";
     }
+    
     // 3. CEK VOCAL (Gold/Silver Tier)
     else if (parseFloat(data.vocalPoint) >= 100) {
         bestTitle = "Perfect Vocalist";
@@ -2203,31 +2217,43 @@ function updatePremiumAchievement(data) {
         tierClass = "badge-gold";
     } else if (parseFloat(data.vocalPoint) >= 90) {
         bestTitle = "Amazing Vocalist";
-        bestIcon = "🌟";
+        bestIcon = "⚡";
+        tierClass = "badge-gold";
+    } else if (parseFloat(data.vocalPoint) >= 70) {
+        bestTitle = "Great Vocalist";
+        bestIcon = "🎤";
         tierClass = "badge-silver";
     }
     // 4. CEK DANCE (Gold/Silver Tier)
     else if (parseFloat(data.dancePoint) >= 99) {
         bestTitle = "Master Dancer";
         bestIcon = "💃";
-        tierClass = "badge-silver";
+        tierClass = "badge-gold";
     } else if (parseFloat(data.dancePoint) >= 100) {
         bestTitle = "Insanse Dancer";
         bestIcon = "💃";
-        tierClass = "badge-gold";
+        tierClass = "badge-diamond";
+    } else if (parseFloat(data.dancePoint) >= 95) {
+        bestTitle = "Proficient Dancer";
+        bestIcon = "💃";
+        tierClass = "badge-silver";
     }
     // 5. CEK RAP (Bronze/Silver Tier)
     else if (parseFloat(data.rapPoint) >= 95) {
         bestTitle = "Rap God";
         bestIcon = "🔥";
+        tierClass = "badge-gold";
+    } else if (parseFloat(data.rapPoint) >= 75) {
+        bestTitle = "Ace Rapper";
+        bestIcon = "🔥";
         tierClass = "badge-bronze";
     }
     // 6. CEK CREDIT (Special Tier)
-    else if (parseFloat(data.credit) >= 50) {
+    else if (parseFloat(data.credit) >= 500) {
         bestTitle = "Insane Songwriter";
         bestIcon = "✍️";
         tierClass = "badge-gold";
-  } else if (parseFloat(data.credit) >= 25) {
+  } else if (parseFloat(data.credit) >= 100) {
         bestTitle = "Amazing Songwriter";
         bestIcon = "📝";
         tierClass = "badge-silver";
@@ -2388,15 +2414,15 @@ const idolDatabase = {
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Jeongyeon", group: "TWICE",
-            talent: `• Vocal: Mid A (C) | +60 (Good)\n• Dance: 6.75 | +67.5 (Intermediate)\n• Rap: Upper.Nr | +15 (Complete)\n• SP: 16/20 | +80 (Upper)\n• Credit Songs: 9+ | +0.9 (Complete)\n• Visual: 76% | +7.6 (Great)`,
-            rank: "Top 7/9 in TWICE",
-            status: "☆ Almost All-Rounder ☆ (+0.01)", score: "7.78 – Good Idol"
+            talent: `• Vocal: Mid A (C) | +60 (Good)\n• Dance: 6.75 | +67.5 (Intermediate)\n• Rap: High.Nr | +20 (Complete)\n• SP: 16/20 | +80 (Upper)\n• Credit Songs: 9+ | +0.9 (Complete)\n• Visual: 76% | +7.6 (Great)`,
+            rank: "Top 6/9 in TWICE",
+            status: "☆ Almost All-Rounder ☆ (+0.01)", score: "7.90 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Momo", group: "TWICE",
-            talent: `• Vocal: U (F+) | +10 (Dozen)\n• Dance: 9.90 | +99 (Ace Dancer)\n• Rap: 13.50 | +35 (Good)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 8+ | +0.8 (Complete)\n• Visual: 76% | +7.6 (Great)`,
+            talent: `• Vocal: U-W (E-) | +15 (Dozen)\n• Dance: 9.90 | +99 (Ace Dancer)\n• Rap: 14.75 | +35 (Good)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 8+ | +0.8 (Complete)\n• Visual: 76% | +7.6 (Great)`,
             rank: "Top 4/9 in TWICE",
-            status: "☆ Almost All-Rounder ☆ (+0.01)", score: "8.07 – Great Idol"
+            status: "☆ Almost All-Rounder ☆ (+0.01)", score: "8.18 – Great Idol"
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Sana", group: "TWICE",
@@ -2413,12 +2439,12 @@ const idolDatabase = {
         {
             name: "Mina", group: "TWICE",
             talent: `• Vocal: Mid W-A (D) | +45 (Complete)\n• Dance: 8.85 | +88.5 (Advanced)\n• Rap: High.Nr | +20 (Complete)\n• SP: 14/20 | +70 (Upper)\n• Credit Songs: 7+ | +0.7 (Complete)\n• Visual: 86% | +8.6 (Graceful)`,
-            rank: "Top 6/9 in TWICE",
+            rank: "Top 7/9 in TWICE",
             status: "★ All-Rounder ★ (+0.05)", score: "7.87 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Dahyun", group: "TWICE",
-            talent: `• Vocal: U-W (E) | +20 (Complete)\n• Dance: 7.15 | +71.5 (Intermediate)\n• Rap: 14.75 | +35 (Good)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 30+ | +3 (Ace)\n• Visual: 79% | +7.9 (Great)`,
+            talent: `• Vocal: U-W (E) | +20 (Complete)\n• Dance: 7.15 | +71.5 (Intermediate)\n• Rap: 14.50 | +35 (Good)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 30+ | +3 (Ace)\n• Visual: 79% | +7.9 (Great)`,
             rank: "Top 9/9 in TWICE",
             status: "☆ Almost All-Rounder ☆ (+0.01)", score: "7.32 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2438,7 +2464,7 @@ const idolDatabase = {
         // ================= RED VELVET =================
         {
             name: "Irene", group: "Red Velvet",
-            talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.40 | +74 (Intermediate)\n• Rap: 16.00 | +40 (Great)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
+            talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.40 | +74 (Intermediate)\n• Rap: 15.50 | +40 (Great)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
             rank: "Top 3/5 in Red Velvet",
             status: "★ All-Rounder ★ (+0.05)", score: "7.77 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2464,7 +2490,7 @@ const idolDatabase = {
             name: "Yeri", group: "Red Velvet",
             talent: `• Vocal: U-W (E) | +20 (Complete)\n• Dance: 5.60 | +56 (Average)\n• Rap: 14.75 | +35 (Good)\n• SP: 12/20 | +60 (Mid)\n• Credit Songs: 6+ | +0.6 (Complete)\n• Visual: 79% | +7.9 (Great)`,
             rank: "Top 5/5 in Red Velvet",
-            status: "● balanced ● (+0.00)", score: "6.48 – Above A. Idol"
+            status: "● Balanced ● (+0.00)", score: "6.48 – Above A. Idol"
         } // <--- INI ITEM TERAKHIR, TIDAK PERLU KOMA
     ], // <--- PENUTUP ARRAY GEN3
 
@@ -2473,9 +2499,9 @@ const idolDatabase = {
         name: "Karina",
         group: "aespa",
         rank: "Top 1/4 in aespa", // ✅ FOTG & Leader = Rank 1
-        talent: `• Vocal: Low A (C-) | +55 (Good)\n• Dance: 8.70 | +87 (Advanced)\n• Rap: 17.25 | +45 (Great)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
+        talent: `• Vocal: Low A (C-) | +55 (Good)\n• Dance: 8.70 | +87 (Advanced)\n• Rap: 18.75 | +50 (Great)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
         status: "♡ Almost Ace ♡ (+0.10)",
-        score: "9.27 – Top Idol"
+        score: "9.30 – Top Idol"
     }, // <--- KOMA PENTING DI SINI
     {
         name: "Giselle",
@@ -2516,9 +2542,9 @@ const idolDatabase = {
         name: "Chaewon",
         group: "LE SSERAFIM",
         rank: "Top 2/5 in LE SSERAFIM",
-        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 8.95 | +89.5 (Advanced)\n• Rap: High.Nr | +20 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 14+ | +1.4 (Good)\n• Visual: 68% | +6.8 (High)`,
+        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 8.95 | +89.5 (Advanced)\n• Rap: High.Nr | +20 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 65+ | +6.5 (Producer)\n• Visual: 68% | +6.8 (High)`,
         status: "★ All-Rounder ★ (+0.05)",
-        score: "8.61 – Great Idol"
+        score: "8.82 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
     {
         name: "Yunjin",
@@ -2532,9 +2558,9 @@ const idolDatabase = {
         name: "Kazuha",
         group: "LE SSERAFIM",
         rank: "Top 3/5 in LE SSERAFIM",
-        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.25 | +92.5 (Proficient)\n• Rap: 8.00 | +25 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 7+ | +0.7 (Complete)\n• Visual: 94% | +9.4 (Visualist)`,
+        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.30 | +93 (Proficient)\n• Rap: 8.00 | +25 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 19+ | +1.9(Good)\n• Visual: 94% | +9.4 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
-        score: "8.61 – Great Idol"
+        score: "8.73– Great Idol"
     }, // <--- KOMA PENTING DI SINI
     {
         name: "Eunchae",
@@ -2657,7 +2683,16 @@ const idolDatabase = {
 
 
  
-    gen2: [] 
+    gen2: [
+      {
+        name: "Hyoyeon", 
+        group: "Girls Generation",
+        rank: "Top 1/7 in Girls Generation",
+        talent: `• Vocal: U (F+) | +10 (Dozen)\n• Dance: 10.0 | +100 (Ace Dancer)\n• Rap: 13.75 | +35 (Good)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 16+ | +1.6(Good)\n• Visual: 63% | +6.3 (High)`,
+        status: "☆ Almost All-Rounder ☆ (+0.01)", 
+        score: "8.32 – Great Idol"
+    }
+    ] 
 };
 
 let currentGen = 'gen3';
@@ -2692,6 +2727,7 @@ function renderIdolChart(searchText = "") {
         if (idol.group === "aespa") borderColor = "#dfff48";
         if (idol.group === "LE SSERAFIM") borderColor = "#ff751f";
         if (idol.group === "IVE") borderColor = "#002892";
+        if (idol.group === "Girls Generation") borderColor = "#92002c";
         
         // ✅ PERBAIKAN LOGIKA RENDER TALENT (VARIABEL PROCESSEDLINE DIDEFINISIKAN)
         const processedTalent = idol.talent.split('\n').map(line => {
@@ -2747,7 +2783,7 @@ function renderIdolChart(searchText = "") {
             });
 
             // Kecilkan teks di dalam kurung
-            processedLine = processedLine.replace(/$([^)]+)$/g, '<span style="display: inline-block; font-size: 8px !important; line-height: 1 !important; opacity: 0.6;">($1)</span>');
+            processedLine = processedLine.replace(/$([^)]+)$/g, '<span style="display: inline-block; font-size: 5px !important; line-height: 1 !important; opacity: 0.6;">($1)</span>');
 
             return processedLine;
         }).join('<br>');
