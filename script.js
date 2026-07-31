@@ -628,6 +628,12 @@ if (analyzeBtn) {
                         }
                     };
 
+if (typeof Chart === "undefined") {
+    console.error("Chart.js failed to load!");
+    showToast("Chart.js not loaded!");
+    return;
+}
+
                     window.talentChart = new Chart(ctx, {
                         type: "radar",
                         data: {
@@ -842,7 +848,7 @@ updatePremiumAchievement(window.lastAnalysis);
                 }
 
                 // --- 8. TAMPILKAN RESULT CARD ---
-                const resultCard = document.getElementById("resultCard");
+              const resultCard = document.getElementById("resultCard");
                 if (resultCard) {
                     resultCard.style.display = "block";
                     setTimeout(() => { resultCard.scrollIntoView({ behavior: "smooth" }); }, 50);
@@ -851,11 +857,21 @@ updatePremiumAchievement(window.lastAnalysis);
                 showCompareButtons(); 
 
                 try {
-                    playSound('successSound');
-                    if (finalScore >= 8.5 && typeof triggerConfetti === 'function') {
-                        triggerConfetti();
-                    }
-                } catch (e) { console.warn("⚠️ Sound/Confetti failed:", e); }
+    playSound('successSound');
+
+    if (finalScore >= 11 && typeof triggerLightning === 'function') {
+        triggerLightning();
+
+    } else if (finalScore >= 9.5 && typeof triggerFire === 'function') {
+        triggerFire();
+
+    } else if (finalScore >= 8.5 && typeof triggerConfetti === 'function') {
+        triggerConfetti();
+    }
+
+} catch (e) {
+    console.warn("⚠️ Sound/Effect failed:", e);
+}
 
             } catch (err) {
                 console.error("CRITICAL ERROR:", err);
@@ -997,9 +1013,11 @@ ${d.name}
 
 • Credit: ${d.credit} | +${d.creditPoint} (${cBadge})
 
-• Visual: ${d.visual} | +${d.visualPoint} (${visBadge})
+• Visual: ${d.visual}% | +${d.visualPoint} (${visBadge})
 
-Status: ${d.status} (${d.bonus > 0 ? '+' + d.bonus : 'No Bonus'})
+━━━━━━━━━━━━━━━━━━━━━━━
+
+Status: ${d.status} (${d.bonus > 0 ? '+' + d.bonus : '0.00'})
 
 Total:
 ${document.getElementById("formulaText").textContent} ${document.getElementById("averageText").textContent}
@@ -1036,47 +1054,68 @@ ${specLabel}
 const exportBtn = document.getElementById("exportImage");
 
 if (exportBtn) {
-    exportBtn.addEventListener("click", async () => {
-        const card = document.getElementById("resultCard") || document.querySelector(".export-card");
-        if (!card || typeof htmlToImage === 'undefined') return;
+exportBtn.addEventListener("click", async () => {
+const card = document.getElementById("resultCard");
+if (!card) return;
 
-        const originalText = exportBtn.innerHTML;
-        exportBtn.innerHTML = " Rendering...";
-        exportBtn.disabled = true;
+// Tampilkan loading state sementara  
+    const originalText = exportBtn.innerHTML;  
+    exportBtn.innerHTML = "⏳ Generating...";  
+    exportBtn.disabled = true;  
 
-        try {
-            await document.fonts.ready;
-            await new Promise(resolve => setTimeout(resolve, 500));
+    try {  
+        // 1. Pastikan semua font Google/Web sudah termuat sempurna  
+        await document.fonts.ready;  
+          
+        // 2. Beri jeda agar browser selesai merender ulang layout & animasi  
+        await new Promise(resolve => setTimeout(resolve, 500));  
 
-            // ✅ VERSI ASLI: Tanpa onclone, tanpa brightness, tanpa export-mode
-            const dataUrl = await htmlToImage.toPng(card, {
-                quality: 1.0,
-                pixelRatio: 3,
-                backgroundColor: "#090b18",
-                cacheBust: true
-            });
+if (window.talentChart) {
+    window.talentChart.update();
+}
 
-            const link = document.createElement("a");
-            const idolName = document.getElementById("names")?.value || 
-                             document.querySelector(".export-score")?.textContent?.trim() || "Unknown";
-            link.download = `NEXORA-${idolName.replace(/\s+/g, '-')}.png`;
-            link.href = dataUrl;
-            link.click();
+await new Promise(resolve => requestAnimationFrame(resolve));
+        // 3. Capture dengan konfigurasi optimal  
+        const canvas = await html2canvas(card, {  
+            scale: 3,           // Resolusi tinggi (3x)  
+            backgroundColor: "#0b1020", // Warna background fallback  
+            useCORS: true,      // Izinkan gambar eksternal 
+            allowTaint: true,
+            
+            removeContainer: true,
+            
+            imageTimeout: 0,
+            
+            logging: false,     // Matikan log biar gak berat  
+            windowWidth: card.scrollWidth,  
+            windowHeight: card.scrollHeight,  
+            x: 0,               // Mulai capture dari koordinat 0  
+            y: 0  
+        });  
 
-            showToast("Export berhasil! ✨");
+        // 4. Download file  
+        const link = document.createElement("a");  
+        const idolName = document.getElementById("names")?.value || "Unknown";  
+        link.download = `NEXORA-${idolName.replace(/\s+/g, '-')}.png`;  
+        link.href = canvas.toDataURL("image/png");  
+        link.click();  
 
-        } catch (err) {
-            console.error("Export failed:", err);
-            showToast("Gagal export ❌");
-        } finally {
-            exportBtn.innerHTML = originalText;
-            exportBtn.disabled = false;
-        }
-    });
+        showToast("Image exported! 📷");  
+
+    } catch (err) {  
+        console.error("Export failed:", err);  
+        showToast("Export failed ❌ Check console");  
+    } finally {  
+        // Kembalikan tombol ke semula  
+        exportBtn.innerHTML = originalText;  
+        exportBtn.disabled = false;  
+    }  
+});
+
 }
 
 // =========================
-// NEXORA TOAST SYSTEM
+// NEXORA TOAST SYSTEM V2 (Dipakai Jika Perlu)
 // =========================
 function showNexoraToast(message) {
     const toast = document.getElementById('nexoraToast');
@@ -2332,6 +2371,104 @@ function triggerConfetti() {
     }, 3000); // Mulai memudar setelah 3 detik
 }
 
+function triggerFire() {
+    const myCanvas = document.createElement('canvas');
+    myCanvas.style.position = 'fixed';
+    myCanvas.style.top = '0';
+    myCanvas.style.left = '0';
+    myCanvas.style.width = '100%';
+    myCanvas.style.height = '100%';
+    myCanvas.style.pointerEvents = 'none';
+    myCanvas.style.zIndex = '9999';
+    document.body.appendChild(myCanvas);
+
+    const fire = confetti.create(myCanvas, { resize: true });
+
+    const duration = 2200;
+    const end = Date.now() + duration;
+
+    (function frame() {
+
+        fire({
+            particleCount: 12,
+            angle: 60,
+            spread: 35,
+            startVelocity: 70,
+            origin: { x: 0, y: 1 },
+            gravity: 1,
+            scalar: 1.4,
+            colors: [
+                "#ff2d00",
+                "#ff5a00",
+                "#ff9900",
+                "#ffd000"
+            ]
+        });
+
+        fire({
+            particleCount: 12,
+            angle: 120,
+            spread: 35,
+            startVelocity: 70,
+            origin: { x: 1, y: 1 },
+            gravity: 1,
+            scalar: 1.4,
+            colors: [
+                "#ff2d00",
+                "#ff5a00",
+                "#ff9900",
+                "#ffd000"
+            ]
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        } else {
+            myCanvas.style.transition = "opacity 1.5s ease";
+
+setTimeout(() => {
+    myCanvas.style.opacity = "0";
+
+    setTimeout(() => {
+        myCanvas.remove();
+    },1500);
+
+},2200);
+        }
+
+    })();
+}
+
+function triggerLightning() {
+
+    const flash = document.createElement("div");
+
+    flash.style.position = "fixed";
+    flash.style.inset = "0";
+    flash.style.background = "white";
+    flash.style.opacity = "0";
+    flash.style.pointerEvents = "none";
+    flash.style.zIndex = "99999";
+
+    document.body.appendChild(flash);
+
+    let i = 0;
+
+    const interval = setInterval(() => {
+
+        flash.style.opacity = flash.style.opacity == "0" ? "0.95" : "0";
+
+        i++;
+
+        if (i >= 8) {
+            clearInterval(interval);
+            flash.remove();
+        }
+
+    }, 80);
+
+}
+
 // --- FUNGSI UNTUK MEMUNCULKAN TOMBOL COMPARE ---
 window.showCompareButtons = function() {
     const saveBtn = document.getElementById("saveCompare");
@@ -2397,7 +2534,7 @@ const idolDatabase = {
             name: "Rosé", 
             group: "BLACKPINK",
             rank: "Top 3/4 in Blackpink",
-            talent: `• Vocal: Low A (C-) | +55 (Good)\n• Dance: 7.00 | +70 (Intermediate)\n• Rap: Mid.Nr | +10 (Dozen)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 42+ | +4.2 (Ace)\n• Visual: 88% | +8.8 (Graceful)`,
+            talent: `• Vocal: Low A (C-) | +55 (Good)\n• Dance: 7 | +70 (Intermediate)\n• Rap: Mid.Nr | +10 (Dozen)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 42+ | +4.2 (Ace)\n• Visual: 88% | +8.8 (Graceful)`,
             status: "☆ Almost All-Rounder ☆ (+0.01)", 
             score: "7.83 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2405,7 +2542,7 @@ const idolDatabase = {
             name: "Lisa", 
             group: "BLACKPINK",
             rank: "Top 2/4 in Blackpink",
-            talent: `• Vocal: U-W (E-) | +15 (Dozen)\n• Dance: 9.35 | +93.5 (Proficient)\n• Rap: 25.50 | +70 (Ace)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 33+ | +3.3 (Ace)\n• Visual: 75% | +7.5 (Great)`,
+            talent: `• Vocal: U-W (E-) | +15 (Dozen)\n• Dance: 9.35 | +93.5 (Proficient)\n• Rap: 25.5 | +70 (Ace)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 33+ | +3.3 (Ace)\n• Visual: 75% | +7.5 (Great)`,
             status: "♡ Almost Ace ♡ (+0.10)", 
             score: "9.33 – Top Idol"
         },// <--- ITEM TERAKHIR SEBELUM TWICE
@@ -2448,7 +2585,7 @@ const idolDatabase = {
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Dahyun", group: "TWICE",
-            talent: `• Vocal: U-W (E) | +20 (Complete)\n• Dance: 7.15 | +71.5 (Intermediate)\n• Rap: 14.50 | +35 (Good)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 30+ | +3 (Ace)\n• Visual: 79% | +7.9 (Great)`,
+            talent: `• Vocal: U-W (E) | +20 (Complete)\n• Dance: 7.15 | +71.5 (Intermediate)\n• Rap: 14.5 | +35 (Good)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 30+ | +3 (Ace)\n• Visual: 79% | +7.9 (Great)`,
             rank: "Top 9/9 in TWICE",
             status: "☆ Almost All-Rounder ☆ (+0.01)", score: "7.32 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2468,7 +2605,7 @@ const idolDatabase = {
         // ================= RED VELVET =================
         {
             name: "Irene", group: "Red Velvet",
-            talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.40 | +74 (Intermediate)\n• Rap: 15.50 | +40 (Great)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
+            talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.40 | +74 (Intermediate)\n• Rap: 15.5 | +40 (Great)\n• SP: 15/20 | +75 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 97% | +9.7 (Visualist)`,
             rank: "Top 3/5 in Red Velvet",
             status: "★ All-Rounder ★ (+0.05)", score: "7.77 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2486,7 +2623,7 @@ const idolDatabase = {
         }, // <--- KOMA PENTING DI SINI
         {
             name: "Joy", group: "Red Velvet",
-            talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 5.90 | +59 (Average)\n• Rap: 6.25 | +25 (Complete)\n• SP: 14/20 | +70 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 80% | +8 (Graceful)`,
+            talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 5.90 | +59 (Average)\n• Rap: 8 | +25 (Complete)\n• SP: 14/20 | +70 (Upper)\n• Credit Songs: 4+ | +0.4 (Complete)\n• Visual: 80% | +8 (Graceful)`,
             rank: "Top 4/5 in Red Velvet",
             status: "☆ Almost All-Rounder ☆ (+0.01)", score: "7.07 – Good Idol"
         }, // <--- KOMA PENTING DI SINI
@@ -2511,7 +2648,7 @@ const idolDatabase = {
         name: "Giselle",
         group: "aespa",
         rank: "Top 4/4 in aespa",
-        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 6.95 | +69.5 (Intermediate)\n• Rap: 21.00 | +55 (Ace)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 15+ | +1.5 (Good)\n• Visual: 75% | +7.5 (Great)`,
+        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 6.95 | +69.5 (Intermediate)\n• Rap: 21 | +55 (Ace)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 15+ | +1.5 (Good)\n• Visual: 75% | +7.5 (Great)`,
         status: "★ All-Rounder ★ (+0.05)",
         score: "8.76 – Great Idol"
     },
@@ -2527,7 +2664,7 @@ const idolDatabase = {
         name: "Ningning",
         group: "aespa",
         rank: "Top 2/4 in aespa",
-        talent: `• Vocal: High A (C) | +65 (Good)\n• Dance: 8.25 | +82.5 (Advanced)\n• Rap: 8.50 | +25 (Complete)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 9+ | +0.9 (Complete)\n• Visual: 68% | +6.8 (High)`,
+        talent: `• Vocal: High A (C) | +65 (Good)\n• Dance: 8.25 | +82.5 (Advanced)\n• Rap: 8.5 | +25 (Complete)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 9+ | +0.9 (Complete)\n• Visual: 68% | +6.8 (High)`,
         status: "♡ Almost Ace ♡ (+0.10)",
         score: "8.85 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2538,7 +2675,7 @@ const idolDatabase = {
         name: "Sakura",
         group: "LE SSERAFIM",
         rank: "Top 4/5 in LE SSERAFIM",
-        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 8.00 | +80 (Advanced)\n• Rap: Upper.Nr | +15 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 128+ | +12.8 (Perfect)\n• Visual: 91% | +9.1 (Visualist)`,
+        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 8 | +80 (Advanced)\n• Rap: Upper.Nr | +15 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 128+ | +12.8 (Perfect)\n• Visual: 91% | +9.1 (Visualist)`,
         status: "☆ Almost All-Rounder ☆ (+0.01)",
         score: "7.93 – Good Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2562,7 +2699,7 @@ const idolDatabase = {
         name: "Kazuha",
         group: "LE SSERAFIM",
         rank: "Top 3/5 in LE SSERAFIM",
-        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.30 | +93 (Proficient)\n• Rap: 8.00 | +25 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 19+ | +1.9 (Good)\n• Visual: 94% | +9.4 (Visualist)`,
+        talent: `• Vocal: Low W-A (D-) | +40 (Complete)\n• Dance: 9.30 | +93 (Proficient)\n• Rap: 8 | +25 (Complete)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 19+ | +1.9 (Good)\n• Visual: 94% | +9.4 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
         score: "8.73 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2579,7 +2716,7 @@ const idolDatabase = {
         name: "Gaeul",
         group: "IVE",
         rank: "Top 3/6 in IVE",
-        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 7.95 | +79.5 (Intermediate)\n• Rap: 15.00 | +40 (Great)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 1+ | +0.1 (Complete)\n• Visual: 90% | +9 (Visualist)`,
+        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 7.95 | +79.5 (Intermediate)\n• Rap: 15 | +40 (Great)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 1+ | +0.1 (Complete)\n• Visual: 90% | +9 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
         score: "8.01 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2619,7 +2756,7 @@ const idolDatabase = {
         name: "Leeseo",
         group: "IVE",
         rank: "Top 4/6 in IVE",
-        talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.75 | +77.5 (Intermediate)\n• Rap: 9.50 | +30 (Good)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 1+ | +0.1 (Complete)\n• Visual: 93% | +9.3 (Visualist)`,
+        talent: `• Vocal: Mid W (E+) | +30 (Complete)\n• Dance: 7.75 | +77.5 (Intermediate)\n• Rap: 9.5 | +30 (Good)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 1+ | +0.1 (Complete)\n• Visual: 93% | +9.3 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
         score: "7.84 – Good Idol"
     } // <--- ITEM TERAKHIR IVE
@@ -2631,7 +2768,7 @@ const idolDatabase = {
         name: "Ruka", 
         group: "BABYMONSTER",
         rank: "Top 3/7 in BABYMONSTER",
-        talent: `• Vocal: U-W (E-) | +15 (Dozen)\n• Dance: 8.65 | +86.5 (Advanced)\n• Rap: 24.00 | +65 (Ace)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 2+ | +0.2 (Complete)\n• Visual: 72% | +7.2 (Great)`,
+        talent: `• Vocal: U-W (E-) | +15 (Dozen)\n• Dance: 8.65 | +86.5 (Advanced)\n• Rap: 24 | +65 (Ace)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 2+ | +0.2 (Complete)\n• Visual: 72% | +7.2 (Great)`,
         status: "♡ Almost Ace ♡ (+0.10)", 
         score: "8.69 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2647,7 +2784,7 @@ const idolDatabase = {
         name: "Asa", 
         group: "BABYMONSTER",
         rank: "Top 1/7 in BABYMONSTER",
-        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 8.15 | +81.5 (Advanced)\n• Rap: 27.00 | +75 (Ace)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 12+ | +1.2 (Good)\n• Visual: 76% | +7.6 (Great)`,
+        talent: `• Vocal: Low W (E+) | +25 (Complete)\n• Dance: 8.15 | +81.5 (Advanced)\n• Rap: 27.25 | +75 (Ace)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 12+ | +1.2 (Good)\n• Visual: 76% | +7.6 (Great)`,
         status: "♡ Almost Ace ♡ (+0.10)", 
         score: "9.23 – Top Idol"
     }, // <--- KOMA PENTING DI SINI
@@ -2655,9 +2792,9 @@ const idolDatabase = {
         name: "Ahyeon", 
         group: "BABYMONSTER",
         rank: "Top 4/7 in BABYMONSTER",
-        talent: `• Vocal: Mid W-A (D) | +45 (Complete)\n• Dance: 7.45 | +74.5 (Intermediate)\n• Rap: 16.75 | +40 (Great)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 3+ | +0.3 (Complete)\n• Visual: 84% | +8.4 (Graceful)`,
+        talent: `• Vocal: Mid W-A (D) | +45 (Complete)\n• Dance: 7.45 | +74.5 (Intermediate)\n• Rap: 19.25 | +50 (Great)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 3+ | +0.3 (Complete)\n• Visual: 84% | +8.4 (Graceful)`,
         status: "★ All-Rounder ★ (+0.05)", 
-        score: "8.38 – Great Idol"
+        score: "8.58 – Great Idol"
     }, // <--- KOMA PENTING DI SINI
     {
         name: "Rami", 
@@ -2679,7 +2816,7 @@ const idolDatabase = {
         name: "Chiquita", 
         group: "BABYMONSTER",
         rank: "Top 2/7 in BABYMONSTER",
-        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 8.00 | +80 (Advanced)\n• Rap: 8.00 | +25 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 0+ | +0 (Dozen)\n• Visual: 68% | +6.8 (High)`,
+        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 8 | +80 (Advanced)\n• Rap: 8 | +25 (Complete)\n• SP: 19/20 | +95 (Virtuoso)\n• Credit Songs: 0+ | +0 (Dozen)\n• Visual: 68% | +6.8 (High)`,
         status: "★ All-Rounder ★ (+0.05)", 
         score: "8.47 – Great Idol"
     } // <--- ITEM TERAKHIR GEN5
@@ -2692,7 +2829,7 @@ const idolDatabase = {
         name: "Hyoyeon", 
         group: "Girls Generation",
         rank: "Top 1/7 in Girls Generation",
-        talent: `• Vocal: U (F+) | +10 (Dozen)\n• Dance: 10.0 | +100 (Ace Dancer)\n• Rap: 13.75 | +35 (Good)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 16+ | +1.6(Good)\n• Visual: 63% | +6.3 (High)`,
+        talent: `• Vocal: U (F+) | +10 (Dozen)\n• Dance: 10 | +100 (Ace Dancer)\n• Rap: 13.75 | +35 (Good)\n• SP: 20/20 | +100 (Virtuoso)\n• Credit Songs: 16+ | +1.6(Good)\n• Visual: 63% | +6.3 (High)`,
         status: "☆ Almost All-Rounder ☆ (+0.01)", 
         score: "8.32 – Great Idol"
     }
