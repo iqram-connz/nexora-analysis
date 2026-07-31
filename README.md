@@ -1,2 +1,2 @@
 # nexora-analysis
-analysis idol talents
+analysis idol talents, ranking, compare, And others
