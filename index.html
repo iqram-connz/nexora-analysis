@@ -12,11 +12,10 @@
    <meta name="description" content="NEXORA Talent Analysis is a K-pop idol database featuring talent rankings, vocal, dance, rap, stage presence, visual analysis, and overall scores for K-pop idols from every generation.">
 
     <!-- 3. KEYWORDS (Bantu Google paham topikmu) -->
-   <meta name="keywords" content="NEXORA, K-pop, K-pop database, idol ranking, talent analysis, vocal ranking, dance rzzanking, rap ranking, stage presence, visual ranking, K-pop stats">
+   <meta name="keywords" content="NEXORA, K-pop, K-pop database, idol ranking, talent analysis, vocal ranking, dance ranking, rap ranking, stage presence, visual ranking, K-pop stats">
 
     <!-- 4. CSS & SCRIPT -->
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -279,7 +278,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
                 ⚔ MEMBER
             </button>
 
-            <button id="groupTab" class="overlay-tab" disabled>
+            <button id="groupTab" class="overlay-tab">
                 👥 GROUP (Coming Soon)
             </button>
         </div>
@@ -492,7 +491,6 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
 <!-- Pastikan file click.mp3 ada di folder assets/sounds/ -->
 <audio id="clickSound" src="assets/sounds/click.mp3" preload="auto"></audio>
 
@@ -509,12 +507,8 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
   
 <script src="data.js"></script>
-<!-- HAPUS INI -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> -->
-
-<!-- TAMBAHKAN INI -->
-<script src="https://unpkg.com/html-to-image/dist/html-to-image.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="script.js"></script>
 
 </body>
