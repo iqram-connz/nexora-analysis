@@ -435,16 +435,19 @@ transition: all 0.3s ease;
 }
 
 .chart-box{
-    margin-top:25px;
-    padding:20px;
-    border-radius:20px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(108,92,231,.25);
-    backdrop-filter:blur(12px);
 
-    box-shadow:
-        inset 0 0 15px rgba(255,255,255,.03),
-        0 0 20px rgba(108,92,231,.15);
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(108,92,231,.25);
+
+    backdrop-filter:blur(12px);
+    
 }
     
 box-shadow:
@@ -1889,26 +1892,6 @@ score-bonus{
 .btn-secondary:hover {
     background: #ff4d4d;
     color: white;
-}
-
-@keyframes scorePop{
-
-0%{
-transform:scale(1);
-}
-
-50%{
-transform:scale(1.25);
-}
-
-100%{
-transform:scale(1);
-}
-
-}
-
-.score-pop{
-animation:scorePop .40s ease;
 }
 
 .compare-side span{
@@ -3689,4 +3672,32 @@ transition: all 0.3s ease;
 #idolSearch:focus{
     border-color:#a259ff;
     box-shadow:0 0 18px rgba(162,89,255,.35);
+}
+
+.data-btn {
+  background: rgba(162, 89, 255, 0.1);
+    border: 1px solid rgba(162, 89, 255, 0.4);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+@keyframes lightningFlash{
+    0%{filter:brightness(1);}
+    10%{filter:brightness(2.8);}
+    20%{filter:brightness(1);}
+    30%{filter:brightness(2.3);}
+    100%{filter:brightness(1);}
+}
+
+.lightning-mode{
+    animation:lightningFlash .4s linear 4;
 }
