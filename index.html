@@ -23,6 +23,10 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#8b5cf6">
+    
 </head>
 <body>
     
@@ -34,7 +38,7 @@
             <h1 class="logo">𝄞</h1>
             <h1 class="title">NEXORA</h1>
             <h2 class="subtitle">Talent Analysis</h2>
-            <p class="tagline">Measure • Analyze • Discover</p>
+            <p class="tagline">Measure • Analyzing • Discover</p>
             <div class="divider"></div>
 
               <p class="tagline" style="font-weight: bold";>  @nexora_analysis</p>
@@ -216,13 +220,13 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
             
         </div>
         
-    <!-- INI TOMBOL ANALYZE YANG HILANG -->
+    <!-- INI TOMBOL  YANG HILANG -->
     <button id="analyze" class="btn-primary">📊 ANALYZE</button>
 
 <!-- ✅ LOADING SCREEN (Harus ada di dalam body) -->
 <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
     <div class="loading-box">
-        <div class="loading-icon">✨</div>
+        <div class="loading-icon">🌟</div>
         <h2>Analyzing Talent...</h2>
         <p>Please Wait...</p>
         <div class="loading-bar">
@@ -233,7 +237,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
  <div style="display:flex; gap:10px; margin-bottom:20px;">
     <button id="saveCompare" class="btn-secondary" style="display: none;">
-        ⭐ Save for Compare
+        ★ Save for Compare
     </button>
     <button id="openCompare" class="btn-primary">
         ⚔ Open Compare List
@@ -275,7 +279,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
         <!-- TAB -->
         <div class="overlay-tabs">
             <button id="memberTab" class="overlay-tab active">
-                ⚔ MEMBER
+                ⚔️ MEMBER
             </button>
 
             <button id="groupTab" class="overlay-tab">
@@ -308,7 +312,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
                 <hr>
 
-                <h4>Average Skills</h4>
+                <h4>Average Talents</h4>
 
                 <div class="group-skill">
                     <span>🎤 Vocal</span>
@@ -321,7 +325,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
                 </div>
 
                 <div class="group-skill">
-                    <span>🎤 Rap</span>
+                    <span>🗣️ Rap</span>
                     <span id="avgRap">-</span>
                 </div>
 
@@ -345,8 +349,12 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
                 <h4>AI Insight</h4>
 
                 <p id="groupInsight">
-                    Analyze a group to generate AI Insight.
+                     a group to generate AI Insight.
                 </p>
+                
+                <!-- Tombol Copy Result -->
+<button id="btnCopyResult" onclick="copyGroupResult()">📋 Copy Group Result</button>
+
 
             </div>
 
@@ -364,7 +372,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
 <div id="resultCard" class="result-card" style="display:none;">
   
-    <h3 class="analysis-title">NEXORA ANALYSIS</h3>
+    <h3 class="analysis-title">NEXORA TALENT ANALYSIS</h3>
 
     <div class="score-display">
         <span id="finalScore">0.00</span>
@@ -389,8 +397,6 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
         <div id="formulaText"></div>
         <div id="averageText"></div>
     </div>
-    
-    <!-- TAMBAHKAN INI DI DALAM #resultCard, DI ATAS TOMBOL COPY RESULT -->
 
 <!-- GANTI BAGIAN AI SUMMARY LAMA DENGAN INI -->
 <div class="section-title">INSIGHT</div>
@@ -467,7 +473,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
     </button>
 
     <button id="copyResultCard" class="btn-secondary">
-        📋 COPY RESULT (Full Card 📊)
+        📋 COPY RESULT (Full Card)
     </button>
 </div>
 
@@ -480,7 +486,7 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 <!-- ========================================== -->
 <!-- 4. RANKING OVERLAY (ANTI-BENTROK SEARCH)   -->
 <!-- ========================================== -->
-
+<!--- Jihyo Imut lucu mirip sana💛💜 -->
 <!-- ========================================== -->
 <!-- 5. TOAST NOTIFICATION                      -->
 <!-- ========================================== -->
@@ -497,17 +503,14 @@ Where talent meets precision. We break down, measure, and rank Vocal, Dance, Rap
 
 <audio id="successSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_12b0c7443c.mp3" preload="auto"></audio>
 
-
-        
  </div>
     
     </div>
         
   </div>
 
-  
 <script src="data.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+<script src="chart.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="script.js"></script>
 
