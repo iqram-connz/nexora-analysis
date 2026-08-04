@@ -97,7 +97,7 @@ function applyColorToStat(statId, value, type) {
           "#ff4d4d";    
         else if (num <= 0.9) color = "#feca57"; 
         else if (num <= 2.9) color = "#5bff1b"; 
-        else if (num <= 3.9) color = "#a29bfe"; 
+        else if (num <= 9.9) color = "#a29bfe"; 
         else color = 
           "#6c5ce7";           
       
@@ -235,7 +235,7 @@ let deleteTargetIndex = null; // Untuk menyimpan index yang sedang dipilih
 // --- RANDOM IDOL GENERATOR (CLEANED & ANIMATED) ---
 const idolList = [
     "Yujin (IVE)", "Ahyeon (BABYMONSTER)", "Rosè (BLACKPINK) ", "Winter (Aespa)", 
-    "Sana (TWICE)", "Asa (BABYMONSTER)", "Hanni (NEWJEANS)", "Miyeon (I-DLE)", "Jennie (BLACKPINK)", "Karina (Aespa)", "Yuju (GFRIEND)", "Rei (IVE)", "Nayeon (TWICE)", "Irene (Red Velvet)", "Ian (Hearts2Hearts)", "Chiquita (BABYMONSTER)", "Ningning (Aespa)", "Chaewon (LE SSERAFIM)", "Minju (ILLIT)", "Sakura (LE SSERAFIM)", "Yeji (ITZY)", "Soyeon (I-DLE)", "Jihyo (TWICE)", "Wonhee (ILLIT)", "Yuna (ITZY)", "Rora (BABYMONSTER)", "Wonyoung (IVE)", "Haewon (NMIXX)", "Momo (TWICE)", "Yunah (ILLIT)", "Kyujin (NMIXX)", "Lily (NMIXX)", "Lesseo (IVE)", "Yunjin (LE SSERAFIM)", "Seulgi (Red Velvet)", "Tzuyu (TWICE)", "Eunchae (LE SSERAFIM)", "Jiwoo (NMIXX)", "Yuha (Hearts2Hearts)", "Yeon (Hearts2Hearts)", "Dahyun (TWICE)", "Giselle (Aespa)", "Jisoo (BLACKPINK)", "Lia (ITZY)", "Ruka (BABYMONSTER)", "Lisa (BLACKPINK)", "Pharita (BABYMONSTER)", "Gaeul (IVE)", "Rami ♡ (BABYMONSTER)", "Haerin (NEWJEANS)", "Hyein (NEWJEANS)", "Jeongyeon (TWICE)", "Kazuha (LE SSERAFIM)", "Gawon (MEOVV)", "Minnie (I-DLE)", "Jiwoo (Hearts2Hearts)", "Bailey (ADP)", "Anna (MEOVV)", "Juun (Hearts2Hearts)", "Yuqi (I-DLE)", "Shuhua (I-DLE)", "Ella (MEOVV)", "Carmen (Hearts2Hearts)", "Danielle ♡ (NEWJEANS)", "Minji (NEWJEANS)", "Chaeyoung (TWICE)", "Bae (NMIXX)", "Narin (MEOVV)", "Hyoyeon (SNSD)", "Ryujin (ITZY)", "Chaeryoung (ITZY)", "Moka (ILLIT)", "Mina (TWICE)", "Iroha (ILLIT)", "Sullyoon (NMIXX)", "Sooin (MEOVV)"
+    "Sana (TWICE)", "Asa (BABYMONSTER)", "Hanni (NEWJEANS)", "Miyeon (I-DLE)", "Jennie (BLACKPINK)", "Karina (Aespa)", "Yuju (GFRIEND)", "Rei (IVE)", "Nayeon (TWICE)", "Irene (Red Velvet)", "Ian (Hearts2Hearts)", "Chiquita (BABYMONSTER)", "Ningning (Aespa)", "Chaewon (LE SSERAFIM)", "Minju (ILLIT)", "Sakura (LE SSERAFIM)", "Yeji (ITZY)", "Soyeon (I-DLE)", "Jihyo (TWICE)", "Wonhee (ILLIT)", "Yuna (ITZY)", "Rora (BABYMONSTER)", "Wonyoung (IVE)", "Haewon (NMIXX)", "Momo (TWICE)", "Yunah (ILLIT)", "Kyujin (NMIXX)", "Lily (NMIXX)", "Lesseo (IVE)", "Yunjin (LE SSERAFIM)", "Seulgi (Red Velvet)", "Tzuyu (TWICE)", "Eunchae (LE SSERAFIM)", "Jiwoo (NMIXX)", "Yuha (Hearts2Hearts)", "Yeon (Hearts2Hearts)", "Dahyun (TWICE)", "Giselle (Aespa)", "Jisoo (BLACKPINK)", "Lia (ITZY)", "Ruka (BABYMONSTER)", "Lisa (BLACKPINK)", "Pharita (BABYMONSTER)", "Gaeul (IVE)", "Rami ♡ (BABYMONSTER)", "Haerin (NEWJEANS)", "Hyein (NEWJEANS)", "Jeongyeon (TWICE)", "Kazuha (LE SSERAFIM)", "Gawon (MEOVV)", "Minnie (I-DLE)", "Jiwoo (Hearts2Hearts)", "Bailey (ADP)", "Anna (MEOVV)", "Juun (Hearts2Hearts)", "Yuqi (I-DLE)", "Shuhua (I-DLE)", "Ella (MEOVV)", "Carmen (Hearts2Hearts)", "Danielle ♡ (NEWJEANS)", "Minji (NEWJEANS)", "Chaeyoung (TWICE)", "Bae (NMIXX)", "Narin (MEOVV)", "Hyoyeon (SNSD)", "Ryujin (ITZY)", "Chaeryoung (ITZY)", "Moka (ILLIT)", "Mina (TWICE)", "Iroha (ILLIT)", "Sullyoon (NMIXX)"
 ];
 
 const randomBtn = document.getElementById("randomNameBtn");
@@ -279,7 +279,7 @@ if (randomBtn && nameInput) {
             vData.forEach(item => {
                 if (!item.name || String(item.name).trim() === "") return;
                 const option = document.createElement("option");
-                option.value = item.name;
+
                 option.textContent = item.name;
                 option.dataset.point = item.point || 0;
                 option.dataset.badge = item.badge || "-";
@@ -384,6 +384,7 @@ if (rapSelect && typeof rapData !== 'undefined' && Array.isArray(rapData)) {
     rapData.filter(item => item.name && !item.min).forEach(item => {
         const option = document.createElement("option");
         option.value = item.name;
+        option.dataset.value = item.name; // <-- TAMBAHKAN DI SINI (Menggunakan name karena tidak ada score)
         // Di Dropdown: Low.Nr (Low T7)
         option.textContent = item.subTier ? `${item.name} (${item.subTier})` : item.name;
         
@@ -401,6 +402,8 @@ if (rapSelect && typeof rapData !== 'undefined' && Array.isArray(rapData)) {
 
             const option = document.createElement("option");
             option.value = roundedScore;
+            option.dataset.value = roundedScore;   // <-- TAMBAHKAN DI SINI
+            
             // Di Dropdown: 17.25 (Mid T5)
             option.textContent = range.subTier ? `${roundedScore.toFixed(2)} (${range.subTier})` : roundedScore.toFixed(2);
             
@@ -898,14 +901,21 @@ function getSortedDistribution(data) {
 }
 
 
-// 1️ TOMBOL: COPY RESULT (Only Talent 🎤)
+// 1️⃣ TOMBOL: COPY RESULT (Only Talent 🎤)
 const btnTalent = document.getElementById("copyResult");
 if (btnTalent) {
     btnTalent.addEventListener("click", async () => {
         if (!window.lastAnalysis) return showToast("Analyze an idol first!");
         
         const d = window.lastAnalysis;
-        const text = `NEXORA Talent Analysis
+        
+        // Simpan teks asli & aktifkan loading state
+        const originalText = btnTalent.innerHTML;
+        btnTalent.innerHTML = "⏳ Copying...";
+        btnTalent.disabled = true; // ✅ Perbaikan: tambahkan '= true'
+        
+        try {
+            const text = `NEXORA Talent Analysis
 
 ${d.name}
 
@@ -930,12 +940,26 @@ ${document.getElementById("formulaText").textContent} ${document.getElementById(
 
 Score: ${d.score.toFixed(2)} (${d.tier}) • ${currentFinalGrade}`;
 
-        try {
             await navigator.clipboard.writeText(text);
-            showToast("🎤 Result copied!");
-        } catch (err) { showToast("Copy failed!"); }
+            
+            // PINDAHKAN showToast KE DALAM SETTIMEOUT AGAR BERSAMAAN DENGAN RESET
+            setTimeout(() => {
+                btnTalent.innerHTML = originalText;
+                btnTalent.disabled = false;
+                showToast("🎤 Result copied!"); 
+            }, 2000);
+
+        } catch (err) { 
+            console.error("Copy failed:", err);
+            // Jika gagal, langsung reset tanpa delay agar user bisa coba lagi cepat
+            btnTalent.innerHTML = originalText;
+            btnTalent.disabled = false;
+            showToast("Copy failed!"); 
+        
+        }
     });
 }
+
 
 const btnCard = document.getElementById("copyResultCard");
 if (btnCard) {
@@ -944,61 +968,66 @@ if (btnCard) {
         if (!window.lastAnalysis) return showToast("Analyze an idol first!");
         
         const d = window.lastAnalysis;
-       
 
-        // 3. AMBIL BADGE TEXT DARI UI (JANGAN DARI DATA MENTAH AGAR LEBIH AKURAT)
-        // Pastikan ID elemen ini sesuai dengan HTML-mu
-        const vBadge = document.getElementById("vocalBadge")?.textContent || "N/A";
-        const dBadge = document.getElementById("danceBadge")?.textContent || "N/A";
-        const rBadge = document.getElementById("rapBadge")?.textContent || "N/A";
-        const sBadge = document.getElementById("spBadge")?.textContent || "N/A";
-        const cBadge = document.getElementById("creditBadge")?.textContent || "N/A";
-        const visBadge = document.getElementById("visualBadge")?.textContent || "N/A";
+        // TAMPILKAN LOADING STATE
+        const originalText = btnCard.innerHTML;
+        btnCard.innerHTML = "✏️ Copying...";
+        btnCard.disabled = true;
 
-        // 4. HITUNG DISTRIBUTION & GAP
-        let sortedDist = [];
-        if (window.currentStatsList && window.currentStatsList.length > 0) {
-            sortedDist = window.currentStatsList.map(stat => ({
-                name: stat.name,
-                value: Math.min(stat.val, 100) 
-            })).sort((a, b) => b.value - a.value);
-        } else {
-            // Fallback manual
-            sortedDist = [
-    { name: "SP", value: Math.min(d.spPoint || 0, 100) },
-    { name: "Dance", value: Math.min(d.dancePoint || 0, 100) },
-    { name: "Vocal", value: Math.min(d.vocalPoint || 0, 100) },
-    { name: "Rap", value: Math.min(d.rapPoint || 0, 100) },
-    { name: "Credit", value: Math.min(d.creditPoint || 0, 100) },
-    { name: "Visual", value: Math.min(d.visualPoint || 0, 100) }
-].sort((a, b) => b.value - a.value);
-}
+        try {
+            // 3. AMBIL BADGE TEXT DARI UI (JANGAN DARI DATA MENTAH AGAR LEBIH AKURAT)
+            // Pastikan ID elemen ini sesuai dengan HTML-mu
+            const vBadge = document.getElementById("vocalBadge")?.textContent || "N/A";
+            const dBadge = document.getElementById("danceBadge")?.textContent || "N/A";
+            const rBadge = document.getElementById("rapBadge")?.textContent || "N/A";
+            const sBadge = document.getElementById("spBadge")?.textContent || "N/A";
+            const cBadge = document.getElementById("creditBadge")?.textContent || "N/A";
+            const visBadge = document.getElementById("visualBadge")?.textContent || "N/A";
 
-        const highest = sortedDist[0] || {name: "N/A", value: 0};
-        const lowest = sortedDist[sortedDist.length - 1] || {name: "N/A", value: 0};
-        const gap = Math.abs(highest.value - lowest.value).toFixed(1);
-        
-        let specLabel = "Balanced Profile";
-        if (gap >= 70) specLabel = "Extreme specialization detected";
-        else if (gap >= 40) specLabel = "Strong specialization";
-        else if (gap >= 20) specLabel = "Mild specialization";
+            // 4. HITUNG DISTRIBUTION & GAP
+            let sortedDist = [];
+            if (window.currentStatsList && window.currentStatsList.length > 0) {
+                sortedDist = window.currentStatsList.map(stat => ({
+                    name: stat.name,
+                    value: Math.min(stat.val, 100) 
+                })).sort((a, b) => b.value - a.value);
+            } else {
+                // Fallback manual
+                sortedDist = [
+                    { name: "SP", value: Math.min(d.spPoint || 0, 100) },
+                    { name: "Dance", value: Math.min(d.dancePoint || 0, 100) },
+                    { name: "Vocal", value: Math.min(d.vocalPoint || 0, 100) },
+                    { name: "Rap", value: Math.min(d.rapPoint || 0, 100) },
+                    { name: "Credit", value: Math.min(d.creditPoint || 0, 100) },
+                    { name: "Visual", value: Math.min(d.visualPoint || 0, 100) }
+                ].sort((a, b) => b.value - a.value);
+            }
 
-        const distLines = sortedDist.map(item => `• ${item.name}: ${Math.round(item.value)}%`).join("\n");
+            const highest = sortedDist[0] || {name: "N/A", value: 0};
+            const lowest = sortedDist[sortedDist.length - 1] || {name: "N/A", value: 0};
+            const gap = Math.abs(highest.value - lowest.value).toFixed(1);
+            
+            let specLabel = "Balanced Profile";
+            if (gap >= 70) specLabel = "Extreme specialization detected";
+            else if (gap >= 40) specLabel = "Strong specialization";
+            else if (gap >= 20) specLabel = "Mild specialization";
+
+            const distLines = sortedDist.map(item => `• ${item.name}: ${Math.round(item.value)}%`).join("\n");
 
 
-const finalGrade = currentFinalGrade;
-const comment = currentComment;
-        
-        // Ambil data achievement premium
-        const achIcon = document.querySelector(".badge-icon")?.textContent || "━";
-        const achTitle = document.querySelector(".badge-title")?.textContent || "";
-        let achLine = "━";
-        if (achTitle) {
-            achLine = `\n🏆 Achievement: ${achIcon} ${achTitle}`;
-        }
+            const finalGrade = currentFinalGrade;
+            const comment = currentComment;
+            
+            // Ambil data achievement premium
+            const achIcon = document.querySelector(".badge-icon")?.textContent || "━";
+            const achTitle = document.querySelector(".badge-title")?.textContent || "";
+            let achLine = "━";
+            if (achTitle) {
+                achLine = `\n🏆 Achievement: ${achIcon} ${achTitle}`;
+            }
 
-        // 6. SUSUN TEKS FINAL
-        const text = `
+            // 6. SUSUN TEKS FINAL
+            const text = `
 NEXORA TALENT ANALYSIS
 
 ${d.name}
@@ -1040,12 +1069,21 @@ Gap: ${gap}
 ${specLabel}
 `.trim();
 
-        // 7. COPY KE CLIPBOARD
-        try {
+            // 7. COPY KE CLIPBOARD
             await navigator.clipboard.writeText(text);
-            showToast("✅ Full Result Copied to Clipboard!");
+
+            // Tunda reset tombol & toast agar loading state terlihat natural (800ms)
+            setTimeout(() => {
+                btnCard.innerHTML = originalText;
+                btnCard.disabled = false;
+                showToast("✅ Full Result Copied to Clipboard!");
+            }, 2000);
+
         } catch (err) {
             console.error('Failed to copy: ', err);
+            // Jika gagal, langsung reset tanpa delay agar user bisa retry cepat
+            btnCard.innerHTML = originalText;
+            btnCard.disabled = false;
             showToast("❌ Failed to copy text.");
         }
     });
@@ -1060,7 +1098,7 @@ if (!card) return;
 
 // Tampilkan loading state sementara  
     const originalText = exportBtn.innerHTML;  
-    exportBtn.innerHTML = "⏳ Generating...";  
+    exportBtn.innerHTML = "📸 Generating...";  
     exportBtn.disabled = true;  
 
     try {  
@@ -1104,7 +1142,7 @@ await new Promise(resolve => requestAnimationFrame(resolve));
 
     } catch (err) {  
         console.error("Export failed:", err);  
-        showToast("Export failed ❌ Check console");  
+        showToast("Offline mode is not supported.");  
     } finally {  
         // Kembalikan tombol ke semula  
         exportBtn.innerHTML = originalText;  
@@ -1175,7 +1213,7 @@ window.editIdolFromList = function(index) {
 
     // 1. ISI NAMA
     document.getElementById("names").value = idolData.name || "";
-    
+
     // 2. RESET SEMUA ELEMEN KE STATE AWAL TERLEBIH DAHULU
     ["vocal", "rap", "sp"].forEach(id => {
         const select = document.getElementById(id);
@@ -1219,7 +1257,7 @@ window.editIdolFromList = function(index) {
     compareList.splice(index, 1);
     updateCompareUI();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    
+
     // 5. TRIGGER AUTO-REANALYZE (PENTING!)
     // Kita beri jeda sedikit agar UI inputan selesai terisi dulu
     setTimeout(() => {
@@ -1259,7 +1297,7 @@ window.editIdolFromList = function(index) {
         if (window.lastAnalysis) {
             saveIdolToDatabase(window.lastAnalysis);
         }
-        
+
         showToast(`✏️ Editing "${idolData.name}"... Data Loaded!`);
     }, 300);
 };
@@ -1272,7 +1310,7 @@ function updateCompareUI() {
     const card = document.getElementById("compareCard");
     const list = document.getElementById("compareListDisplay");
     const totalEl = document.getElementById("compareTotal");
-    
+
     if (!card || !list) return;
 
     if (totalEl) totalEl.textContent = `Total : ${compareList.length} / 20`;
@@ -1321,13 +1359,13 @@ function renderHistoryUI() {
     }
 
     historyContainer.innerHTML = `<div class="history-title">📜 Nexora Archives</div>`;
-    
+
     [...compareHistory].reverse().forEach((session, idx) => {
         const realIndex = compareHistory.length - 1 - idx;
         const names = session.idols.map(i => i.name).join(", ");
         const winner = session.idols[0].name; 
         const dateStr = new Date(session.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-        
+
         historyContainer.innerHTML += `
             <div class="history-item">
                 <div class="history-info">
@@ -1390,59 +1428,379 @@ function getVocalTier(point) {
     return closest.name;
 }
 
+console.table(compareList.map(x => ({
+    name: x.name,
+    rap: x.rap,
+    rapValue: x.rapValue,
+    rapPoint: x.rapPoint
+})));
+
 // =========================
-// GROUP ANALYSIS
+// GLOBAL VARIABLES
 // =========================
+let currentGroupAverages = {};
+let groupInsightText = ""; 
+
+function getVocalTier(score) {
+    // 🔴 Tier Dozen
+    if (score < 7.5) return "U (F)";       // +5
+    if (score < 12.5) return "U (F+)";      // +10
+    if (score < 17.5) return "U-W (E-)";    // +15
+    
+    // 🟠 Tier Complete 
+    if (score < 22.5) return "U-W (E)";     // +20
+    if (score < 27.5) return "Low W (E+)";  // +25
+    if (score < 32.5) return "Mid W (E+)";  // +30
+    if (score < 37.5) return "High W (E+)"; // +35
+    if (score < 42.5) return "Low W-A (D-)";// +40
+    if (score < 47.5) return "Mid W-A (D)"; // +45
+    
+    // 🟢 Tier Good
+    if (score < 52.5) return "High W-A (D+)"; // +50
+    if (score < 57.5) return "Low A (C-)";    // +55
+    if (score < 62.5) return "Mid A (C)";     // +60
+    if (score < 67.5) return "High A (C)";    // +65
+    
+    // 🔵 Tier Great
+    if (score < 72.5) return "Low A-AA (C+)"; // +70
+    if (score < 77.5) return "Mid A-AA (C+)"; // +75
+    if (score < 82.5) return "High A-AA (C+)";// +80
+    
+    // 🟣 Tier Ace
+    if (score < 87.5) return "Low AA (B-)";   // +85
+    if (score < 92.5) return "Mid AA (B-)";  // +90
+    if (score >= 97.5) return "High AA (B-)";// +95 (dan seterusnya cap di 100)
+    if (score >= 102.5) return "Low AA-P (B)";
+    if (score >= 107.5) return "Mid AA-P (B)";
+    if (score >= 112.5) return "High AA-P (B)";
+    // ⚫ Tier Master & 🟤 Tier Perfect (Semuanya +100)
+    // Karena poinnya sama, kita bisa kembalikan label tertinggi atau sesuaikan dengan skor mentah
+    return "Low P (B+)±"; 
+}
+
+// Helper untuk mendapatkan POIN dari Tier Vocal (untuk Copy Result)
+function getVocalPointsFromTier(tierLabel) {
+    const pointMap = {
+        "U (F)": 5, "U (F+)": 10, "U-W (E-)": 15,
+        "U-W (E)": 20, "Low W (E+)": 25, "Mid W (E+)": 30, "High W (E+)": 35,
+        "Low W-A (D-)": 40, "Mid W-A (D)": 45, "High W-A (D+)": 50,
+        "Low A (C-)": 55, "Mid A (C)": 60, "High A (C)": 65,
+        "Low A-AA (C+)": 70, "Mid A-AA (C+)": 75, "High A-AA (C+)": 80,
+        "Low AA (B-)": 85, "Mid AA (B-)": 90, "High AA (B-)": 95,
+        "Low P (B+)": 100, "Mid P (B+)": 100, "High P (B+)": 100,
+        "Low P-G (A-)": 100, "Mid P-G (A)": 100, "High P-G (A+)": 100,
+        "Low G (S)": 100, "Mid G (S)": 100, "High G (S)": 100
+    };
+    return pointMap[tierLabel] || 0;
+}
+
+// Pembulatan Dance ke kelipatan 0.05
+function roundDance(val) { 
+    return Math.round(val / 0.05) * 0.05; 
+}
+
+// Pembulatan Rap Value ke kelipatan 0.25
+function roundRapValue(val) { 
+    return Math.round(val * 4) / 4; 
+}
+
+// Pembulatan ke Kelipatan 5 Terdekat
+function roundToNearest5(val) {
+    return Math.round(val / 5) * 5;
+}
+
+// Khusus Dance: Karena Dance poinnya besar (x10 dari value), 
+// kita bulatkan Poin-nya ke kelipatan 5, lalu saat tampil Value-nya jadi kelipatan 0.5
+function roundDancePointsTo5(val) {
+    return Math.round(val / 5) * 5;
+}
+
+
+// Konversi Value Rap ke Label Tier (NR)
+function getRapTierLabel(val) {
+    // Gunakan pembulatan dulu agar 2.5000001 tetap terbaca sebagai 2.50
+    const roundedVal = roundRapValue(val);
+    
+    if (roundedVal <= 2.50) return "Low.Nr";
+    if (roundedVal <= 3.50) return "Mid.Nr";
+    if (roundedVal <= 4.50) return "Upper.Nr";
+    if (roundedVal <= 5.50) return "High.Nr";
+    
+    // Jika di atas 5.50, tampilkan angka value-nya
+    return roundedVal.toFixed(2);
+}
+
+// Konversi Value Rap ke POIN (Untuk Hitungan Skor)
+function getRapPointsFromValue(val) {
+    const roundedVal = roundRapValue(val);
+    
+    // Tier Dozen (NR)
+    if (roundedVal <= 2.50) return 5;   // Low.Nr
+    if (roundedVal <= 3.50) return 10;  // Mid.Nr
+    if (roundedVal <= 4.50) return 15;  // Upper.Nr
+    if (roundedVal <= 5.50) return 20;  // High.Nr
+    
+    // Tier Complete & Above (Angka Value)
+    if (roundedVal <= 8.75) return 25;
+    if (roundedVal <= 11.75) return 30;
+    if (roundedVal <= 14.75) return 35;
+    if (roundedVal <= 17.00) return 40;
+    if (roundedVal <= 18.25) return 45;
+    if (roundedVal <= 20.00) return 50;
+    if (roundedVal <= 21.25) return 55;
+    if (roundedVal <= 23.00) return 60;
+    if (roundedVal <= 24.25) return 65;
+    if (roundedVal <= 26.00) return 70;
+    if (roundedVal <= 28.00) return 75;
+    if (roundedVal <= 31.00) return 80;
+    if (roundedVal <= 34.00) return 85;
+    if (roundedVal <= 36.00) return 90;
+    if (roundedVal <= 40.00) return 95;
+    return 100;
+}
+
+// Helper Credit: Pastikan tidak 0 jika ada lagu
+function getCreditPoints(count) {
+    if (count <= 0) return 0;
+    return count * 0.0; 
+}
+
+function getGroupTierData(score) {
+    if (score >= 10) return { name: "Perfect Group", cssClass: "tier-perfect" };
+    if (score >= 9)  return { name: "Top Group", cssClass: "tier-top" };
+    if (score >= 8)  return { name: "Great Group", cssClass: "tier-great" };
+    if (score >= 7)  return { name: "Good Group", cssClass: "tier-good" };
+    if (score >= 6)  return { name: "Above A. Group", cssClass: "tier-above-a" };
+    if (score >= 5)  return { name: "Average Group", cssClass: "tier-average" };
+    return { name: "Dozen Group", cssClass: "tier-dozen" };
+}
+
+// =========================
+// AI INSIGHT GENERATOR (ENGLISH)
+// =========================
+function generateDynamicInsight(v, d, r, s, c, vis, score) {
+    let strengths = [];
+    let weaknesses = [];
+    let conceptSuggestion = "";
+    
+    // Strength Analysis
+    if (vis >= 9) strengths.push("a world-class visual line that serves as the group's primary magnet");
+    if (d >= 8) strengths.push("razor-sharp dance synchronization and consistently powerful stage performances");
+    if (v >= 60) strengths.push("a solid vocal foundation with mature breathing techniques and stable live singing");
+    if (s >= 75) strengths.push("captivating stage presence and exceptional ability to bring songs to life");
+    if (c >= 1) strengths.push("high self-production creativity, giving the group a unique and authentic musical identity");
+    if (r >= 20) strengths.push("a dominant rap line with distinctive flow, tone, and charismatic delivery");
+    
+    // Weakness / Development Area Analysis
+    if (vis < 7) weaknesses.push("styling strategies and camera work need refinement to better highlight members' visuals");
+    if (d < 7) weaknesses.push("synchronization drills and movement isolation require more intensive practice for flawless live stages");
+    if (v < 40) weaknesses.push("vocal stability during intense choreography needs further training to prevent breathlessness");
+    if (s < 50) weaknesses.push("facial expressions and audience interaction can be explored more deeply to enhance emotional connection");
+    if (c < 0.3) weaknesses.push("participation in songwriting and composition should be encouraged to strengthen the group's artistic signature");
+    if (r < 10) weaknesses.push("rap verse depth needs reinforcement to avoid sounding monotonous or overly brief in tracks");
+    
+    // Concept Recommendation Based on Skill Dominance
+    if (vis >= 9 && d >= 8) conceptSuggestion = "This group is perfectly suited for high-fashion performance concepts or elegant girl crush themes that showcase both stunning visuals and complex choreography.";
+    else if (v >= 60 && s >= 75) conceptSuggestion = "The powerful combination of vocals and stage presence makes this group ideal for dramatic ballads or soulful R&B concepts that rely heavily on emotional expression.";
+    else if (r >= 20 && d >= 8) conceptSuggestion = "Rap dominance paired with precise dancing suggests an edgy hip-hop or experimental concept that boldly pushes genre boundaries.";
+    else if (c >= 1 && v >= 60) conceptSuggestion = "Self-production capabilities combined with strong vocals open doors for indie-pop or acoustic concepts that feel authentic and personal.";
+    else conceptSuggestion = "The relatively balanced skill distribution allows this group to experiment with diverse concepts without being confined to a single niche.";
+    
+    // Assemble Comprehensive Insight Paragraph
+    let insightText = `Based on comprehensive analysis, this group demonstrates ${strengths.length > 0 ? strengths.join(", ") + "." : "a well-rounded skill profile"}`;
+    
+    if (weaknesses.length > 0) {
+        insightText += ` However, there are key development areas including ${weaknesses.join(", ")}.`;
+    }
+    
+    insightText += ` ${conceptSuggestion}`;
+    
+    // Tier-Based Closing Remark
+    if (score >= 8) insightText += " Overall, this is an elite-tier group with highly promising debut/redebut potential.";
+    else if (score >= 6) insightText += " The group has a strong foundation and only requires polishing in select areas to reach the next level.";
+    else insightText += " Focusing on fundamental skill enhancement and inter-member chemistry will significantly elevate overall performance quality.";
+    
+    return insightText;
+}
+
 function generateGroupAnalysis() {
+    // 1. Filter Member Aktif
+    const activeMembers = compareList.filter(idol => 
+        idol.isSelected === true || 
+        idol.active === true || 
+        (idol.vocalPoint > 0 && idol.dancePoint > 0)
+    );
 
-    if (compareList.length < 2) return;
+    if (activeMembers.length < 2) {
+        console.warn("Need at least 2 active members.");
+        return;
+    }
 
-let totalVocal = 0;
-let totalDance = 0;
-let totalRap = 0;
-let totalSP = 0;
-let totalCredit = 0;
-let totalVisual = 0;
-let totalScore = 0;
+    let tVocal = 0, tDance = 0, tRapVal = 0, tSP = 0, tCreditCount = 0, tVis = 0;
 
-compareList.forEach(idol => {
-    totalVocal += Number(idol.vocalPoint) || 0;
-totalDance += Number(idol.dancePoint) || 0;
-totalRap += Number(idol.rapPoint) || 0;
-totalSP += Number(idol.spPoint) || 0;
-totalCredit += Number(idol.creditPoint) || 0;
-totalVisual += Number(idol.visualPoint) || 0;
-totalScore += Number(idol.score) || 0;
-});
+    // 2. Loop Data Member
+    activeMembers.forEach(idol => {
+        tVocal += Number(idol.vocalPoint || idol.vocal || 0);
+        tDance += Number(idol.dancePoint || idol.dance || 0);
 
-const member = compareList.length;
+        let rVal = idol.rapValue || idol.rap || 0;
+        const rapLabelToVal = { "Low.Nr": 2.50, "Mid.Nr": 3.50, "Upper.Nr": 4.50, "High.Nr": 5.50 };
+        
+        if (rapLabelToVal[rVal] !== undefined) {
+            tRapVal += rapLabelToVal[rVal];
+        } else {
+            if (typeof rVal === 'string') rVal = parseFloat(rVal.replace(/[^0-9.]/g, ''));
+            tRapVal += Number(rVal) || 0;
+        }
 
-const avgVocal = totalVocal / member;
-const avgDance = totalDance / member;
-const avgRap = totalRap / member;
-const avgSP = totalSP / member;
-const avgCredit = totalCredit / member;
-const avgVisual = totalVisual / member;
-const avgScore = totalScore / member;
+        tSP += Number(idol.spPoint || idol.sp || 0);
 
-document.getElementById("groupScore").textContent = avgScore.toFixed(2);
-document.getElementById("groupTier").textContent = getTierText(avgScore);
+        let cCount = idol.credit || idol.songs || idol.totalSongs || idol.songCount || idol.credits || 0;
+        if (typeof cCount === 'string') cCount = parseInt(cCount.replace(/[^0-9]/g, ''));
+        tCreditCount += Number(cCount) || 0;
 
-document.getElementById("avgVocal").textContent = getVocalTier(avgVocal);
-document.getElementById("avgDance").textContent = roundDance(avgDance).toFixed(2);
-document.getElementById("avgRap").textContent = roundRap(avgRap).toFixed(2);
-document.getElementById("avgSP").textContent = Math.round(avgSP) + "/20";
-document.getElementById("avgCredit").textContent = Math.round(avgCredit);
-document.getElementById("avgVisual").textContent = Math.round(avgVisual);
+        let vPt = idol.visualPoint || idol.visual || 0;
+        if (typeof vPt === 'string') vPt = parseFloat(vPt.replace(/[^0-9.]/g, ''));
+        tVis += Number(vPt) || 0;
+    });
+
+    // 3. Hitung Rata-rata
+    const member = activeMembers.length;
+    const aVocal = tVocal / member;   
+    const aDance = tDance / member;   
+    const aRapVal = tRapVal / member; 
+    const aSP = tSP / member;         
+    const aCreditCount = tCreditCount; 
+    const aVisual = tVis / member;    
+
+    // 4. Konversi ke POIN & PEMBULATAN KE KELIPATAN 5
+    // ATURAN: Math.round(val / 5) * 5
+    
+    const vPts = Math.round(aVocal / 5) * 5;              // Vocal Poin (Rounded)
+    const dPts = Math.round(aDance / 5) * 5;              // Dance Poin (Rounded)
+    
+    let rPtsRaw = getRapPointsFromValue(aRapVal);
+    const rPts = Math.round(rPtsRaw / 5) * 5;             // Rap Poin (Rounded)
+    
+    const sPts = Math.round(aSP / 5) * 5;                 // SP Poin (ROUNDED, TANPA KALI 5!)
+    
+    const cPts = Math.round((aCreditCount * 0.1) * 10) / 10; // Credit presisi 1 desimal
+    
+    const visPts = Math.round(aVisual / 0.1) * 0.1;           // Visual Poin (ROUNDED, TANPA BAGI 10!)
+
+    const sumAvgPoints = vPts + dPts + rPts + sPts + cPts + visPts;
+    const overallScore = (sumAvgPoints / 40) + 2;
+
+    console.log(`DEBUG ROUNDED: V:${vPts} D:${dPts} R:${rPts} S:${sPts} C:${cPts.toFixed(1)} Vis:${visPts}`);
+    console.log(`FINAL SCORE: ${overallScore.toFixed(2)}`);
+
+    // 5. Update UI
+    document.getElementById("groupScore").textContent = overallScore.toFixed(2);
+    
+    const tierData = getGroupTierData(overallScore);
+    const tierEl = document.getElementById("groupTier");
+    tierEl.textContent = tierData.name;
+    tierEl.className = ""; 
+    tierEl.classList.add(tierData.cssClass);
+    
+    document.getElementById("avgVocal").textContent = getVocalTier(vPts);
+    
+    // Dance: Tampilkan Value (Poin / 10). Karena poin kelipatan 5, value jadi .0 atau .5
+    document.getElementById("avgDance").textContent = (dPts / 10).toFixed(2);
+    
+    document.getElementById("avgRap").textContent = getRapTierLabel(aRapVal); 
+    
+    const creditDisplay = aCreditCount < 1 ? aCreditCount.toFixed(1) : Math.floor(aCreditCount);
+    document.getElementById("avgCredit").textContent = creditDisplay + " Songs"; 
+    
+    // SP: Tampilkan Skala 20. Karena sPts adalah poin mentah (bukan x5), kita bagi 5 untuk dapat skala 20
+    document.getElementById("avgSP").textContent = (sPts / 5) + "/20"; 
+    
+    const visPercent = Math.floor(aVisual * 10);
+    document.getElementById("avgVisual").textContent = visPercent + "%";
+
+    // 6. Save Global Data
+    groupInsightText = generateDynamicInsight(vPts, dPts/10, aRapVal, sPts/5, aCreditCount, visPts/10, overallScore);
+    document.getElementById("groupInsight").textContent = groupInsightText;
+
+    currentGroupAverages = {
+        vocal: vPts, dance: dPts, rap: aRapVal, 
+        sp: sPts, credit: aCreditCount, visual: visPts
+    };
 }
 
-function roundDance(val){
-    return Math.round(val / 0.05) * 0.05;
+// =========================
+// COPY RESULT FUNCTION
+// =========================
+function copyGroupResult() {
+    const score = document.getElementById("groupScore").textContent;
+    const tier = document.getElementById("groupTier").textContent;
+    const vocalLabel = document.getElementById("avgVocal").textContent;
+    const danceLabel = document.getElementById("avgDance").textContent;
+    const rapLabel = document.getElementById("avgRap").textContent;
+    const spLabel = document.getElementById("avgSP").textContent;
+    const creditLabel = document.getElementById("avgCredit").textContent;
+    const visualLabel = document.getElementById("avgVisual").textContent;
+    
+    const insight = groupInsightText || "No insight available.";
+    
+    const memberNames = compareList
+        .filter(m => m.isSelected || m.active || (m.vocalPoint > 0 && m.dancePoint > 0))
+        .map(m => `- ${m.name}`)
+        .join("\n");
+
+    const { vocal: vPts, dance: dPts, rap: rPts, sp: sPts, credit: cPts, visual: visPts } = currentGroupAverages;
+
+    const resultText = `NEXORA GROUP ANALYSIS
+
+List Idol:
+${memberNames}
+
+• Vocal: ${vocalLabel} | +${parseFloat(vPts).toFixed(1)}
+• Dance: ${danceLabel} | +${parseFloat(dPts).toFixed(1)}
+• Rap: ${rapLabel} | +${parseFloat(rPts).toFixed(1)}
+• SP: ${spLabel} | +${parseFloat(sPts).toFixed(1)}
+• Credit Songs: ${creditLabel.replace(" Songs", "")} | +${parseFloat(cPts).toFixed(1)}
+• Visual: ${visualLabel} | +${parseFloat(visPts).toFixed(1)}
+
+_ _ _ _
+
+Score: ${score} (${tier}) 
+
+"${insight}"`;
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(resultText).then(showCopySuccess);
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = resultText;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showCopySuccess();
+        } catch (err) {
+            alert("Failed to copy.");
+        } finally {
+            document.body.removeChild(textArea);
+        }
+    }
+} // <--- PASTIKAN KURUNG INI ADA UNTUK MENUTUP FUNGSI copyGroupResult
+
+function showCopySuccess() {
+    const btn = document.getElementById("btnCopyResult");
+    if (!btn) return;
+    const original = btn.textContent;
+    btn.textContent = "✅ Copied!";
+    btn.style.background = "rgba(34, 197, 94, 0.3)";
+    setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = "";
+    }, 2000);
 }
 
-function roundRap(val){
-    return Math.round(val / 0.25) * 0.25;
-}
 
 // =========================
 // SCORE COUNT UP
@@ -1468,8 +1826,7 @@ function animateScore(element, target) {
             element.style.animation = "scorePop .35s";
 
             setTimeout(() => {
-                element.style.animation = "";
-            }, 350);
+          }, 350);
         }
 
         element.textContent = current.toFixed(2);
@@ -1494,11 +1851,11 @@ window.deleteHistory = function(index) {
     if (deleteTargetIndex === index) {
         compareHistory.splice(index, 1); // Hapus data
         localStorage.setItem('nexoraCompareHistory', JSON.stringify(compareHistory));
-        
+
         renderHistoryUI(); // Refresh tampilan
-        
+
         showToast("🗑️ Archive deleted successfully!");
-        
+
         // Reset target setelah berhasil dihapus
         deleteTargetIndex = null; 
     } else {
@@ -1555,9 +1912,9 @@ if (saveBtn) {
         // 1. Ambil Poin Angka
         const vocal = getPointValue("vocalPoint");
         const dance = getPointValue("dancePoint");
-        const rap = getPointValue("rapPoint");
+        const rap = document.getElementById("rap").value;
         const sp = getPointValue("spPoint");
-        
+
         // 2. AMBIL TEKS TIER DARI BADGE
         const vocalTier = document.getElementById("vocalBadge")?.textContent || "-";
         const danceTier = document.getElementById("danceBadge")?.textContent || "-";
@@ -1569,7 +1926,7 @@ if (saveBtn) {
             const inputVal = document.getElementById("credit")?.value;
             credit = inputVal ? "+" + inputVal : "–";
         }
-        
+
         let visual = getPointValue("visualPoint");
         if (visual === "0" || visual === "+0") {
             const inputVal = document.getElementById("visual")?.value;
@@ -1582,6 +1939,14 @@ if (saveBtn) {
 
 console.log(window.lastAnalysis);
 
+console.log({
+    rap,
+    rapTier,
+    rapPoint: window.lastAnalysis.rapPoint,
+    rapValue: Number(document.getElementById("rap").selectedOptions[0].dataset.value)
+});
+
+const rapOption = document.getElementById("rap").selectedOptions[0];
         // 3. Simpan dengan Format Lengkap
        compareList.push({
 
@@ -1602,7 +1967,7 @@ console.log(window.lastAnalysis);
     rap,
     rapTier,
     rapPoint: window.lastAnalysis.rapPoint,
-
+    rapValue: Number(document.getElementById("rap").selectedOptions[0].dataset.value),    
     sp,
     spTier,
     spPoint: window.lastAnalysis.spPoint,
@@ -1629,17 +1994,17 @@ if (startBtnGlobal) {
 
         const overlay = document.getElementById("rankingOverlay");
         const rankingList = document.getElementById("rankingList");
-        
+
         if (overlay && rankingList) {
             rankingList.innerHTML = ""; 
-            
+
             // A. OVERALL RANKING
             let sortedOverall = [...compareList].sort((a, b) => b.overall - a.overall);
             let overallHtml = `<div class="overlay-ranking-header">🏆 OVERALL RANKING</div>`;
-            
+
             sortedOverall.forEach((idol, index) => {
                 let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index+1}.`;
-                
+
                 // LOGIKA TIE UNTUK OVERALL
                 let tieLabel = '';
                 if (index > 0 && idol.overall === sortedOverall[index-1].overall) {
@@ -1656,28 +2021,68 @@ if (startBtnGlobal) {
             rankingList.innerHTML += overallHtml;
 
             // B. DETAIL KATEGORI (FULL INLINE STYLE + TIE DETECTION)
+            
+            // Helper function khusus untuk mendapatkan nilai sort Rap
+            function getRapSortValue(val) {
+                if (!val) return 0;
+                
+                // Mapping bobot untuk Tier Name NR agar bisa diurutkan dengan benar
+                const nrWeights = {
+                    "Low.Nr": 2.00,
+                    "Mid.Nr": 3.50,
+                    "Upper.Nr": 4.50,
+                    "High.Nr": 5.50
+                };
+
+                // Jika value adalah Tier Name, kembalikan bobotnya
+                if (nrWeights[val] !== undefined) {
+                    return nrWeights[val];
+                }
+
+                // Jika angka, parsing seperti biasa
+                let num = parseFloat(String(val).replace(/[^\d.-]/g, ''));
+                return isNaN(num) ? 0 : num;
+            }
+
             function renderSection(title, key) {
                 let sorted = [...compareList].sort((a, b) => {
-                    let valA = parseFloat(String(a[key]).replace(/[^\d.-]/g, '')) || 0;
-                    let valB = parseFloat(String(b[key]).replace(/[^\d.-]/g, '')) || 0;
-                    return valB - valA;
+                    let valA, valB;
+
+                    // Gunakan logika khusus jika kategorinya Rap
+                    if (key === "rap") {
+                        valA = getRapSortValue(a[key]);
+                        valB = getRapSortValue(b[key]);
+                    } else {
+                        // Logika default untuk kategori lain
+                        valA = parseFloat(String(a[key]).replace(/[^\d.-]/g, '')) || 0;
+                        valB = parseFloat(String(b[key]).replace(/[^\d.-]/g, '')) || 0;
+                    }
+
+                    return valB - valA; // Urutkan dari terbesar ke terkecil
                 });
-                
+
                 // CARD UTAMA KATEGORI
                 let html = `
                     <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(162,89,255,0.2); border-radius:16px; padding:15px; margin-top:15px;">
                         <div style="font-size:12px; color:#a259ff; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid rgba(162,89,255,0.15);">${title}</div>
                         <div style="display:flex; flex-direction:column; gap:6px;">
                 `;
-                
+
                 sorted.forEach((idol, index) => {
                     let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index+1}.`;
-                    
+
                     // LOGIKA TIE UNTUK KATEGORI
                     let tieLabel = '';
-                    let currentVal = parseFloat(String(idol[key]).replace(/[^\d.-]/g, '')) || 0;
-                    let prevVal = index > 0 ? (parseFloat(String(sorted[index-1][key]).replace(/[^\d.-]/g, '')) || 0) : null;
-                    
+                    let currentVal, prevVal;
+
+                    if (key === "rap") {
+                        currentVal = getRapSortValue(idol[key]);
+                        prevVal = index > 0 ? getRapSortValue(sorted[index-1][key]) : null;
+                    } else {
+                        currentVal = parseFloat(String(idol[key]).replace(/[^\d.-]/g, '')) || 0;
+                        prevVal = index > 0 ? (parseFloat(String(sorted[index-1][key]).replace(/[^\d.-]/g, '')) || 0) : null;
+                    }
+
                     if (index > 0 && currentVal === prevVal) {
                         tieLabel = '<span style="color:#ffd700; font-size:11px; margin-left:5px;">( Tie! 🤝 )</span>';
                     }
@@ -1685,7 +2090,7 @@ if (startBtnGlobal) {
                     // BACKGROUND BERBEDA UNTUK JUARA 1, 2, 3
                     let bgStyle = "background:rgba(0,0,0,0.2);";
                     let borderLeft = "";
-                    
+
                     if (index === 0) {
                         bgStyle = "background:rgba(162,89,255,0.15);";
                         borderLeft = "border-left:3px solid #ffd700;";
@@ -1704,7 +2109,7 @@ if (startBtnGlobal) {
                         </div>
                     `;
                 });
-                
+
                 html += `</div></div>`; 
                 rankingList.innerHTML += html;
             }
@@ -1762,8 +2167,6 @@ if (openBtn) {
         }
     });
 }
-
-
 // --- NEXORA AI SUMMARY (FIXED ORIGINAL VERSION) ---
 function generateAISummary() {
     console.log("🤖 Nexora AI Summary started...");
@@ -1880,7 +2283,7 @@ function generateAISummary() {
     let grade = "F- (Rookie)";
     let gradeBg = "linear-gradient(135deg, #576574, #34495e)"; 
 
-    if (coreAvg >= 100) { grade = "SS (Insanse)"; gradeBg = "linear-gradient(135deg, #ffd700, #ffaa00)"; } 
+    if (coreAvg >= 100) { grade = "SS (Insane)"; gradeBg = "linear-gradient(135deg, #ffd700, #ffaa00)"; } 
     else if (coreAvg >= 95) { grade = "S+ (Immortal)"; gradeBg = "linear-gradient(135deg, #ff4d4d, #cc0000)"; } 
     else if (coreAvg >= 90) { grade = "S (Legend)"; gradeBg = "linear-gradient(135deg, #ff6b6b, #ee5a5a)"; } 
     else if (coreAvg >= 85) { grade = "S- (Elite)"; gradeBg = "linear-gradient(135deg, #ff9f43, #ff7f00)"; } 
@@ -1959,7 +2362,7 @@ function generateAISummary() {
         ];
         comment = developingComments[Math.floor(Math.random() * developingComments.length)];
         
-    } else {
+    } else if (coreAvg >= 1.5) {
         const beginnerComments = [
             `${name} is still developing. Focus on improving ${wSkill} to climb the ranks, while using their small advantage in ${bSkill} as a confidence booster.`,
             `Every legend starts somewhere. ${name} has the raw material to grow. They should cherish their slight edge in ${bSkill} but prioritize fixing the fundamentals of ${wSkill}.`,
@@ -1971,6 +2374,22 @@ function generateAISummary() {
             `The fire is there. ${name} just needs to channel it into focused training. Let their passion for ${bSkill} drive them to overcome the challenges they face in ${wSkill}.`
         ];
         comment = beginnerComments[Math.floor(Math.random() * beginnerComments.length)];
+        
+    } else {
+      const rookieComments = [
+        `?`,
+        `What are you doing?`,
+        `Input a talent, please!`,
+        `okay?`,
+        `Oh My God, what's wrong this Idol?`,
+        `Ummm...`,
+        `Nothing to say.`,
+        `Ace Idol.`,
+        `What happen to ${name}?`,
+        `Just ${name}.`,
+        `${name}?`
+        ];
+        comment = rookieComments[Math.floor(Math.random() * rookieComments.length)];
     }
 
 currentFinalGrade = grade;
@@ -2390,9 +2809,9 @@ function triggerFire() {
     (function frame() {
 
         fire({
-            particleCount: 12,
-            angle: 60,
-            spread: 35,
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
             startVelocity: 70,
             origin: { x: 0, y: 1 },
             gravity: 1,
@@ -2406,9 +2825,9 @@ function triggerFire() {
         });
 
         fire({
-            particleCount: 12,
+            particleCount: 5,
             angle: 120,
-            spread: 35,
+            spread: 55,
             startVelocity: 70,
             origin: { x: 1, y: 1 },
             gravity: 1,
@@ -2647,15 +3066,15 @@ const idolDatabase = {
     {
         name: "Giselle",
         group: "aespa",
-        rank: "Top 4/4 in aespa",
-        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 6.95 | +69.5 (Intermediate)\n• Rap: 21 | +55 (Ace)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 15+ | +1.5 (Good)\n• Visual: 75% | +7.5 (Great)`,
+        rank: "Top 2/4 in aespa (With Ningning)",
+        talent: `• Vocal: High W-A (D+) | +50 (Good)\n• Dance: 6.50 | +65 (Intermediate)\n• Rap: 21.5| +60 (Ace)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 15+ | +1.5 (Good)\n• Visual: 76% | +7.6 (Great)`,
         status: "★ All-Rounder ★ (+0.05)",
-        score: "8.76 – Great Idol"
+        score: "8.85 – Great Idol"
     },
     {
         name: "Winter",
         group: "aespa",
-        rank: "Top 3/4 in aespa",
+        rank: "Top 4/4 in aespa",
         talent: `• Vocal: Low A-AA (C+) | +70 (Great)\n• Dance: 8.10 | +81 (Advanced)\n• Rap: 7.75 | +25 (Complete)\n• SP: 17/20 | +85 (High)\n• Credit Songs: 2+ | +0.2 (Complete)\n• Visual: 94% | +9.4 (Visualist)`,
         status: "★ All-Rounder ★ (+0.05)",
         score: "8.81 – Great Idol"
@@ -2663,7 +3082,7 @@ const idolDatabase = {
     {
         name: "Ningning",
         group: "aespa",
-        rank: "Top 2/4 in aespa",
+        rank: "Top 2/4 in aespa (With Giselle)",
         talent: `• Vocal: High A (C) | +65 (Good)\n• Dance: 8.25 | +82.5 (Advanced)\n• Rap: 8.5 | +25 (Complete)\n• SP: 18/20 | +90 (High)\n• Credit Songs: 9+ | +0.9 (Complete)\n• Visual: 68% | +6.8 (High)`,
         status: "♡ Almost Ace ♡ (+0.10)",
         score: "8.85 – Great Idol"
@@ -2861,10 +3280,10 @@ function renderIdolChart(searchText = "") {
     
     data.forEach(idol => {
         let borderColor = "#e196ff"; 
-        if (idol.group === "BLACKPINK") borderColor = "#424242";
+        if (idol.group === "BLACKPINK") borderColor = "#3d3d3d";
         if (idol.group === "TWICE") borderColor = "#d97f62"; 
         if (idol.group === "Red Velvet") borderColor = "#8dc0ff"; 
-        if (idol.group === "BABYMONSTER") borderColor = "#8e0000"; 
+        if (idol.group === "BABYMONSTER") borderColor = "#741717"; 
         if (idol.group === "aespa") borderColor = "#dfff48";
         if (idol.group === "LE SSERAFIM") borderColor = "#ff751f";
         if (idol.group === "IVE") borderColor = "#002892";
@@ -2905,7 +3324,7 @@ function renderIdolChart(searchText = "") {
                 }
                 else if (type === 'credit') {
                     if (val === 0) return "#ff4d4d"; if (val <= 0.9) return "#feca57";
-                    if (val <= 2.9) return "#5bff1b"; if (val <= 3.9) return "#a29bfe";
+                    if (val <= 2.9) return "#5bff1b"; if (val <= 9.9) return "#a29bfe";
                     return "#6c5ce7";
                 }
                 else if (type === 'visual') {
