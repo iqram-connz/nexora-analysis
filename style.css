@@ -3408,266 +3408,183 @@ transition: all 0.3s ease;
 .badge-diamond { background: linear-gradient(135deg, rgba(185, 242, 255, 0.2), rgba(185, 242, 255, 0.05)); border-color: rgba(185, 242, 255, 0.5); color: #b9f2ff; box-shadow: 0 0 15px rgba(185, 242, 255, 0.2); }
 
 /* =========================
-   ANALYSIS TAB
+   RESET & FONT SHARPENING
 ========================= */
-
-.overlay-tabs{
-
-    display:flex;
-    gap:10px;
-
-    margin-top:8px;
-    margin-bottom:18px;
-
+* {
+    -webkit-font-smoothing: antialiased; /* Membuat font tajam di semua device */
+    -moz-osx-font-smoothing: grayscale;
 }
-
-.overlay-tab{
-
-    flex:1;
-
-    padding:13px;
-
-    border:none;
-    border-radius:14px;
-
-    background:#232332;
-
-    color:#bdbdbd;
-
-    font-size:14px;
-    font-weight:800;
-
-    letter-spacing:.8px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.overlay-tab:hover{
-
-    transform:translateY(-2px);
-
-    color:#fff;
-
-}
-
-.overlay-tab.active{
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #a259ff
-    );
-
-    color:#fff;
-
-    box-shadow:
-        0 0 18px rgba(162,89,255,.55);
-
-}
-
-
 
 /* =========================
-   GROUP PANEL
+   OVERLAY TABS
 ========================= */
+.overlay-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
 
+.overlay-tab {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #888;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.overlay-tab.active {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff;
+    border-color: #a259ff;
+    box-shadow: 0 0 15px rgba(162, 89, 255, 0.4);
+}
+
+/* =========================
+   PANEL LAYOUT
+========================= */
 #memberPanel,
-#groupPanel{
-
-    flex:1;
-
-    overflow-y:auto;
-
-    min-height:0;
-
+#groupPanel {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
 }
-
-
 
 /* =========================
-   GROUP CARD
+   GROUP CARD (SHARP & PREMIUM)
 ========================= */
-
-.group-card{
-
-    background:linear-gradient(
-        145deg,
-        #1d1d28,
-        #14141d
-    );
-
-    border:1px solid rgba(162,89,255,.35);
-
-    border-radius:18px;
-
-    padding:18px;
-
-    box-shadow:
-        0 0 20px rgba(162,89,255,.12);
-
+.group-card {
+    background: linear-gradient(160deg, #2a1b3d 0%, #1a1025 100%);
+    border: 1px solid rgba(162, 89, 255, 0.4);
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(162, 89, 255, 0.2) inset;
+    position: relative;
+    overflow: hidden;
 }
 
-
+.group-card h3 {
+    margin: 0 0 25px;
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(162, 89, 255, 0.5);
+}
 
 /* =========================
-   GROUP TITLE
+   SCORE DISPLAY (CENTERED)
 ========================= */
-
-.group-card h3{
-
-    margin:0 0 15px;
-
-    text-align:center;
-
-    color:#fff;
-
-    font-size:20px;
-
-    letter-spacing:2px;
-
-    text-transform:uppercase;
-
+.group-score {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
+.group-score span {
+    font-size: 60px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(162, 89, 255, 0.6);
+    margin-bottom: 10px;
+}
 
+#groupTier {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Gradient Tiers */
+.tier-dozen     { background: linear-gradient(135deg, #ff0000, #ff4500); }
+.tier-average   { background: linear-gradient(135deg, #ff8c00, #ff0000); }
+.tier-above-a   { background: linear-gradient(135deg, #00cc44, #00ffff); color: #003300 !important; }
+.tier-good      { background: linear-gradient(135deg, #00cc44, #0066ff); }
+.tier-great     { background: linear-gradient(135deg, #0066ff, #9933ff); }
+.tier-top       { background: linear-gradient(135deg, #9933ff, #4b0082); }
+.tier-perfect   { 
+    background: linear-gradient(135deg, #ffd700, #ff8c00); 
+    color: #4a3b00 !important; 
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
 
 /* =========================
-   SCORE
+   SKILLS (CLEAN VERSION)
 ========================= */
-
-.group-score{
-
-    text-align:center;
-
-    margin-bottom:20px;
-
+.group-skill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 16px 20px; 
+    margin-bottom: 12px;
+    
+    background: rgba(162, 89, 255, 0.12); 
+    border: 1px solid rgba(162, 89, 255, 0.2);
+    border-radius: 14px;
+    
+    transition: all 0.2s ease;
 }
 
-.group-score span{
-
-    display:block;
-
-    font-size:38px;
-
-    font-weight:900;
-
-    color:#a259ff;
-
-    text-shadow:
-        0 0 18px rgba(162,89,255,.6);
-
+.group-skill span:first-child {
+    font-family: 'Segoe UI', sans-serif; 
+    color: #e0e0e0;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
 }
 
-.group-score p{
-
-    margin-top:5px;
-
-    color:#bdbdbd;
-
-    font-size:15px;
-
+.group-skill span:last-child {
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
-
-
-/* =========================
-   SKILLS
-========================= */
-
-.group-skill{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:12px 0;
-
-    border-bottom:1px solid rgba(255,255,255,.06);
-
+.group-skill:hover {
+    background: rgba(162, 89, 255, 0.2);
+    transform: scale(1.02);
 }
-
-.group-skill span:first-child{
-
-    color:#ddd;
-
-    font-weight:700;
-
-}
-
-.group-skill span:last-child{
-
-    color:#fff;
-
-    font-weight:900;
-
-}
-
-
 
 /* =========================
    INSIGHT
 ========================= */
-
-#groupInsight{
-
-    margin-top:15px;
-
-    padding:15px;
-
-    border-radius:14px;
-
-    background:rgba(162,89,255,.08);
-
-    border:1px solid rgba(162,89,255,.18);
-
-    color:#ddd;
-
-    line-height:1.6;
-
-    font-size:14px;
-
+#groupInsight {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid #a259ff;
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 14px;
 }
 
 
-
-/* =========================
-   SCROLLBAR
-========================= */
-
-#groupPanel::-webkit-scrollbar{
-
-    width:4px;
-
-}
-
-#groupPanel::-webkit-scrollbar-thumb{
-
-    background:#a259ff;
-
-    border-radius:10px;
-
-}
-
-.idol-search{
-    margin:18px 0;
-}
-
-#idolSearch{
-    width:100%;
-    padding:14px 18px;
-    border-radius:14px;
-    border:1px solid rgba(162,89,255,.35);
-    background:#17171d;
-    color:#fff;
-    font-size:15px;
-    outline:none;
-    box-sizing:border-box;
-}
 
 #idolSearch:focus{
     border-color:#a259ff;
@@ -3700,4 +3617,22 @@ transition: all 0.3s ease;
 
 .lightning-mode{
     animation:lightningFlash .4s linear 4;
+}
+
+.copy-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:active {
+    background: rgba(168, 85, 247, 0.3); /* Ungu saat ditekan */
+    transform: scale(0.98);
 }
